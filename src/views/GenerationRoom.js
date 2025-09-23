@@ -1,5 +1,7 @@
 // src/views/GenerationRoom.js
 import { state, setRoundQuestions } from "../state.js";
+import { RoleBadge } from "../components/RoleBadge.js";
+
 
 export function GenerationRoom() {
   const root = document.createElement("div");
@@ -52,5 +54,6 @@ export function GenerationRoom() {
     location.hash = "#round1";
   });
 
-  return root;
+root.appendChild(RoleBadge());
+return root;
 }
