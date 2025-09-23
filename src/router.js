@@ -24,3 +24,9 @@ export function router() {
 export function mountRoute() {
   router();
 }
+window.addEventListener("hashchange", () => {
+  router();
+});
+
+// Call once on load
+router();
