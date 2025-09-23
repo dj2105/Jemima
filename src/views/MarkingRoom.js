@@ -1,3 +1,4 @@
+// src/views/MarkingRoom.js
 import { state } from "../state.js";
 import { setDoc, doc } from "../lib/firebase.js";
 
@@ -5,11 +6,12 @@ export function MarkingRoom() {
   const root = document.createElement("div");
   root.className = "wrap";
 
-  // Decide who you are + who you're marking
-  const self = "Daniel"; // TODO: detect dynamically (e.g. from login/session)
+  // Detect which player this client is — for now hardcoded.
+  // TODO: later detect via login/session or role in Firestore.
+  const self = "Daniel";
   const opponent = self === "Daniel" ? "Jaime" : "Daniel";
 
-  // Grab opponent answers (stub fallback if missing)
+  // Grab opponent answers (fallback if none yet)
   const oppAnswers = state.round1OpponentAnswers || [
     { id: "q1", question: "Stub Q1?", chosen: "Yes" },
     { id: "q2", question: "Stub Q2?", chosen: "Right" },
@@ -38,7 +40,7 @@ export function MarkingRoom() {
 
   let marks = {};
 
-  // Render each opponent answer
+  // Render opponent’s answers
   oppAnswers.forEach((a) => {
     const div = document.createElement("div");
     div.className = "panel mt-3";
@@ -53,7 +55,7 @@ export function MarkingRoom() {
     markList.appendChild(div);
   });
 
-  // Handle marking clicks
+  // Marking logic
   markList.querySelectorAll(".markBtn").forEach((btn) => {
     btn.addEventListener("click", (e) => {
       const qid = e.target.dataset.q;
@@ -71,9 +73,9 @@ export function MarkingRoom() {
     });
   });
 
-  // Continue button
+  // Continue button logic
   continueBox.querySelector("#continueBtn").addEventListener("click", async () => {
-    // Add perceived points
+    // Add perceived points for the opponent
     const points = Object.values(marks).reduce((a, b) => a + b, 0);
     state.perceivedScores[opponent] = (state.perceivedScores[opponent] || 0) + points;
 
@@ -81,17 +83,18 @@ export function MarkingRoom() {
     document.getElementById("scoreDaniel").textContent = state.perceivedScores.Daniel || 0;
     document.getElementById("scoreJaime").textContent = state.perceivedScores.Jaime || 0;
 
-    // Save to Firestore under current room
+    // Save to Firestore (stub — currently using null db in doc())
     await setDoc(doc(null, "rooms", state.room.code, "marking", self), {
       marks,
       round: state.currentRound
     });
 
-    // Switch overlays
+    // Show waiting screen until opponent also finishes
     continueBox.classList.add("hidden");
     waiting.classList.remove("hidden");
 
-    // TODO: Add real sync → check if both players submitted, then:
+    // TODO: Add Firestore listener → if both players submitted,
+    // then increment round and redirect:
     // state.currentRound++;
     // location.hash = "#round" + state.currentRound;
   });
