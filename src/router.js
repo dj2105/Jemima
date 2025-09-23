@@ -10,7 +10,7 @@ const routes = {
   "#key": KeyRoom,
   "#generation": GenerationRoom,
   "#round1": QuestionRoom,
-  "#marking1": MarkingRoom   // NEW
+  "#marking1": MarkingRoom
 };
 
 export function router() {
@@ -18,4 +18,9 @@ export function router() {
   const root = document.getElementById("app");
   root.innerHTML = "";
   root.appendChild(view());
+}
+
+// ✅ Export alias so main.js import works
+export function mountRoute() {
+  router();
 }
