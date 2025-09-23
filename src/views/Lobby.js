@@ -1,11 +1,31 @@
-import { setRoomCode } from '../state.js';
+import { state, setRoomCode } from '../state.js';
 import { generateCode, validateCodeInput } from '../lib/codeFormat.js';
 
 export function Lobby(){
   const wrap = document.createElement('div');
   wrap.className = 'wrap';
+
+  // restore saved role (default Daniel)
+  const savedRole = localStorage.getItem('ja_role');
+  state.self = savedRole === 'Jaime' ? 'Jaime' : 'Daniel';
+
   wrap.innerHTML = `
     <div class="h1">Jemima's Asking</div>
+
+    <div class="panel" style="margin-bottom:1rem">
+      <div class="row" style="gap:16px; align-items:center; flex-wrap:wrap">
+        <strong>Select your role:</strong>
+        <label class="row" style="gap:8px; align-items:center">
+          <input type="radio" name="role" value="Daniel" ${state.self==='Daniel'?'checked':''}/>
+          Daniel
+        </label>
+        <label class="row" style="gap:8px; align-items:center">
+          <input type="radio" name="role" value="Jaime" ${state.self==='Jaime'?'checked':''}/>
+          Jaime
+        </label>
+      </div>
+    </div>
+
     <div class="grid-2">
       <section class="panel">
         <div class="badge jaime">JAIME</div>
@@ -31,14 +51,30 @@ export function Lobby(){
     </div>
   `;
 
-  // Normalise input
-  const codeInput = wrap.querySelector('#jaime-code');
-  codeInput.addEventListener('input', (e) => {
-    e.target.value = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0,4);
+  // role selection
+  wrap.querySelectorAll('input[name="role"]').forEach(r => {
+    r.addEventListener('change', (e) => {
+      state.self = e.target.value === 'Jaime' ? 'Jaime' : 'Daniel';
+      localStorage.setItem('ja_role', state.self);
+    });
   });
 
-  // Jaime join
+  // normalise Jaime code input
+  const codeInput = wrap.querySelector('#jaime-code');
+  codeInput.addEventListener('input', (e) => {
+    e.target.value = e.target.value
+      .toUpperCase()
+      .replace(/[^A-Z0-9]/g, '')
+      .replace(/[O0]/g, '')  // exclude O and 0
+      .slice(0,4);
+  });
+
+  // Jaime → must enter valid code, role must be Jaime
   wrap.querySelector('#jaime-go').addEventListener('click', () => {
+    if (state.self !== 'Jaime') {
+      alert('Switch role to Jaime (top of screen) to join as Jaime.');
+      return;
+    }
     const val = codeInput.value.trim();
     if (!validateCodeInput(val)) {
       alert('Please enter a valid 4-character code (A–Z, 1–9; excludes 0 and O).');
@@ -48,17 +84,20 @@ export function Lobby(){
     location.hash = "#generation";
   });
 
-  // Daniel setup
-  wrap.querySelector('#daniel-go').addEventListener('click', () => {
-    location.hash = "#key";
-  });
-
-  // Generate code
+  // Daniel → can generate a code, then proceed to Key Room
   wrap.querySelector('#gen-code').addEventListener('click', () => {
     const code = generateCode({ exclude: ['O','0'] });
-    const out = wrap.querySelector('#code-out');
-    out.textContent = code;
+    wrap.querySelector('#code-out').textContent = code;
+    setRoomCode(code);
     navigator.clipboard?.writeText(code).catch(()=>{});
+  });
+
+  wrap.querySelector('#daniel-go').addEventListener('click', () => {
+    if (state.self !== 'Daniel') {
+      alert('Switch role to Daniel (top of screen) to set up the game.');
+      return;
+    }
+    location.hash = "#key";
   });
 
   return wrap;
