@@ -25,7 +25,9 @@ export const state = {
     rejected: 0,
     mathsReady: false
   },
-  round1Questions: null
+  round1Questions: null,
+round1OpponentAnswers: null,
+  perceivedScores: { Daniel: 0, Jaime: 0 }
 };
 
 export function setRoomCode(code) {
@@ -36,7 +38,6 @@ export function setKeyRoomField(field, value) {
   state.keyRoom[field] = value;
 }
 
-// ✅ New helper for Round 1
 export function setRound1Questions(questions) {
   state.round1Questions = questions;
 }
