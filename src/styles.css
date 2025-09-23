@@ -111,3 +111,16 @@ body{
 .role-badge.jaime {
   background: #ffee00; /* electric neon yellow */
 }
+/* Selected answer / mark button */
+.btn.selected,
+.markBtn.selected {
+  outline: 3px solid #111;          /* strong contrast outline */
+  box-shadow: 0 0 0 3px #00e5ff66;  /* cyan glow */
+  transform: translateY(-1px);
+}
+
+/* Optional: make the unselected twin look inactive once chosen */
+.btn.is-locked {
+  opacity: 0.55;
+  pointer-events: none;
+}
