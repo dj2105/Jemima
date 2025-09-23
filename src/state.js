@@ -1,29 +1,11 @@
+// App-wide state
 export const state = {
-  room: {
-    code: '',
-  },
-  runtime: {
-    geminiEnvKey: null,
-    firebaseEnvJSON: null
-  },
-  keyRoom: {
-    geminiKey: '',
-    qJSON: '',
-    mathsJSON: '',
-    firestoreJSON: '',
-    codeFormatJSON: ''
-  },
-  validation: {
-    geminiKey: false,
-    qJSON: true,       // empty = green per spec
-    mathsJSON: true,   // empty = green
-    firestoreJSON: false,
-    codeFormatJSON: true // empty = green -> fallback to default
+  db: null,
+  roomCode: "EH6W", // stub until generated
+  generationProgress: {
+    generated: 0,
+    verified: 0,
+    rejected: 0,
+    mathsReady: false
   }
 };
-
-export function setRoomCode(code){ state.room.code = code; }
-
-export function setKeyRoomField(field, value){
-  state.keyRoom[field] = value;
-}
