@@ -2,6 +2,7 @@
 import { state } from "../state.js";
 import { advanceToMarking } from "../flow.js";
 import { RoleBadge } from "../components/RoleBadge.js";
+import { ScoreStrip, updateScoreStrip } from "../components/ScoreStrip.js";
 
 export function QuestionRoom() {
   const root = document.createElement("div");
@@ -10,17 +11,16 @@ export function QuestionRoom() {
   const r = state.currentRound;
   const questions = state[`round${r}Questions`] || [];
 
+  // Main content (score strip is injected separately so it’s shared)
   root.innerHTML = `
-    <div class="score-strip">
-      Daniel: ${state.perceivedScores.Daniel} |
-      Jaime: ${state.perceivedScores.Jaime}
-    </div>
-
     <div class="h1">Round ${r} Questions</div>
     <div id="qList"></div>
     <div class="gap"></div>
     <button id="contBtn" class="btn hidden">Continue to Marking</button>
   `;
+
+  // Insert shared score strip at top
+  root.insertBefore(ScoreStrip(), root.firstChild);
 
   const list = root.querySelector("#qList");
   const contBtn = root.querySelector("#contBtn");
@@ -34,14 +34,17 @@ export function QuestionRoom() {
     div.innerHTML = `
       <p><strong>${q.question}</strong></p>
       <div class="row center gap" data-qid="${q.id}" data-locked="0" role="group" aria-label="Question ${idx + 1}">
-        ${q.options.map((opt, i) => `
+        ${q.options
+          .map(
+            (opt, i) => `
           <button class="btn optBtn"
                   data-q="${q.id}"
                   data-i="${i}"
                   aria-pressed="false">
             ${opt}
-          </button>
-        `).join("")}
+          </button>`
+          )
+          .join("")}
       </div>
     `;
     list.appendChild(div);
@@ -73,6 +76,9 @@ export function QuestionRoom() {
       if (answered >= questions.length) {
         contBtn.classList.remove("hidden");
       }
+
+      // If you later award points per answer, call this after updating state:
+      updateScoreStrip(root);
     });
   });
 
@@ -80,7 +86,7 @@ export function QuestionRoom() {
     advanceToMarking();
   });
 
-  // Role badge
+  // Role badge (top-right)
   root.appendChild(RoleBadge());
   return root;
 }
