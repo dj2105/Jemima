@@ -37,7 +37,11 @@ export function Lobby(){
 
   const codeInput = wrap.querySelector('#jaime-code');
   codeInput.addEventListener('input', (e) => {
-    e.target.value = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, '').replace(/[O0]/g,'').slice(0,4);
+    e.target.value = e.target.value
+      .toUpperCase()
+      .replace(/[^A-Z0-9]/g, '')
+      .replace(/[O0]/g,'')
+      .slice(0,4);
   });
 
   wrap.querySelector('#gen-code').addEventListener('click', () => {
@@ -49,11 +53,13 @@ export function Lobby(){
 
   // Daniel → Key Room
   wrap.querySelector('#daniel-go').addEventListener('click', async () => {
-    // ensure we have a code (if Daniel didn’t click Generate, make one)
+    // Ensure we have a room code
     if (!state.room.code) {
       const code = generateCode({ exclude: ['O','0'] });
       setRoomCode(code);
+      wrap.querySelector('#code-out').textContent = code;
     }
+    state.self = "Daniel";
     await ensureFirebase();
     await markJoined(state.room.code, "Daniel");
     location.hash = "#key";
@@ -67,15 +73,17 @@ export function Lobby(){
       return;
     }
     setRoomCode(val);
+    state.self = "Jaime";
     await ensureFirebase();
     await markJoined(val, "Jaime");
 
     const wait = wrap.querySelector('#jaime-wait');
     wait.classList.remove('hidden');
 
-    // Subscribe to room status and react when host starts countdown
-    subscribeRoomStatus(val, (s) => {
-      if (s.phase === "countdown" && s.round === 1) {
+    // Subscribe to room status; when host starts countdown, follow
+    const unsub = await subscribeRoomStatus(val, (s) => {
+      if (s && s.phase === "countdown" && Number(s.round) === 1) {
+        if (typeof unsub === "function") unsub();
         countdownThen("#round1");
       }
     });
