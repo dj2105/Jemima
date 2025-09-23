@@ -1,101 +1,54 @@
-// src/state.js
-// App-wide state (playable local MVP) — includes interludes + mini-scores + big question guesses
-export const state = {
-  // Room & runtime (future: Firestore/Gemini)
-  room: { code: '' },
-  runtime: { geminiEnvKey: null, firebaseEnvJSON: null },
+// src/router.js
+import { Lobby } from "./views/Lobby.js";
+import { KeyRoom } from "./views/KeyRoom.js";
+import { GenerationRoom } from "./views/GenerationRoom.js";
+import { QuestionRoom } from "./views/QuestionRoom.js";
+import { MarkingRoom } from "./views/MarkingRoom.js";
+import { Interlude } from "./views/Interlude.js";
+import { FinalRoom } from "./views/FinalRoom.js";
 
-  // Key Room inputs
-  keyRoom: {
-    geminiKey: '',
-    qJSON: '',
-    mathsJSON: '',
-    firestoreJSON: '',
-    codeFormatJSON: ''
-  },
+const routes = {
+  "": Lobby,
+  "#lobby": Lobby,
+  "#key": KeyRoom,
+  "#generation": GenerationRoom,
 
-  // Validation flags
-  validation: {
-    geminiKey: false,
-    qJSON: true,        // empty = green
-    mathsJSON: true,    // empty = green
-    firestoreJSON: false,
-    codeFormatJSON: true
-  },
+  // Rounds
+  "#round1": QuestionRoom,
+  "#round2": QuestionRoom,
+  "#round3": QuestionRoom,
+  "#round4": QuestionRoom,
+  "#round5": QuestionRoom,
 
-  // Generation progress (display only for now)
-  generationProgress: {
-    generated: 0,
-    verified: 0,
-    rejected: 0,
-    mathsReady: false
-  },
+  // Marking
+  "#marking1": MarkingRoom,
+  "#marking2": MarkingRoom,
+  "#marking3": MarkingRoom,
+  "#marking4": MarkingRoom,
+  "#marking5": MarkingRoom,
 
-  // Questions per round (arrays of 3 items)
-  round1Questions: null,
-  round2Questions: null,
-  round3Questions: null,
-  round4Questions: null,
-  round5Questions: null,
+  // Interludes (after R1..R4)
+  "#interlude2": Interlude,
+  "#interlude3": Interlude,
+  "#interlude4": Interlude,
+  "#interlude5": Interlude,
 
-  // Optional: opponent answers cache per round (used by some views)
-  round1OpponentAnswers: null,
-
-  // Local answer store: answers[player][qid] = index (0|1)
-  answers: { Daniel: {}, Jaime: {} },
-
-  // Scores
-  perceivedScores: { Daniel: 0, Jaime: 0 }, // from marking
-  actualScores:    { Daniel: 0, Jaime: 0 }, // computed at final
-
-  // Round / flow
-  currentRound: 1,
-  phase: "question", // "question" | "marking" | "interlude" | "final"
-
-  // Big question
-  bigQuestionParts: [
-    "Part 1: Stub text",
-    "Part 2: Stub text",
-    "Part 3: Stub text",
-    "Part 4: Stub text"
-  ],
-  bigQuestionAnswer: null, // set later
-  bigQuestionGuess: { Daniel: null, Jaime: null }, // numeric guesses after R5
-
-  // Interludes store (shown after R1..R4 → interlude 2..5)
-  interludes: { 2: null, 3: null, 4: null, 5: null },
-
-  // Optional mini-scores for interludes (not part of main leaderboard)
-  miniScores: { Daniel: 0, Jaime: 0 },
-
-  // Player identity
-  self: "Daniel",
-  get opponent() { return this.self === "Daniel" ? "Jaime" : "Daniel"; }
+  // Final
+  "#final": FinalRoom
 };
 
-// ---- Mutators / helpers ----
-export function setRoomCode(code) {
-  state.room.code = code;
+export function router() {
+  const view = routes[location.hash] || Lobby;
+  const root = document.getElementById("app");
+  root.innerHTML = "";
+  root.appendChild(view());
 }
 
-export function setKeyRoomField(field, value) {
-  state.keyRoom[field] = value;
+// ✅ export the symbol main.js imports
+export function mountRoute() {
+  router();
 }
 
-export function setRoundQuestions(round, questions) {
-  state[`round${round}Questions`] = questions;
-}
-
-export function recordAnswer(qid, index) {
-  const who = state.self;
-  state.answers[who][qid] = index;
-}
-
-export function nextRound() {
-  if (state.currentRound < 5) {
-    state.currentRound++;
-    state.phase = "question";
-  } else {
-    state.phase = "final";
-  }
-}
+window.addEventListener("hashchange", router);
+// First render
+router();
