@@ -1,32 +1,14 @@
-import { state, setRoomCode } from '../state.js';
+// src/views/Lobby.js
+import { setRoomCode, state } from '../state.js';
 import { generateCode, validateCodeInput } from '../lib/codeFormat.js';
-import { RoleBadge } from "../components/RoleBadge.js";
+import { ensureFirebase, markJoined, subscribeRoomStatus } from '../lib/firebase.js';
+import { countdownThen } from '../flow.js';
 
 export function Lobby(){
   const wrap = document.createElement('div');
   wrap.className = 'wrap';
-
-  // restore saved role (default Daniel)
-  const savedRole = localStorage.getItem('ja_role');
-  state.self = savedRole === 'Jaime' ? 'Jaime' : 'Daniel';
-
   wrap.innerHTML = `
     <div class="h1">Jemima's Asking</div>
-
-    <div class="panel" style="margin-bottom:1rem">
-      <div class="row" style="gap:16px; align-items:center; flex-wrap:wrap">
-        <strong>Select your role:</strong>
-        <label class="row" style="gap:8px; align-items:center">
-          <input type="radio" name="role" value="Daniel" ${state.self==='Daniel'?'checked':''}/>
-          Daniel
-        </label>
-        <label class="row" style="gap:8px; align-items:center">
-          <input type="radio" name="role" value="Jaime" ${state.self==='Jaime'?'checked':''}/>
-          Jaime
-        </label>
-      </div>
-    </div>
-
     <div class="grid-2">
       <section class="panel">
         <div class="badge jaime">JAIME</div>
@@ -35,6 +17,7 @@ export function Lobby(){
         <div class="subtext">4 characters. A–Z or 1–9. Excludes 0 and O.</div>
         <div class="gap"></div>
         <button id="jaime-go" class="btn full jaime">Go</button>
+        <div id="jaime-wait" class="p hidden">Waiting for host…</div>
       </section>
 
       <section class="panel">
@@ -52,56 +35,51 @@ export function Lobby(){
     </div>
   `;
 
-  // role selection
-  wrap.querySelectorAll('input[name="role"]').forEach(r => {
-    r.addEventListener('change', (e) => {
-      state.self = e.target.value === 'Jaime' ? 'Jaime' : 'Daniel';
-      localStorage.setItem('ja_role', state.self);
-    });
-  });
-
-  // normalise Jaime code input
   const codeInput = wrap.querySelector('#jaime-code');
   codeInput.addEventListener('input', (e) => {
-    e.target.value = e.target.value
-      .toUpperCase()
-      .replace(/[^A-Z0-9]/g, '')
-      .replace(/[O0]/g, '')  // exclude O and 0
-      .slice(0,4);
+    e.target.value = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, '').replace(/[O0]/g,'').slice(0,4);
   });
 
-  // Jaime → must enter valid code, role must be Jaime
-  wrap.querySelector('#jaime-go').addEventListener('click', () => {
-    if (state.self !== 'Jaime') {
-      alert('Switch role to Jaime (top of screen) to join as Jaime.');
-      return;
+  wrap.querySelector('#gen-code').addEventListener('click', () => {
+    const code = generateCode({ exclude: ['O','0'] });
+    setRoomCode(code);
+    wrap.querySelector('#code-out').textContent = code;
+    navigator.clipboard?.writeText(code).catch(()=>{});
+  });
+
+  // Daniel → Key Room
+  wrap.querySelector('#daniel-go').addEventListener('click', async () => {
+    // ensure we have a code (if Daniel didn’t click Generate, make one)
+    if (!state.room.code) {
+      const code = generateCode({ exclude: ['O','0'] });
+      setRoomCode(code);
     }
+    await ensureFirebase();
+    await markJoined(state.room.code, "Daniel");
+    location.hash = "#key";
+  });
+
+  // Jaime → join + wait for countdown
+  wrap.querySelector('#jaime-go').addEventListener('click', async () => {
     const val = codeInput.value.trim();
     if (!validateCodeInput(val)) {
       alert('Please enter a valid 4-character code (A–Z, 1–9; excludes 0 and O).');
       return;
     }
     setRoomCode(val);
-    location.hash = "#generation";
+    await ensureFirebase();
+    await markJoined(val, "Jaime");
+
+    const wait = wrap.querySelector('#jaime-wait');
+    wait.classList.remove('hidden');
+
+    // Subscribe to room status and react when host starts countdown
+    subscribeRoomStatus(val, (s) => {
+      if (s.phase === "countdown" && s.round === 1) {
+        countdownThen("#round1");
+      }
+    });
   });
 
-  // Daniel → can generate a code, then proceed to Key Room
-  wrap.querySelector('#gen-code').addEventListener('click', () => {
-    const code = generateCode({ exclude: ['O','0'] });
-    wrap.querySelector('#code-out').textContent = code;
-    setRoomCode(code);
-    navigator.clipboard?.writeText(code).catch(()=>{});
-  });
-
-  wrap.querySelector('#daniel-go').addEventListener('click', () => {
-    if (state.self !== 'Daniel') {
-      alert('Switch role to Daniel (top of screen) to set up the game.');
-      return;
-    }
-    location.hash = "#key";
-  });
-
-wrap.appendChild(RoleBadge());
-  
   return wrap;
 }
