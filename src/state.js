@@ -1,4 +1,4 @@
-// App-wide state (merged PR#1 + PR#2 + PR#3 + PR#5)
+// App-wide state (merged PR#1 + PR#2 + PR#3 + PR#5 + PR#8 prep)
 export const state = {
   room: { code: '' },
   runtime: {
@@ -38,9 +38,16 @@ export const state = {
     "Part 3: Stub text",
     "Part 4: Stub text"
   ],
-  bigQuestionAnswer: null
+  bigQuestionAnswer: null,
+
+  // ✅ PR #8 prep
+  self: "Daniel",
+  get opponent() {
+    return this.self === "Daniel" ? "Jaime" : "Daniel";
+  }
 };
 
+// --- Mutators ---
 export function setRoomCode(code) {
   state.room.code = code;
 }
@@ -51,4 +58,13 @@ export function setKeyRoomField(field, value) {
 
 export function setRound1Questions(questions) {
   state.round1Questions = questions;
+}
+
+export function nextRound() {
+  if (state.currentRound < 5) {
+    state.currentRound++;
+    state.phase = "question";
+  } else {
+    state.phase = "final";
+  }
 }
