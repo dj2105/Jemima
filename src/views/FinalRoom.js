@@ -1,11 +1,13 @@
 // src/views/FinalRoom.js
 import { state } from "../state.js";
+import { RoleBadge } from "../components/RoleBadge.js";
 
 export function FinalRoom() {
   const root = document.createElement("div");
   root.className = "wrap";
   const perceivedDaniel = state.perceivedScores?.Daniel ?? 0;
   const perceivedJaime  = state.perceivedScores?.Jaime  ?? 0;
+  
 
   root.innerHTML = `
     <div class="h1">Final Scores</div>
@@ -48,5 +50,6 @@ export function FinalRoom() {
     root.querySelector('#actual-jaime').textContent  = String(perceivedJaime);
   });
 
-  return root;
+  root.appendChild(RoleBadge());
+return root;
 }
