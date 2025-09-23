@@ -1,21 +1,19 @@
-// src/views/MarkingRoom.js
 import { state } from "../state.js";
-import { setDoc, doc } from "../lib/firebase.js";
+import { setDoc, doc, markReady, subscribeReady } from "../lib/firebase.js";
+import { advanceToNextRoundOrFinal } from "../flow.js";
 
 export function MarkingRoom() {
+  const round = state.currentRound || 1;
+  const self = state.self || "Daniel";
+  const opponent = self === "Daniel" ? "Jaime" : "Daniel";
+
   const root = document.createElement("div");
   root.className = "wrap";
 
-  // Detect which player this client is — for now hardcoded.
-  // TODO: later detect via login/session or role in Firestore.
-  const self = "Daniel";
-  const opponent = self === "Daniel" ? "Jaime" : "Daniel";
-
-  // Grab opponent answers (fallback if none yet)
   const oppAnswers = state.round1OpponentAnswers || [
-    { id: "q1", question: "Stub Q1?", chosen: "Yes" },
-    { id: "q2", question: "Stub Q2?", chosen: "Right" },
-    { id: "q3", question: "Stub Q3?", chosen: "Up" }
+    { id: `r${round}q1`, question: `Stub Q${round}-1?`, chosen: "A" },
+    { id: `r${round}q2`, question: `Stub Q${round}-2?`, chosen: "B" },
+    { id: `r${round}q3`, question: `Stub Q${round}-3?`, chosen: "A" }
   ];
 
   root.innerHTML = `
@@ -24,14 +22,14 @@ export function MarkingRoom() {
       Jaime: <span id="scoreJaime">${state.perceivedScores?.Jaime || 0}</span>
     </div>
 
-    <div class="h1">Mark ${opponent}’s Answers</div>
+    <div class="h1">Mark ${opponent}’s Answers — Round ${round}</div>
     <div id="markList"></div>
 
     <div id="continueBox" class="hidden mt-6 text-center">
-      <button id="continueBtn" class="btn">Continue to Round ${state.currentRound + 1}</button>
+      <button id="continueBtn" class="btn">Continue to Round ${round + 1}</button>
     </div>
 
-    <div id="waitingOverlay" class="overlay hidden"><h2>Waiting…</h2></div>
+    <div id="waitingOverlay" class="overlay hidden"><h2>Waiting for ${opponent}…</h2></div>
   `;
 
   const markList = root.querySelector("#markList");
@@ -40,7 +38,6 @@ export function MarkingRoom() {
 
   let marks = {};
 
-  // Render opponent’s answers
   oppAnswers.forEach((a) => {
     const div = document.createElement("div");
     div.className = "panel mt-3";
@@ -55,16 +52,14 @@ export function MarkingRoom() {
     markList.appendChild(div);
   });
 
-  // Marking logic
+  // Marking interactions
   markList.querySelectorAll(".markBtn").forEach((btn) => {
     btn.addEventListener("click", (e) => {
       const qid = e.target.dataset.q;
       const val = parseInt(e.target.dataset.val);
       marks[qid] = val;
 
-      e.target.parentNode.querySelectorAll("button").forEach((b) => {
-        b.classList.remove("selected");
-      });
+      e.target.parentNode.querySelectorAll("button").forEach((b) => b.classList.remove("selected"));
       e.target.classList.add("selected");
 
       if (Object.keys(marks).length === oppAnswers.length) {
@@ -73,30 +68,31 @@ export function MarkingRoom() {
     });
   });
 
-  // Continue button logic
   continueBox.querySelector("#continueBtn").addEventListener("click", async () => {
-    // Add perceived points for the opponent
+    // Perceived score updates
     const points = Object.values(marks).reduce((a, b) => a + b, 0);
     state.perceivedScores[opponent] = (state.perceivedScores[opponent] || 0) + points;
-
-    // Update UI scores
     document.getElementById("scoreDaniel").textContent = state.perceivedScores.Daniel || 0;
-    document.getElementById("scoreJaime").textContent = state.perceivedScores.Jaime || 0;
+    document.getElementById("scoreJaime").textContent  = state.perceivedScores.Jaime  || 0;
 
-    // Save to Firestore (stub — currently using null db in doc())
-    await setDoc(doc(null, "rooms", state.room.code, "marking", self), {
-      marks,
-      round: state.currentRound
+    // Save marks (stub)
+    await setDoc(doc(null, "rooms", state.room.code || "EH6W", "marking", self), {
+      marks, round
     });
 
-    // Show waiting screen until opponent also finishes
-    continueBox.classList.add("hidden");
+    // Mark me ready for marking phase
     waiting.classList.remove("hidden");
+    markReady({ roomCode: state.room.code || "EH6W", round, phase:'marking', player: self });
 
-    // TODO: Add Firestore listener → if both players submitted,
-    // then increment round and redirect:
-    // state.currentRound++;
-    // location.hash = "#round" + state.currentRound;
+    // Wait for both → advance to next round or final
+    subscribeReady({ roomCode: state.room.code || "EH6W", round, phase:'marking' }, (ready) => {
+      if (ready.Daniel && ready.Jaime) {
+        waiting.classList.add("hidden");
+        advanceToNextRoundOrFinal();
+      }
+    });
+
+    continueBox.classList.add("hidden");
   });
 
   return root;
