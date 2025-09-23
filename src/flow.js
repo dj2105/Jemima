@@ -17,7 +17,7 @@ export function countdownThen(hashTarget) {
     if (n <= 0) {
       clearInterval(t);
       document.body.removeChild(overlay);
-      location.hash = hashTarget;
+      location.hash = hashTarget.startsWith("#") ? hashTarget : `#${hashTarget}`;
     } else {
       h.textContent = String(n);
     }
@@ -30,7 +30,8 @@ export function advanceToMarking() {
   location.hash = `#marking${state.currentRound}`;
 }
 
-/** After Marking:
+/**
+ * After Marking:
  *  - R1..R4 → Interlude (next round number)
  *  - R5     → Final
  */
