@@ -1,5 +1,6 @@
 import { state } from "../state.js";
 import { advanceToMarking } from "../flow.js";
+import { RoleBadge } from "../components/RoleBadge.js";
 
 export function QuestionRoom() {
   const root = document.createElement("div");
@@ -63,6 +64,6 @@ export function QuestionRoom() {
   contBtn.addEventListener("click", () => {
     advanceToMarking();
   });
-
-  return root;
+root.appendChild(RoleBadge());
+return root;
 }
