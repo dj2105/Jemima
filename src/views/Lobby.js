@@ -1,5 +1,6 @@
 import { state, setRoomCode } from '../state.js';
 import { generateCode, validateCodeInput } from '../lib/codeFormat.js';
+import { RoleBadge } from "../components/RoleBadge.js";
 
 export function Lobby(){
   const wrap = document.createElement('div');
@@ -100,5 +101,7 @@ export function Lobby(){
     location.hash = "#key";
   });
 
+wrap.appendChild(RoleBadge());
+  
   return wrap;
 }
