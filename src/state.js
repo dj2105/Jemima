@@ -1,4 +1,4 @@
-// App-wide state (merged PR#1 + PR#2)
+// App-wide state (merged PR#1 + PR#2 + PR#3)
 export const state = {
   room: { code: '' },
   runtime: {
@@ -24,7 +24,8 @@ export const state = {
     verified: 0,
     rejected: 0,
     mathsReady: false
-  }
+  },
+  round1Questions: null
 };
 
 export function setRoomCode(code) {
@@ -32,6 +33,10 @@ export function setRoomCode(code) {
 }
 
 export function setKeyRoomField(field, value) {
-  // keeps Key Room inputs in a single place
   state.keyRoom[field] = value;
+}
+
+// ✅ New helper for Round 1
+export function setRound1Questions(questions) {
+  state.round1Questions = questions;
 }
