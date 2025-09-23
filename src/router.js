@@ -1,8 +1,10 @@
+// src/router.js
 import { Lobby } from "./views/Lobby.js";
 import { KeyRoom } from "./views/KeyRoom.js";
 import { GenerationRoom } from "./views/GenerationRoom.js";
 import { QuestionRoom } from "./views/QuestionRoom.js";
 import { MarkingRoom } from "./views/MarkingRoom.js";
+import { Interlude } from "./views/Interlude.js";
 import { FinalRoom } from "./views/FinalRoom.js";
 
 const routes = {
@@ -18,12 +20,18 @@ const routes = {
   "#round4": QuestionRoom,
   "#round5": QuestionRoom,
 
-  // Marking screens
+  // Marking
   "#marking1": MarkingRoom,
   "#marking2": MarkingRoom,
   "#marking3": MarkingRoom,
   "#marking4": MarkingRoom,
   "#marking5": MarkingRoom,
+
+  // Interludes (after R1–R4)
+  "#interlude2": Interlude,
+  "#interlude3": Interlude,
+  "#interlude4": Interlude,
+  "#interlude5": Interlude,
 
   // Final
   "#final": FinalRoom
@@ -36,10 +44,6 @@ export function router() {
   root.appendChild(view());
 }
 
-export function mountRoute() {
-  router();
-}
+export function mountRoute() { router(); }
 window.addEventListener("hashchange", () => router());
-
-// Call once on load
 router();
