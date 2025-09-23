@@ -1,13 +1,9 @@
 // src/state.js
-// App-wide state (consolidated playable MVP)
+// App-wide state (playable local MVP) — includes interludes + mini-scores + big question guesses
 export const state = {
+  // Room & runtime (future: Firestore/Gemini)
   room: { code: '' },
-
-  // Runtime (env stubs for later Firebase/Gemini)
-  runtime: {
-    geminiEnvKey: null,
-    firebaseEnvJSON: null
-  },
+  runtime: { geminiEnvKey: null, firebaseEnvJSON: null },
 
   // Key Room inputs
   keyRoom: {
@@ -21,8 +17,8 @@ export const state = {
   // Validation flags
   validation: {
     geminiKey: false,
-    qJSON: true,       // empty = green
-    mathsJSON: true,   // empty = green
+    qJSON: true,        // empty = green
+    mathsJSON: true,    // empty = green
     firestoreJSON: false,
     codeFormatJSON: true
   },
@@ -42,39 +38,42 @@ export const state = {
   round4Questions: null,
   round5Questions: null,
 
-  // Local answer store: answers[player][qid] = 0|1
-  answers: {
-    Daniel: {},
-    Jaime: {}
-  },
+  // Optional: opponent answers cache per round (used by some views)
+  round1OpponentAnswers: null,
 
-  // Perceived (from marking) & actual (computed at Final)
-  perceivedScores: { Daniel: 0, Jaime: 0 },
-  actualScores:    { Daniel: 0, Jaime: 0 },
+  // Local answer store: answers[player][qid] = index (0|1)
+  answers: { Daniel: {}, Jaime: {} },
+
+  // Scores
+  perceivedScores: { Daniel: 0, Jaime: 0 }, // from marking
+  actualScores:    { Daniel: 0, Jaime: 0 }, // computed at final
 
   // Round / flow
   currentRound: 1,
-  phase: "question",   // "question" | "marking" | "interlude" | "final"
+  phase: "question", // "question" | "marking" | "interlude" | "final"
 
-  // Big question (parts after R1–R4; final numeric after R5)
+  // Big question
   bigQuestionParts: [
     "Part 1: Stub text",
     "Part 2: Stub text",
     "Part 3: Stub text",
     "Part 4: Stub text"
   ],
-  bigQuestionGuesses: { Daniel: null, Jaime: null },
-  bigQuestionAnswer: 42, // stub; used for closest-wins at final
+  bigQuestionAnswer: null, // set later
+  bigQuestionGuess: { Daniel: null, Jaime: null }, // numeric guesses after R5
 
-  // Interludes store (generated or picked from pack) after R1–R4
+  // Interludes store (shown after R1..R4 → interlude 2..5)
   interludes: { 2: null, 3: null, 4: null, 5: null },
+
+  // Optional mini-scores for interludes (not part of main leaderboard)
+  miniScores: { Daniel: 0, Jaime: 0 },
 
   // Player identity
   self: "Daniel",
   get opponent() { return this.self === "Daniel" ? "Jaime" : "Daniel"; }
 };
 
-// --- Mutators / helpers ---
+// ---- Mutators / helpers ----
 export function setRoomCode(code) {
   state.room.code = code;
 }
@@ -87,46 +86,9 @@ export function setRoundQuestions(round, questions) {
   state[`round${round}Questions`] = questions;
 }
 
-// record a chosen answer index for the current player
 export function recordAnswer(qid, index) {
   const who = state.self;
   state.answers[who][qid] = index;
-}
-
-// compute actual scores from stored answers and correctIndex across rounds
-export function computeActualScores() {
-  const rounds = [1,2,3,4,5];
-  const acc = { Daniel: 0, Jaime: 0 };
-
-  for (const r of rounds) {
-    const qs = state[`round${r}Questions`] || [];
-    for (const q of qs) {
-      if (typeof q.correctIndex !== "number") continue;
-      const dPick = state.answers.Daniel[q.id];
-      const jPick = state.answers.Jaime[q.id];
-      if (dPick === q.correctIndex) acc.Daniel += 1;
-      if (jPick === q.correctIndex) acc.Jaime  += 1;
-    }
-  }
-  state.actualScores = acc;
-}
-
-// closest-wins for big question (+3; tie both +3)
-export function scoreBigQuestion() {
-  const ans = state.bigQuestionAnswer;
-  const d = state.bigQuestionGuesses.Daniel;
-  const j = state.bigQuestionGuesses.Jaime;
-  if (typeof d !== "number" || typeof j !== "number") return; // nothing to do yet
-
-  const dDelta = Math.abs(d - ans);
-  const jDelta = Math.abs(j - ans);
-
-  if (dDelta < jDelta) state.actualScores.Daniel += 3;
-  else if (jDelta < dDelta) state.actualScores.Jaime += 3;
-  else { // tie
-    state.actualScores.Daniel += 3;
-    state.actualScores.Jaime  += 3;
-  }
 }
 
 export function nextRound() {
