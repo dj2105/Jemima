@@ -4,8 +4,10 @@ import { advanceToMarking } from "../flow.js";
 
 export function QuestionRoom() {
   const round = state.currentRound || 1;
-  const self = state.self || "Daniel";
-  const opponent = self === "Daniel" ? "Jaime" : "Daniel";
+  const self = state.self;
+  const opponent = state.opponent;
+  // ...rest unchanged...
+}
 
   const root = document.createElement("div");
   root.className = "wrap";
