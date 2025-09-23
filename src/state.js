@@ -19,7 +19,6 @@ export const state = {
     firestoreJSON: false,
     codeFormatJSON: true
   },
-  // PR#2 progress
   generationProgress: {
     generated: 0,
     verified: 0,
@@ -28,4 +27,11 @@ export const state = {
   }
 };
 
-export function setRoomCode(code){ state.room.code = code; }
+export function setRoomCode(code) {
+  state.room.code = code;
+}
+
+export function setKeyRoomField(field, value) {
+  // keeps Key Room inputs in a single place
+  state.keyRoom[field] = value;
+}
