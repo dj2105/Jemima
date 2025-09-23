@@ -1,15 +1,11 @@
-// Placeholder: reads config now; Firestore wiring arrives in PR #2.
-import { loadLocal } from './localStore.js';
+// Firebase wrapper
+import { state } from "../state.js";
 
-export function getFirebaseConfig(){
-  // Priority: env → Key Room pasted → saved local
-  let envJSON = import.meta.env.VITE_FIREBASE_CONFIG || '';
-  let fromEnv = null;
-  try{ if (envJSON) fromEnv = JSON.parse(envJSON); }catch{ fromEnv = null; }
+export async function setDoc(docRef, data) {
+  // TODO: replace with Firebase SDK call
+  console.log("Firestore setDoc", docRef, data);
+}
 
-  const saved = loadLocal('keyroom') || {};
-  let pasted = null;
-  try{ if (saved.firestoreJSON) pasted = JSON.parse(saved.firestoreJSON); }catch{ pasted = null; }
-
-  return pasted || fromEnv || null;
+export function doc(db, ...path) {
+  return path.join("/");
 }
