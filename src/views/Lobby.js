@@ -31,11 +31,13 @@ export function Lobby(){
     </div>
   `;
 
+  // Normalise input
   const codeInput = wrap.querySelector('#jaime-code');
   codeInput.addEventListener('input', (e) => {
     e.target.value = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0,4);
   });
 
+  // Jaime join
   wrap.querySelector('#jaime-go').addEventListener('click', () => {
     const val = codeInput.value.trim();
     if (!validateCodeInput(val)) {
@@ -43,20 +45,20 @@ export function Lobby(){
       return;
     }
     setRoomCode(val);
-    // In PR #2, this would move Jaime to a waiting screen for Daniel’s room.
-    location.hash = '/gen';
+    location.hash = "#generation";
   });
 
+  // Daniel setup
+  wrap.querySelector('#daniel-go').addEventListener('click', () => {
+    location.hash = "#key";
+  });
+
+  // Generate code
   wrap.querySelector('#gen-code').addEventListener('click', () => {
     const code = generateCode({ exclude: ['O','0'] });
     const out = wrap.querySelector('#code-out');
     out.textContent = code;
-    // convenient copy
     navigator.clipboard?.writeText(code).catch(()=>{});
-  });
-
-  wrap.querySelector('#daniel-go').addEventListener('click', () => {
-    location.hash = '/key';
   });
 
   return wrap;
