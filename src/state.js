@@ -1,4 +1,4 @@
-// App-wide state (merged PR#1 + PR#2 + PR#3)
+// App-wide state (merged PR#1 + PR#2 + PR#3 + PR#5)
 export const state = {
   room: { code: '' },
   runtime: {
@@ -26,8 +26,19 @@ export const state = {
     mathsReady: false
   },
   round1Questions: null,
-round1OpponentAnswers: null,
-  perceivedScores: { Daniel: 0, Jaime: 0 }
+  round1OpponentAnswers: null,
+  perceivedScores: { Daniel: 0, Jaime: 0 },
+
+  // ✅ PR #5 additions
+  currentRound: 1,
+  phase: "question",   // "question" | "marking" | "final"
+  bigQuestionParts: [
+    "Part 1: Stub text",
+    "Part 2: Stub text",
+    "Part 3: Stub text",
+    "Part 4: Stub text"
+  ],
+  bigQuestionAnswer: null
 };
 
 export function setRoomCode(code) {
