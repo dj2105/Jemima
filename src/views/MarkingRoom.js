@@ -27,7 +27,6 @@ export function MarkingRoom() {
     explicit && Array.isArray(explicit) && explicit.length ? explicit : qStub;
 
   root.innerHTML = `
-root.appendChild(ScoreStrip());
     <div class="h1">Mark ${opponent}’s Answers — Round ${r}</div>
     <div id="markList"></div>
 
@@ -41,6 +40,9 @@ root.appendChild(ScoreStrip());
       <h2>Waiting for ${opponent}…</h2>
     </div>
   `;
+
+  // Add score strip at the very top (outside of the template)
+  root.insertBefore(ScoreStrip(), root.firstChild);
 
   const markList = root.querySelector("#markList");
   const continueBox = root.querySelector("#continueBox");
@@ -94,13 +96,10 @@ root.appendChild(ScoreStrip());
     state.perceivedScores[opponent] =
       (state.perceivedScores[opponent] || 0) + points;
 
-    // Reflect in UI
-    const sd = root.querySelector("#scoreDaniel");
-    const sj = root.querySelector("#scoreJaime");
-    if (sd) sd.textContent = state.perceivedScores.Daniel || 0;
-    if (sj) sj.textContent = state.perceivedScores.Jaime || 0;
+    // Reflect in UI (and keep the strip in sync)
+    updateScoreStrip(root);
 
-    // Persist (stubbed)
+    // Persist (Firestone adapter; safe no-op if stubbed)
     await setDoc(
       doc(null, "rooms", state.room.code || "EH6W", "marking", self),
       { marks, round: r }
