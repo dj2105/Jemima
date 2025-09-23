@@ -2,10 +2,6 @@ import { state } from "../state.js";
 import { generateQuestions, generateJemimaMaths } from "../lib/gemini.js";
 import { setDoc, doc } from "../lib/firebase.js";
 
-/**
- * GenerationRoom
- * Daniel’s screen after KeyRoom, where Gemini generates Qs + puzzle
- */
 export default function GenerationRoom(root) {
   root.innerHTML = `
     <div class="panel text-center">
