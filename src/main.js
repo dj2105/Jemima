@@ -1,6 +1,7 @@
 import { mountRoute } from './router.js';
 import { state } from './state.js';
 
+window.state = state;
 window.addEventListener('hashchange', () => mountRoute());
 window.addEventListener('load', () => {
   // Load envs (if any) into state; Key Room can override.
