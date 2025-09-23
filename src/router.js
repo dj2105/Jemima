@@ -1,19 +1,19 @@
-import { Lobby } from './views/Lobby.js';
-import { KeyRoom } from './views/KeyRoom.js';
-import { GenerationRoom } from './views/GenerationRoom.js';
+import { Lobby } from "./views/Lobby.js";
+import { KeyRoom } from "./views/KeyRoom.js";
+import { GenerationRoom } from "./views/GenerationRoom.js";
+import { QuestionRoom } from "./views/QuestionRoom.js";
 
 const routes = {
-  '/': Lobby,
-  '/lobby': Lobby,
-  '/key': KeyRoom,
-  '/gen': GenerationRoom
+  "": Lobby,
+  "#lobby": Lobby,
+  "#key": KeyRoom,
+  "#generation": GenerationRoom,
+  "#round1": QuestionRoom   // NEW
 };
 
-export function mountRoute(){
-  const path = (location.hash.replace('#','') || '/').split('?')[0];
-  const View = routes[path] || Lobby;
-  const app = document.getElementById('app');
-  app.innerHTML = '';
-  const el = View();
-  app.appendChild(el);
+export function router() {
+  const view = routes[location.hash] || Lobby;
+  const root = document.getElementById("app");
+  root.innerHTML = "";
+  root.appendChild(view());
 }
