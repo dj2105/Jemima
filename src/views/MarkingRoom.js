@@ -2,6 +2,7 @@
 import { state } from "../state.js";
 import { setDoc, doc, markReady, subscribeReady } from "../lib/firebase.js";
 import { advanceToNextRoundOrFinal } from "../flow.js";
+import { RoleBadge } from "../components/RoleBadge.js";
 
 export function MarkingRoom() {
   const r = state.currentRound || 1;
@@ -124,6 +125,6 @@ export function MarkingRoom() {
       }
     );
   });
-
-  return root;
+root.appendChild(RoleBadge());
+return root;
 }
