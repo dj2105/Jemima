@@ -1,3 +1,4 @@
+// src/views/QuestionRoom.js
 import { state } from "../state.js";
 import { advanceToMarking } from "../flow.js";
 import { RoleBadge } from "../components/RoleBadge.js";
@@ -26,35 +27,49 @@ export function QuestionRoom() {
 
   let answered = 0;
 
-  questions.forEach((q) => {
+  // Render all 3 questions
+  questions.forEach((q, idx) => {
     const div = document.createElement("div");
     div.className = "panel mt-3";
     div.innerHTML = `
       <p><strong>${q.question}</strong></p>
-      <div class="row center gap">
-        ${q.options
-          .map(
-            (opt) =>
-              `<button class="btn optBtn" data-q="${q.id}" data-val="${opt}">${opt}</button>`
-          )
-          .join("")}
+      <div class="row center gap" data-qid="${q.id}" data-locked="0" role="group" aria-label="Question ${idx + 1}">
+        ${q.options.map((opt, i) => `
+          <button class="btn optBtn"
+                  data-q="${q.id}"
+                  data-i="${i}"
+                  aria-pressed="false">
+            ${opt}
+          </button>
+        `).join("")}
       </div>
     `;
     list.appendChild(div);
   });
 
+  // Click handling with visible selection + lock per question
   list.querySelectorAll(".optBtn").forEach((btn) => {
     btn.addEventListener("click", (e) => {
-      const qid = e.target.dataset.q;
-      const val = e.target.dataset.val;
+      const group = e.currentTarget.parentNode; // the row with both buttons
+      if (group.dataset.locked === "1") {
+        // Already answered; ignore additional clicks
+        return;
+      }
 
-      // mark selection visually
-      e.target.parentNode.querySelectorAll("button").forEach((b) =>
-        b.classList.remove("selected")
-      );
-      e.target.classList.add("selected");
+      // Visually lock both options, then highlight the chosen one
+      group.querySelectorAll("button").forEach((b) => {
+        b.classList.remove("selected");
+        b.classList.add("is-locked");
+        b.setAttribute("aria-pressed", "false");
+      });
+      e.currentTarget.classList.add("selected");
+      e.currentTarget.classList.remove("is-locked");
+      e.currentTarget.setAttribute("aria-pressed", "true");
 
-      answered++;
+      // Lock the group so we only count once
+      group.dataset.locked = "1";
+      answered += 1;
+
       if (answered >= questions.length) {
         contBtn.classList.remove("hidden");
       }
@@ -64,6 +79,8 @@ export function QuestionRoom() {
   contBtn.addEventListener("click", () => {
     advanceToMarking();
   });
-root.appendChild(RoleBadge());
-return root;
+
+  // Role badge
+  root.appendChild(RoleBadge());
+  return root;
 }
