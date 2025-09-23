@@ -3,6 +3,7 @@ import { state } from "../state.js";
 import { setDoc, doc, markReady, subscribeReady } from "../lib/firebase.js";
 import { advanceToNextRoundOrFinal } from "../flow.js";
 import { RoleBadge } from "../components/RoleBadge.js";
+import { ScoreStrip, updateScoreStrip } from "../components/ScoreStrip.js";
 
 export function MarkingRoom() {
   const r = state.currentRound || 1;
@@ -26,11 +27,7 @@ export function MarkingRoom() {
     explicit && Array.isArray(explicit) && explicit.length ? explicit : qStub;
 
   root.innerHTML = `
-    <div class="score-strip">
-      Daniel: <span id="scoreDaniel">${state.perceivedScores?.Daniel || 0}</span> |
-      Jaime: <span id="scoreJaime">${state.perceivedScores?.Jaime || 0}</span>
-    </div>
-
+root.appendChild(ScoreStrip());
     <div class="h1">Mark ${opponent}’s Answers — Round ${r}</div>
     <div id="markList"></div>
 
