@@ -29,7 +29,9 @@ export async function ensureFirebase() {
   auth = getAuth(app);
 
   await new Promise((resolve, reject) => {
-    const unsub = onAuthStateChanged(auth, (u) => { if (u) { unsub(); resolve(); } });
+    const unsub = onAuthStateChanged(auth, (u) => {
+      if (u) { unsub(); resolve(); }
+    });
     signInAnonymously(auth).catch(reject);
   });
 
@@ -79,7 +81,7 @@ export async function getOpponentAnswers({ roomCode, round, player }) {
   return snap.exists() ? (snap.data().answers || {}) : {};
 }
 
-// ----- READY SYNC (what Netlify is complaining about) -----
+// ----- READY SYNC (used by MarkingRoom) -----
 export async function markReady({ roomCode, round, phase, player }) {
   await ensureFirebase();
   const key = `r${round}_${phase}`; // e.g. r1_marking
