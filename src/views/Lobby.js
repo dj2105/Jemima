@@ -1,93 +1,31 @@
-// src/views/Lobby.js
 import { setRoomCode, state } from '../state.js';
 import { generateCode, validateCodeInput } from '../lib/codeFormat.js';
-import { ensureFirebase, markJoined, subscribeRoomStatus } from '../lib/firebase.js';
-import { countdownThen } from '../flow.js';
-
+import { ensureFirebase, subscribeRoomStatus } from '../lib/firebase.js';
 export function Lobby(){
-  const wrap = document.createElement('div');
-  wrap.className = 'wrap';
-  wrap.innerHTML = `
-    <div class="h1">Jemima's Asking</div>
+  const wrap=document.createElement('div'); wrap.className='wrap'; wrap.innerHTML=`
+    <div class="h1">Lobby</div>
     <div class="grid-2">
       <section class="panel">
         <div class="badge jaime">JAIME</div>
-        <h2 class="h2">Enter Code</h2>
-        <input id="jaime-code" class="input code" maxlength="4" placeholder="____" />
-        <div class="subtext">4 characters. A–Z or 1–9. Excludes 0 and O.</div>
-        <div class="gap"></div>
-        <button id="jaime-go" class="btn full jaime">Go</button>
-        <div id="jaime-wait" class="p hidden">Waiting for host…</div>
+        <div class="row" style="gap:8px; margin-top:10px">
+          <input id="code" class="input" maxlength="4" placeholder="CODE" />
+          <button id="join" class="btn primary right">GO</button>
+        </div>
+        <div id="wait" class="p hidden">Waiting for host…</div>
       </section>
-
       <section class="panel">
         <div class="badge daniel">DANIEL</div>
-        <h2 class="h2">Start Setup</h2>
-        <p class="p">Go to the Key Room to paste your Gemini key, Firestore config, and optional JSON overrides.</p>
-        <div class="gap"></div>
-        <div class="row">
-          <button id="gen-code" class="btn">Generate Code</button>
-          <span id="code-out" class="code"></span>
+        <div class="row" style="gap:8px; margin-top:10px">
+          <button id="host" class="btn right">GO</button>
         </div>
-        <div class="gap"></div>
-        <button id="daniel-go" class="btn full daniel">Go to Key Room</button>
       </section>
-    </div>
-  `;
-
-  const codeInput = wrap.querySelector('#jaime-code');
-  codeInput.addEventListener('input', (e) => {
-    e.target.value = e.target.value
-      .toUpperCase()
-      .replace(/[^A-Z0-9]/g, '')
-      .replace(/[O0]/g,'')
-      .slice(0,4);
+    </div>`;
+  const code=wrap.querySelector('#code'); code.addEventListener('input',(e)=>{ e.target.value=e.target.value.toUpperCase().replace(/[^A-Z0-9]/g,'').replace(/[O0]/g,'').slice(0,4); });
+  wrap.querySelector("#host").addEventListener("click",()=>{ state.self="Daniel"; location.hash="#key"; });
+  wrap.querySelector("#join").addEventListener("click",async()=>{
+    const val=code.value.trim(); if(!validateCodeInput(val)){ alert("Enter a valid 4-char code"); return; }
+    state.self="Jaime"; setRoomCode(val); await ensureFirebase(); const wait=wrap.querySelector("#wait"); wait.classList.remove("hidden");
+    subscribeRoomStatus(val,(s)=>{ if(s.phase==="loading"&&s.round===1){ location.hash="#generation"; } if(s.phase==="countdown"&&s.round===1){ location.hash="#round1"; } });
   });
-
-  wrap.querySelector('#gen-code').addEventListener('click', () => {
-    const code = generateCode({ exclude: ['O','0'] });
-    setRoomCode(code);
-    wrap.querySelector('#code-out').textContent = code;
-    navigator.clipboard?.writeText(code).catch(()=>{});
-  });
-
-  // Daniel → Key Room
-  wrap.querySelector('#daniel-go').addEventListener('click', async () => {
-    // Ensure we have a room code
-    if (!state.room.code) {
-      const code = generateCode({ exclude: ['O','0'] });
-      setRoomCode(code);
-      wrap.querySelector('#code-out').textContent = code;
-    }
-    state.self = "Daniel";
-    await ensureFirebase();
-    await markJoined(state.room.code, "Daniel");
-    location.hash = "#key";
-  });
-
-  // Jaime → join + wait for countdown
-  wrap.querySelector('#jaime-go').addEventListener('click', async () => {
-    const val = codeInput.value.trim();
-    if (!validateCodeInput(val)) {
-      alert('Please enter a valid 4-character code (A–Z, 1–9; excludes 0 and O).');
-      return;
-    }
-    setRoomCode(val);
-    state.self = "Jaime";
-    await ensureFirebase();
-    await markJoined(val, "Jaime");
-
-    const wait = wrap.querySelector('#jaime-wait');
-    wait.classList.remove('hidden');
-
-    // Subscribe to room status; when host starts countdown, follow
-    const unsub = await subscribeRoomStatus(val, (s) => {
-      if (s && s.phase === "countdown" && Number(s.round) === 1) {
-        if (typeof unsub === "function") unsub();
-        countdownThen("#round1");
-      }
-    });
-  });
-
   return wrap;
 }
