@@ -6,8 +6,8 @@ import { RoleBadge } from "../components/RoleBadge.js";
 
 export function MarkingRoom() {
   const r = state.currentRound || 1;
-  const self = state.self;            // "Daniel" or "Jaime"
-  const opponent = state.opponent;    // derived
+  const self = state.self;          // "Daniel" or "Jaime"
+  const opponent = state.opponent;  // derived
 
   const root = document.createElement("div");
   root.className = "wrap";
@@ -22,7 +22,8 @@ export function MarkingRoom() {
     chosen: (q.options && q.options[0]) || "A"
   }));
 
-  const oppAnswers = explicit && Array.isArray(explicit) && explicit.length ? explicit : qStub;
+  const oppAnswers =
+    explicit && Array.isArray(explicit) && explicit.length ? explicit : qStub;
 
   root.innerHTML = `
     <div class="score-strip">
@@ -58,8 +59,8 @@ export function MarkingRoom() {
       <p><strong>${a.question}</strong></p>
       <p>Chosen: <code>${a.chosen}</code></p>
       <div class="row center gap">
-        <button class="btn markBtn" data-q="${a.id}" data-val="1">Correct</button>
-        <button class="btn markBtn" data-q="${a.id}" data-val="0">Incorrect</button>
+        <button class="btn markBtn" data-q="${a.id}" data-val="1" aria-pressed="false">Correct</button>
+        <button class="btn markBtn" data-q="${a.id}" data-val="0" aria-pressed="false">Incorrect</button>
       </div>
     `;
     markList.appendChild(div);
@@ -72,10 +73,14 @@ export function MarkingRoom() {
       const val = parseInt(e.currentTarget.dataset.val, 10);
       marks[qid] = val;
 
-      // Visual selection
+      // Visual selection (and ARIA)
       const group = e.currentTarget.parentNode;
-      group.querySelectorAll("button").forEach((b) => b.classList.remove("selected"));
+      group.querySelectorAll("button").forEach((b) => {
+        b.classList.remove("selected");
+        b.setAttribute("aria-pressed", "false");
+      });
       e.currentTarget.classList.add("selected");
+      e.currentTarget.setAttribute("aria-pressed", "true");
 
       if (Object.keys(marks).length === oppAnswers.length) {
         continueBox.classList.remove("hidden");
@@ -89,7 +94,8 @@ export function MarkingRoom() {
 
     // Update perceived score for opponent
     state.perceivedScores = state.perceivedScores || {};
-    state.perceivedScores[opponent] = (state.perceivedScores[opponent] || 0) + points;
+    state.perceivedScores[opponent] =
+      (state.perceivedScores[opponent] || 0) + points;
 
     // Reflect in UI
     const sd = root.querySelector("#scoreDaniel");
@@ -125,6 +131,9 @@ export function MarkingRoom() {
       }
     );
   });
-root.appendChild(RoleBadge());
-return root;
+
+  // Role badge
+  root.appendChild(RoleBadge());
+
+  return root;
 }
