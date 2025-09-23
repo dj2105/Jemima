@@ -1,5 +1,5 @@
 {
-  "name": "jemimas-asking",
+  "name": "jemimas-asking-min",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -8,9 +8,7 @@
     "build": "vite build",
     "preview": "vite preview --port 5174"
   },
-  "dependencies": {
-    "firebase": "^10.13.1"
-  },
+  "dependencies": {},
   "devDependencies": {
     "vite": "^5.4.20"
   }
