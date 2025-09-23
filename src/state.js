@@ -27,6 +27,10 @@ export const state = {
   },
 
   round1Questions: null,
+  round2Questions: null,
+  round3Questions: null,
+  round4Questions: null,
+  round5Questions: null,
   round1OpponentAnswers: null,
   perceivedScores: { Daniel: 0, Jaime: 0 },
 
@@ -57,8 +61,8 @@ export function setKeyRoomField(field, value) {
   state.keyRoom[field] = value;
 }
 
-export function setRound1Questions(questions) {
-  state.round1Questions = questions;
+export function setRoundQuestions(round, questions) {
+  state[`round${round}Questions`] = questions;
 }
 
 export function nextRound() {
