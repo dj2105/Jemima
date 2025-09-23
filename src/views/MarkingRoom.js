@@ -1,20 +1,27 @@
+// src/views/MarkingRoom.js
 import { state } from "../state.js";
 import { setDoc, doc, markReady, subscribeReady } from "../lib/firebase.js";
 import { advanceToNextRoundOrFinal } from "../flow.js";
 
 export function MarkingRoom() {
-  const round = state.currentRound || 1;
-  const self = state.self;
-  const opponent = state.opponent;
-  
+  const r = state.currentRound || 1;
+  const self = state.self;            // "Daniel" or "Jaime"
+  const opponent = state.opponent;    // derived
+
   const root = document.createElement("div");
   root.className = "wrap";
 
-  const oppAnswers = state.round1OpponentAnswers || [
-    { id: `r${round}q1`, question: `Stub Q${round}-1?`, chosen: "A" },
-    { id: `r${round}q2`, question: `Stub Q${round}-2?`, chosen: "B" },
-    { id: `r${round}q3`, question: `Stub Q${round}-3?`, chosen: "A" }
-  ];
+  // Prefer explicit per-round opponent answers if present
+  const explicit = state[`round${r}OpponentAnswers`];
+
+  // Fallback: build simple stubs from that round's questions if answers aren't stored yet
+  const qStub = (state[`round${r}Questions`] || []).map((q, i) => ({
+    id: q.id || `r${r}q${i + 1}`,
+    question: q.question || `Stub Q${r}-${i + 1}?`,
+    chosen: (q.options && q.options[0]) || "A"
+  }));
+
+  const oppAnswers = explicit && Array.isArray(explicit) && explicit.length ? explicit : qStub;
 
   root.innerHTML = `
     <div class="score-strip">
@@ -22,22 +29,27 @@ export function MarkingRoom() {
       Jaime: <span id="scoreJaime">${state.perceivedScores?.Jaime || 0}</span>
     </div>
 
-    <div class="h1">Mark ${opponent}’s Answers — Round ${round}</div>
+    <div class="h1">Mark ${opponent}’s Answers — Round ${r}</div>
     <div id="markList"></div>
 
     <div id="continueBox" class="hidden mt-6 text-center">
-      <button id="continueBtn" class="btn">Continue to Round ${round + 1}</button>
+      <button id="continueBtn" class="btn">
+        Continue to ${r < 5 ? `Round ${r + 1}` : "Final"}
+      </button>
     </div>
 
-    <div id="waitingOverlay" class="overlay hidden"><h2>Waiting for ${opponent}…</h2></div>
+    <div id="waitingOverlay" class="overlay hidden">
+      <h2>Waiting for ${opponent}…</h2>
+    </div>
   `;
 
   const markList = root.querySelector("#markList");
   const continueBox = root.querySelector("#continueBox");
   const waiting = root.querySelector("#waitingOverlay");
 
-  let marks = {};
+  const marks = {}; // qid -> 1 (correct) | 0 (incorrect)
 
+  // Render each opponent answer block
   oppAnswers.forEach((a) => {
     const div = document.createElement("div");
     div.className = "panel mt-3";
@@ -52,15 +64,17 @@ export function MarkingRoom() {
     markList.appendChild(div);
   });
 
-  // Marking interactions
+  // Interactions for marking
   markList.querySelectorAll(".markBtn").forEach((btn) => {
     btn.addEventListener("click", (e) => {
-      const qid = e.target.dataset.q;
-      const val = parseInt(e.target.dataset.val);
+      const qid = e.currentTarget.dataset.q;
+      const val = parseInt(e.currentTarget.dataset.val, 10);
       marks[qid] = val;
 
-      e.target.parentNode.querySelectorAll("button").forEach((b) => b.classList.remove("selected"));
-      e.target.classList.add("selected");
+      // Visual selection
+      const group = e.currentTarget.parentNode;
+      group.querySelectorAll("button").forEach((b) => b.classList.remove("selected"));
+      e.currentTarget.classList.add("selected");
 
       if (Object.keys(marks).length === oppAnswers.length) {
         continueBox.classList.remove("hidden");
@@ -68,31 +82,47 @@ export function MarkingRoom() {
     });
   });
 
+  // Continue → save marks, update perceived, wait for opponent, then advance
   continueBox.querySelector("#continueBtn").addEventListener("click", async () => {
-    // Perceived score updates
     const points = Object.values(marks).reduce((a, b) => a + b, 0);
+
+    // Update perceived score for opponent
+    state.perceivedScores = state.perceivedScores || {};
     state.perceivedScores[opponent] = (state.perceivedScores[opponent] || 0) + points;
-    document.getElementById("scoreDaniel").textContent = state.perceivedScores.Daniel || 0;
-    document.getElementById("scoreJaime").textContent  = state.perceivedScores.Jaime  || 0;
 
-    // Save marks (stub)
-    await setDoc(doc(null, "rooms", state.room.code || "EH6W", "marking", self), {
-      marks, round
-    });
+    // Reflect in UI
+    const sd = root.querySelector("#scoreDaniel");
+    const sj = root.querySelector("#scoreJaime");
+    if (sd) sd.textContent = state.perceivedScores.Daniel || 0;
+    if (sj) sj.textContent = state.perceivedScores.Jaime || 0;
 
-    // Mark me ready for marking phase
+    // Persist (stubbed)
+    await setDoc(
+      doc(null, "rooms", state.room.code || "EH6W", "marking", self),
+      { marks, round: r }
+    );
+
+    // Mark me ready for this round's marking phase
     waiting.classList.remove("hidden");
-    markReady({ roomCode: state.room.code || "EH6W", round, phase:'marking', player: self });
+    continueBox.classList.add("hidden");
 
-    // Wait for both → advance to next round or final
-    subscribeReady({ roomCode: state.room.code || "EH6W", round, phase:'marking' }, (ready) => {
-      if (ready.Daniel && ready.Jaime) {
-        waiting.classList.add("hidden");
-        advanceToNextRoundOrFinal();
-      }
+    markReady({
+      roomCode: state.room.code || "EH6W",
+      round: r,
+      phase: "marking",
+      player: self
     });
 
-    continueBox.classList.add("hidden");
+    // When both are ready → advance
+    subscribeReady(
+      { roomCode: state.room.code || "EH6W", round: r, phase: "marking" },
+      (ready) => {
+        if (ready.Daniel && ready.Jaime) {
+          waiting.classList.add("hidden");
+          advanceToNextRoundOrFinal();
+        }
+      }
+    );
   });
 
   return root;
