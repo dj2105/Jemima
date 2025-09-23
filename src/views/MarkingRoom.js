@@ -5,7 +5,11 @@ export function MarkingRoom() {
   const root = document.createElement("div");
   root.className = "wrap";
 
-  const opponent = "Jaime"; // TODO: dynamic based on player
+  // Decide who you are + who you're marking
+  const self = "Daniel"; // TODO: detect dynamically (e.g. from login/session)
+  const opponent = self === "Daniel" ? "Jaime" : "Daniel";
+
+  // Grab opponent answers (stub fallback if missing)
   const oppAnswers = state.round1OpponentAnswers || [
     { id: "q1", question: "Stub Q1?", chosen: "Yes" },
     { id: "q2", question: "Stub Q2?", chosen: "Right" },
@@ -18,11 +22,11 @@ export function MarkingRoom() {
       Jaime: <span id="scoreJaime">${state.perceivedScores?.Jaime || 0}</span>
     </div>
 
-    <div class="h1">Mark Jaime’s Answers</div>
+    <div class="h1">Mark ${opponent}’s Answers</div>
     <div id="markList"></div>
 
     <div id="continueBox" class="hidden mt-6 text-center">
-      <button id="continueBtn" class="btn">Continue</button>
+      <button id="continueBtn" class="btn">Continue to Round ${state.currentRound + 1}</button>
     </div>
 
     <div id="waitingOverlay" class="overlay hidden"><h2>Waiting…</h2></div>
@@ -34,6 +38,7 @@ export function MarkingRoom() {
 
   let marks = {};
 
+  // Render each opponent answer
   oppAnswers.forEach((a) => {
     const div = document.createElement("div");
     div.className = "panel mt-3";
@@ -48,6 +53,7 @@ export function MarkingRoom() {
     markList.appendChild(div);
   });
 
+  // Handle marking clicks
   markList.querySelectorAll(".markBtn").forEach((btn) => {
     btn.addEventListener("click", (e) => {
       const qid = e.target.dataset.q;
@@ -65,21 +71,29 @@ export function MarkingRoom() {
     });
   });
 
+  // Continue button
   continueBox.querySelector("#continueBtn").addEventListener("click", async () => {
-    // Update perceived score
+    // Add perceived points
     const points = Object.values(marks).reduce((a, b) => a + b, 0);
-    state.perceivedScores = state.perceivedScores || {};
     state.perceivedScores[opponent] = (state.perceivedScores[opponent] || 0) + points;
 
+    // Update UI scores
+    document.getElementById("scoreDaniel").textContent = state.perceivedScores.Daniel || 0;
     document.getElementById("scoreJaime").textContent = state.perceivedScores.Jaime || 0;
 
-    // Save to Firestore (stubbed)
-    await setDoc(doc(null, "rooms", state.room.code, "marking", "Daniel"), marks);
+    // Save to Firestore under current room
+    await setDoc(doc(null, "rooms", state.room.code, "marking", self), {
+      marks,
+      round: state.currentRound
+    });
 
+    // Switch overlays
     continueBox.classList.add("hidden");
     waiting.classList.remove("hidden");
 
-    // TODO: wait for other player then route to Round 2
+    // TODO: Add real sync → check if both players submitted, then:
+    // state.currentRound++;
+    // location.hash = "#round" + state.currentRound;
   });
 
   return root;
