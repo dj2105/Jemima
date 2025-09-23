@@ -1,3 +1,4 @@
+// src/components/RoleBadge.js
 import { state } from "../state.js";
 
 export function RoleBadge() {
