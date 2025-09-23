@@ -4,9 +4,9 @@ import { advanceToNextRoundOrFinal } from "../flow.js";
 
 export function MarkingRoom() {
   const round = state.currentRound || 1;
-  const self = state.self || "Daniel";
-  const opponent = self === "Daniel" ? "Jaime" : "Daniel";
-
+  const self = state.self;
+  const opponent = state.opponent;
+  
   const root = document.createElement("div");
   root.className = "wrap";
 
