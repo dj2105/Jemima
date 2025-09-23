@@ -1,6 +1,7 @@
 import { state, setKeyRoomField } from '../state.js';
 import { saveLocal, loadLocal } from '../lib/localStore.js';
 import { validateGeminiKey, validateJSON, validateFirestoreConfig, defaultCodeFormatJSON } from '../lib/validation.js';
+import { RoleBadge } from "../components/RoleBadge.js";
 
 function dot(ok){ return `<span class="dot ${ok ? 'ok':'err'}"></span>`; }
 
@@ -136,5 +137,8 @@ export function KeyRoom(){
   });
 
   wrap.querySelector('#back').addEventListener('click', () => location.hash = '/lobby');
+
+  wrap.appendChild(RoleBadge());
+  
   return wrap;
 }
