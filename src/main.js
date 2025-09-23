@@ -1,4 +1,4 @@
-import { mountRoute } from './router.js';
+import { router } from './router.js';
 import { state } from './state.js';
 
 window.addEventListener('hashchange', () => mountRoute());
