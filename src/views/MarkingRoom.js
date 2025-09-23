@@ -17,11 +17,17 @@ export function MarkingRoom() {
   const explicit = state[`round${r}OpponentAnswers`];
 
   // Fallback: build simple stubs from that round's questions if answers aren't stored yet
-  const qStub = (state[`round${r}Questions`] || []).map((q, i) => ({
-    id: q.id || `r${r}q${i + 1}`,
-    question: q.question || `Stub Q${r}-${i + 1}?`,
-    chosen: (q.options && q.options[0]) || "A"
-  }));
+  const roundQs = state[`round${r}Questions`] || [];
+  const qStub = roundQs.map((q, i) => {
+    const chosenIdx =
+      (state.answers && state.answers[opponent] && state.answers[opponent][q.id]) ?? 0;
+    const chosenText = (q.options && q.options[chosenIdx]) || (q.options?.[0] ?? "A");
+    return {
+      id: q.id || `r${r}q${i + 1}`,
+      question: q.question || `Stub Q${r}-${i + 1}?`,
+      chosen: chosenText
+    };
+  });
 
   const oppAnswers =
     explicit && Array.isArray(explicit) && explicit.length ? explicit : qStub;
@@ -41,7 +47,7 @@ export function MarkingRoom() {
     </div>
   `;
 
-  // Add score strip at the very top (outside of the template)
+  // Score strip pinned at top
   root.insertBefore(ScoreStrip(), root.firstChild);
 
   const markList = root.querySelector("#markList");
@@ -51,19 +57,27 @@ export function MarkingRoom() {
   const marks = {}; // qid -> 1 (correct) | 0 (incorrect)
 
   // Render each opponent answer block
-  oppAnswers.forEach((a) => {
-    const div = document.createElement("div");
-    div.className = "panel mt-3";
-    div.innerHTML = `
-      <p><strong>${a.question}</strong></p>
-      <p>Chosen: <code>${a.chosen}</code></p>
-      <div class="row center gap">
-        <button class="btn markBtn" data-q="${a.id}" data-val="1" aria-pressed="false">Correct</button>
-        <button class="btn markBtn" data-q="${a.id}" data-val="0" aria-pressed="false">Incorrect</button>
-      </div>
-    `;
-    markList.appendChild(div);
-  });
+  if (!oppAnswers.length) {
+    const empty = document.createElement("div");
+    empty.className = "panel mt-3";
+    empty.innerHTML = `<p>No opponent answers found for Round ${r}. You can proceed.</p>`;
+    markList.appendChild(empty);
+    continueBox.classList.remove("hidden");
+  } else {
+    oppAnswers.forEach((a) => {
+      const div = document.createElement("div");
+      div.className = "panel mt-3";
+      div.innerHTML = `
+        <p><strong>${a.question}</strong></p>
+        <p>Chosen: <code>${a.chosen}</code></p>
+        <div class="row center gap">
+          <button class="btn markBtn" data-q="${a.id}" data-val="1" aria-pressed="false">Correct</button>
+          <button class="btn markBtn" data-q="${a.id}" data-val="0" aria-pressed="false">Incorrect</button>
+        </div>
+      `;
+      markList.appendChild(div);
+    });
+  }
 
   // Interactions for marking
   markList.querySelectorAll(".markBtn").forEach((btn) => {
@@ -96,36 +110,63 @@ export function MarkingRoom() {
     state.perceivedScores[opponent] =
       (state.perceivedScores[opponent] || 0) + points;
 
-    // Reflect in UI (and keep the strip in sync)
+    // Keep the score strip consistent
     updateScoreStrip(root);
 
-    // Persist (Firestone adapter; safe no-op if stubbed)
-    await setDoc(
-      doc(null, "rooms", state.room.code || "EH6W", "marking", self),
-      { marks, round: r }
-    );
+    // Persist (safe no-op if firebase adapter is stubbed)
+    try {
+      await setDoc(
+        doc(null, "rooms", state.room.code || "EH6W", "marking", self),
+        { marks, round: r }
+      );
+    } catch {
+      // ignore in local-only mode
+    }
 
     // Mark me ready for this round's marking phase
     waiting.classList.remove("hidden");
     continueBox.classList.add("hidden");
 
-    markReady({
-      roomCode: state.room.code || "EH6W",
-      round: r,
-      phase: "marking",
-      player: self
-    });
+    try {
+      markReady({
+        roomCode: state.room.code || "EH6W",
+        round: r,
+        phase: "marking",
+        player: self
+      });
+    } catch {
+      // adapter may be stubbed
+    }
 
-    // When both are ready → advance
-    subscribeReady(
-      { roomCode: state.room.code || "EH6W", round: r, phase: "marking" },
-      (ready) => {
-        if (ready.Daniel && ready.Jaime) {
-          waiting.classList.add("hidden");
-          advanceToNextRoundOrFinal();
+    // When both are ready → advance (fallback to local advance if no realtime)
+    let unsub;
+    const proceed = () => {
+      waiting.classList.add("hidden");
+      if (typeof unsub === "function") unsub();
+      advanceToNextRoundOrFinal();
+    };
+
+    try {
+      unsub = subscribeReady(
+        { roomCode: state.room.code || "EH6W", round: r, phase: "marking" },
+        (ready) => {
+          if (ready?.Daniel && ready?.Jaime) proceed();
         }
-      }
-    );
+      );
+      // Fallback safety: if realtime never fires within 2.5s, proceed
+      setTimeout(() => {
+        try {
+          if (!(window.__readyGuardFired__?.[r])) {
+            window.__readyGuardFired__ = window.__readyGuardFired__ || {};
+            window.__readyGuardFired__[r] = true;
+            proceed();
+          }
+        } catch { proceed(); }
+      }, 2500);
+    } catch {
+      // No subscribe support — just proceed after a short delay
+      setTimeout(proceed, 800);
+    }
   });
 
   // Role badge
