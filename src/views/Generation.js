@@ -63,7 +63,9 @@ export default function Generation(ctx = {}) {
   btn.disabled = true;
   btn.addEventListener('click', async () => {
     try { await updateDoc(doc(collection(db, 'rooms'), roomCode), { status: 'countdown' }); } catch {}
-    navigate('#/countdown');
+    try { localStorage.setItem('advanceNext', 'countdown'); } catch {}
+    location.hash = '#/countdown';
+    return;
   });
   row.appendChild(btn);
 
@@ -78,6 +80,12 @@ export default function Generation(ctx = {}) {
   // ---------- logic ----------
 
   async function start() {
+    // fail-safe: if a previous click decided to advance, hop immediately
+    if ((lsGet('advanceNext', '') || '') === 'countdown') {
+      location.hash = '#/countdown';
+      return;
+    }
+
     if (!roomCode || roomCode.length < 4) {
       lRoom.textContent = 'Room: missing code — go back to Key Room.';
       return;
@@ -109,7 +117,7 @@ export default function Generation(ctx = {}) {
 
       setPct(5);
 
-      await generateQuestionsWithTopUp(roomCode);  // 6 per round, guaranteed
+      await generateQuestionsWithTopUp(roomCode);  // 6 per round, guaranteed-ish
       setPct(65);
 
       await generateInterludes(roomCode);
@@ -134,7 +142,11 @@ export default function Generation(ctx = {}) {
       if (!snap.exists()) return;
       const d = snap.data() || {};
       lRoom.textContent = `Room: ${code} — status: ${d.status || '…'}`;
-      if (d.status === 'countdown') { navigate('#/countdown'); return; }
+
+      if (d.status === 'countdown') {
+        location.hash = '#/countdown';
+        return;
+      }
       if (d.status === 'ready') {
         setPct(100);
         btn.disabled = false;
@@ -224,7 +236,7 @@ export default function Generation(ctx = {}) {
       let attempts = 0;
       while (bucket.questions.length < 6 && attempts < 2) {
         const missing = 6 - bucket.questions.length;
-        const extraRounds = await requestQuestionRounds(1, Math.max(3, missing)); // ask a bit more
+        const extraRounds = await requestQuestionRounds(1, Math.max(3, missing));
         const extra = Array.isArray(extraRounds) && extraRounds.length
           ? (Array.isArray(extraRounds[0].questions) ? extraRounds[0].questions : [])
           : [];
@@ -232,7 +244,6 @@ export default function Generation(ctx = {}) {
         dedupeQuestions(bucket);
         attempts++;
       }
-      // Trim down to 6 if we overshot
       if (bucket.questions.length > 6) bucket.questions = bucket.questions.slice(0, 6);
     }
 
@@ -268,7 +279,6 @@ export default function Generation(ctx = {}) {
 
     const data = res.data || {};
     const rounds = Array.isArray(data.rounds) ? data.rounds : [];
-    // lightweight validation
     for (const r of rounds) {
       if (!Array.isArray(r.questions)) r.questions = [];
       r.questions = r.questions.filter(q => (
