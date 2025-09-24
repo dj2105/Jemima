@@ -1,1 +1,0 @@
-import { mountRoute } from './router.js'; import { state } from './state.js'; window.state=state; window.addEventListener('load',()=>mountRoute());
