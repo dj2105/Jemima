@@ -1,12 +1,8 @@
 // /src/views/QuestionRoom.js
-// Round screen: loads 3 questions for the given round from Firestore seeds,
-// lets the current player answer, then saves answers to
-//   rooms/{code}/answers/{player_round}  (player in {daniel|jaime})
-//
-// Fixes:
-// - Falls back to localStorage for room code if state is empty.
-// - Infers player role from localStorage ('playerRole' = host/guest → daniel/jaime).
-// - Ensures Anonymous Auth before Firestore ops.
+// Role-based question subsets per round.
+// Daniel → first 3 items (0,1,2); Jaime → second 3 (3,4,5).
+// Falls back to first 3 if fewer than 6 exist.
+// Saves: rooms/{code}/answers/{player_round} = { indices:[...], answers:[...], ts }
 
 import {
   initFirebase, ensureAuth, db, doc, getDoc, setDoc
@@ -24,12 +20,8 @@ export default function QuestionRoom(ctx = {}) {
   if (!state.roomCode && roomCode) state.roomCode = roomCode;
 
   const roleRaw = (state.playerId || ls('playerRole', 'host')).toLowerCase();
-  // Map to canonical ids
-  const playerId = roleRaw === 'guest' ? 'jaime'
-                  : roleRaw === 'jaime' ? 'jaime'
-                  : 'daniel'; // default host→daniel
-
-  if (!state.playerId) state.playerId = playerId;
+  const me = roleRaw === 'guest' || roleRaw === 'jaime' ? 'jaime' : 'daniel';
+  if (!state.playerId) state.playerId = me;
   if (!state.scores) state.scores = { daniel: 0, jaime: 0 };
 
   // ---- UI scaffolding ----
@@ -60,15 +52,16 @@ export default function QuestionRoom(ctx = {}) {
   row.appendChild(btn);
   root.appendChild(row);
 
-  // ---- Local state ----
-  const answers = [null, null, null];
+  // local state
+  let servedIndices = [0, 1, 2];
+  const answers = [null, null, null]; // 'a1' | 'a2'
 
   btn.addEventListener('click', async () => {
     try {
-      await saveAnswersToFirestore(roomCode, playerId, round, answers);
+      await saveAnswers(roomCode, me, round, servedIndices, answers);
       navigate(`#/mark/${round}`);
     } catch (err) {
-      card.textContent = 'Failed to save answers: ' + (err.message || err);
+      toast(`Failed to save answers: ${(err && err.message) || err}`);
     }
   });
 
@@ -103,9 +96,19 @@ export default function QuestionRoom(ctx = {}) {
         return;
       }
 
-      renderQuestions(rObj.questions.slice(0, 3));
+      // Determine subset by role.
+      // Prefer 6+ questions → split 3/3. Fallback → first 3 for both.
+      if (rObj.questions.length >= 6) {
+        servedIndices = (me === 'daniel') ? [0, 1, 2] : [3, 4, 5];
+      } else {
+        servedIndices = [0, 1, 2];
+      }
+
+      // Build the three question blocks for our subset
+      const subset = servedIndices.map((i) => rObj.questions[i]).filter(Boolean);
+      renderQuestions(subset);
     } catch (err) {
-      card.textContent = 'Failed to load questions: ' + (err.message || err);
+      card.textContent = 'Failed to load questions: ' + ((err && err.message) || err);
     }
   }
 
@@ -124,8 +127,11 @@ export default function QuestionRoom(ctx = {}) {
       const opts = document.createElement('div');
       opts.className = 'mt-2';
 
-      const b1 = optionButton(q.a1, () => choose(idx, 'a1', b1, b2));
-      const b2 = optionButton(q.a2, () => choose(idx, 'a2', b1, b2));
+      const b1 = optionButton(q.a1);
+      const b2 = optionButton(q.a2);
+
+      b1.addEventListener('click', () => choose(idx, 'a1', b1, b2));
+      b2.addEventListener('click', () => choose(idx, 'a2', b1, b2));
 
       opts.append(b1, b2);
       block.appendChild(opts);
@@ -133,31 +139,53 @@ export default function QuestionRoom(ctx = {}) {
     });
   }
 
-  function optionButton(label, onClick) {
+  function optionButton(label) {
     const b = document.createElement('button');
     b.className = 'btn btn-opt';
     b.style.display = 'block';
     b.style.marginTop = '8px';
     b.textContent = label;
-    b.addEventListener('click', onClick);
+
+    // Inline invert style when active (works even without CSS support)
+    b._setActive = (on) => {
+      if (on) {
+        b.style.background = '#fff';
+        b.style.color = '#000';
+        b.style.borderColor = '#fff';
+      } else {
+        b.style.background = 'transparent';
+        b.style.color = '#fff';
+        b.style.borderColor = '#fff';
+      }
+    };
+
+    // Set initial (inactive)
+    b._setActive(false);
     return b;
   }
 
   function choose(idx, val, b1, b2) {
     answers[idx] = val;
-    b1.classList.remove('btn-active');
-    b2.classList.remove('btn-active');
-    if (val === 'a1') b1.classList.add('btn-active');
-    if (val === 'a2') b2.classList.add('btn-active');
+    // toggle visuals
+    b1._setActive(val === 'a1');
+    b2._setActive(val === 'a2');
 
+    // Enable GO only when all 3 answered
     btn.disabled = answers.some((a) => a === null);
   }
 }
 
 // ---- Firestore write helper ----
-async function saveAnswersToFirestore(roomCode, playerId, round, answers) {
+async function saveAnswers(roomCode, playerId, round, indices, answers) {
   initFirebase();
   await ensureAuth();
   const ref = doc(db, 'rooms', roomCode, 'answers', `${playerId}_${round}`);
-  await setDoc(ref, { answers, ts: Date.now() });
+  await setDoc(ref, { indices, answers, ts: Date.now() });
+}
+
+// (Optional) tiny toast helper
+function toast(msg) {
+  try {
+    console.warn(msg);
+  } catch {}
 }
