@@ -1,21 +1,44 @@
 // /src/views/MarkingRoom.js
-// Lets player mark opponent’s answers for the round.
-// Saves marking under rooms/{code}/marking/{player_round}.
-// Waits for opponent’s marking before revealing score.
+// Mark the opponent's 3 answers (role-based split):
+// - Daniel answers indices [0,1,2]; Jaime answers [3,4,5].
+// - This screen shows the opponent's 3 answers (pulled from their saved {indices, answers}).
+// - You choose Correct / Incorrect for each. When done, we write:
+//     rooms/{code}/marking/{me}_{round} = { marks:[true|false], ts }
+// - When both players have submitted marking, we reveal *your own* correct total (truth from seeds),
+//   wait 4s, then move on: rounds 1–4 → interlude/:round, round 5 → jemima.
 
-import { initFirebase, db, doc, getDoc } from '../lib/firebase.js';
-import { saveMarking, onOpponentMarking, state } from '../state.js';
+import {
+  initFirebase, ensureAuth, db, doc, getDoc, setDoc, onSnapshot
+} from '../lib/firebase.js';
+import { state } from '../state.js';
 
 export default function MarkingRoom(ctx = {}) {
   const navigate = ctx.navigate || ((h) => (location.hash = h));
-  const round = ctx.round || 1;
+  const round = Number(ctx.round || 1);
 
+  // identity
+  const ls = (k, d = '') => { try { return localStorage.getItem(k) ?? d; } catch { return d; } };
+  const roomCode = (state.roomCode || ls('lastGameCode', '')).toUpperCase();
+  if (!state.roomCode && roomCode) state.roomCode = roomCode;
+
+  const roleRaw = (state.playerId || ls('playerRole', 'host')).toLowerCase();
+  const me   = (roleRaw === 'guest' || roleRaw === 'jaime') ? 'jaime' : 'daniel';
+  const them = me === 'daniel' ? 'jaime' : 'daniel';
+  if (!state.playerId) state.playerId = me;
+  if (!state.scores) state.scores = { daniel: 0, jaime: 0 };
+
+  // ui
   const root = document.createElement('div');
   root.className = 'wrap';
 
+  const banner = document.createElement('div');
+  banner.className = 'score-strip';
+  banner.textContent = `Daniel ${state.scores.daniel || 0} | Jaime ${state.scores.jaime || 0}`;
+  root.appendChild(banner);
+
   const title = document.createElement('div');
-  title.className = 'panel-title accent-white';
-  title.textContent = `Marking Round ${round}`;
+  title.className = 'panel-title accent-white mt-4';
+  title.textContent = `ROUND ${round} — MARK OPPONENT`;
   root.appendChild(title);
 
   const card = document.createElement('div');
@@ -32,118 +55,231 @@ export default function MarkingRoom(ctx = {}) {
   row.appendChild(btn);
   root.appendChild(row);
 
-  const marks = [];
+  const note = document.createElement('div');
+  note.className = 'note mt-2';
+  root.appendChild(note);
+
+  // state
+  const marks = [null, null, null]; // true|false
+  let oppIndices = [];
+  let oppAnswers = [];
+  let questionsForOpp = []; // [{q, a1, a2, correct}, ... length 3]
+  let myAnswers = [];       // for reveal calc
+  let myIndices = [];
 
   btn.addEventListener('click', async () => {
-    await saveMarking(round, marks);
-    // Show waiting message
-    root.innerHTML = '';
-    const hold = document.createElement('div');
-    hold.className = 'center-stage';
-    const msg = document.createElement('div');
-    msg.className = 'panel-title accent-white';
-    msg.textContent = `${oppName()} scored you… waiting for reveal.`;
-    hold.appendChild(msg);
-    root.appendChild(hold);
-  });
-
-  // Subscribe to opponent’s marking → when both done, compute reveal
-  onOpponentMarking(round, (data) => {
-    if (marks.length && data?.marks) {
-      revealScores(data.marks);
+    try {
+      await submitMarks(marks);
+      btn.disabled = true;
+      note.textContent = 'Submitted. Waiting for opponent…';
+    } catch (e) {
+      note.textContent = 'Failed to submit: ' + (e.message || e);
     }
   });
 
-  // Async: load opponent answers
-  void load();
+  // start
+  void init();
 
   return root;
 
-  async function load() {
-    initFirebase();
-    if (!state.roomCode) {
+  async function init() {
+    if (!roomCode) {
       card.textContent = 'Error: no room joined.';
       return;
     }
+    initFirebase();
+    await ensureAuth();
 
     try {
-      // Get opponent’s answers
-      const opp = oppName();
-      const ref = doc(db, 'rooms', state.roomCode, 'answers', `${opp}_${round}`);
-      const snap = await getDoc(ref);
-      if (!snap.exists()) {
-        card.textContent = 'Opponent answers not found.';
+      // load seeds for this round
+      const seedSnap = await getDoc(doc(db, 'rooms', roomCode, 'seed', 'questions'));
+      if (!seedSnap.exists()) {
+        card.textContent = 'No question seeds found.';
         return;
       }
-      const data = snap.data();
-      renderAnswers(data.answers || []);
+      const allRounds = (seedSnap.data()?.rounds) || [];
+      const rObj = allRounds.find((r) => Number(r.round) === round);
+      if (!rObj || !Array.isArray(rObj.questions) || rObj.questions.length < 3) {
+        card.textContent = `No questions for round ${round}.`;
+        return;
+      }
+      const qArr = rObj.questions;
+
+      // load both answers docs (mine + theirs)
+      const mySnap  = await getDoc(doc(db, 'rooms', roomCode, 'answers', `${me}_${round}`));
+      const oppSnap = await getDoc(doc(db, 'rooms', roomCode, 'answers', `${them}_${round}`));
+      if (!oppSnap.exists()) {
+        card.textContent = `Waiting for ${capitalise(them)} to submit answers…`;
+        // also watch for their answers then re-render once available
+        onSnapshot(doc(db, 'rooms', roomCode, 'answers', `${them}_${round}`), (sn) => {
+          if (sn.exists()) { location.reload(); }
+        });
+        return;
+      }
+
+      // opponent data to mark
+      oppIndices = (oppSnap.data()?.indices) || [];
+      oppAnswers = (oppSnap.data()?.answers) || [];
+      if (oppIndices.length < 3 || oppAnswers.length < 3) {
+        card.textContent = 'Opponent answers incomplete.';
+        return;
+      }
+      questionsForOpp = oppIndices.map((i) => qArr[i]).filter(Boolean);
+      if (questionsForOpp.length < 3) {
+        card.textContent = 'Seed mismatch for opponent indices.';
+        return;
+      }
+
+      // my data for later reveal (if missing, still allow marking)
+      if (mySnap.exists()) {
+        myIndices = (mySnap.data()?.indices) || [];
+        myAnswers = (mySnap.data()?.answers) || [];
+      }
+
+      renderBlocks(questionsForOpp, oppAnswers);
+
+      // watch both marking docs; when both in, reveal, then proceed
+      watchMarkingAndReveal();
     } catch (err) {
-      card.textContent = 'Failed to load opponent answers: ' + (err.message || err);
+      card.textContent = 'Failed to load marking: ' + (err.message || err);
     }
   }
 
-  function renderAnswers(ans) {
+  function renderBlocks(qs3, oppAns3) {
     card.innerHTML = '';
-    ans.forEach((a, idx) => {
+    qs3.forEach((q, i) => {
       const block = document.createElement('div');
-      block.className = idx ? 'mt-6' : '';
+      if (i) block.className = 'mt-6';
 
       const qtext = document.createElement('div');
       qtext.style.fontWeight = '700';
-      qtext.textContent = `Q${idx + 1}: Opponent chose ${a}`;
+      qtext.textContent = `${i + 1}. ${q.q}`;
       block.appendChild(qtext);
 
-      const opts = document.createElement('div');
-      opts.className = 'mt-2';
+      const picked = oppAns3[i]; // 'a1' | 'a2'
+      const pickedLabel = picked === 'a1' ? q.a1 : q.a2;
 
-      const b1 = mkBtn('Correct', () => choose(idx, true, b1, b2));
-      const b2 = mkBtn('Incorrect', () => choose(idx, false, b1, b2));
+      const pickRow = document.createElement('div');
+      pickRow.className = 'note mt-1';
+      pickRow.textContent = `Opponent chose: ${pickedLabel}`;
+      block.appendChild(pickRow);
 
-      opts.append(b1, b2);
-      block.appendChild(opts);
+      const btns = document.createElement('div');
+      btns.className = 'mt-2';
+
+      const bC = choiceBtn('Correct');
+      const bI = choiceBtn('Incorrect');
+
+      bC.addEventListener('click', () => choose(i, true, bC, bI));
+      bI.addEventListener('click', () => choose(i, false, bC, bI));
+
+      btns.append(bC, bI);
+      block.appendChild(btns);
+
       card.appendChild(block);
     });
   }
 
-  function mkBtn(label, onClick) {
+  function choiceBtn(label) {
     const b = document.createElement('button');
-    b.className = 'btn btn-opt';
-    b.style.marginRight = '10px';
+    b.className = 'btn';
+    b.style.marginRight = '8px';
     b.textContent = label;
-    b.addEventListener('click', onClick);
+
+    b._setActive = (on) => {
+      if (on) {
+        b.style.background = '#fff';
+        b.style.color = '#000';
+        b.style.borderColor = '#fff';
+      } else {
+        b.style.background = 'transparent';
+        b.style.color = '#fff';
+        b.style.borderColor = '#fff';
+      }
+    };
+    b._setActive(false);
     return b;
   }
 
-  function choose(idx, val, b1, b2) {
+  function choose(idx, val, bc, bi) {
     marks[idx] = val;
-    b1.classList.remove('btn-active');
-    b2.classList.remove('btn-active');
-    if (val === true) b1.classList.add('btn-active');
-    if (val === false) b2.classList.add('btn-active');
-    btn.disabled = marks.length < 3 || marks.some((m) => m === undefined);
+    bc._setActive(val === true);
+    bi._setActive(val === false);
+
+    btn.disabled = marks.some((m) => m === null);
   }
 
-  function revealScores(oppMarks) {
-    root.innerHTML = '';
-    const hold = document.createElement('div');
-    hold.className = 'center-stage';
-    const total = marks.filter((m) => m === true).length;
-    const msg = document.createElement('div');
-    msg.className = 'panel-title accent-white';
-    msg.textContent = `Round ${round} — You scored ${total}/3`;
-    hold.appendChild(msg);
-    root.appendChild(hold);
+  async function submitMarks(marksArr) {
+    await setDoc(doc(db, 'rooms', roomCode, 'marking', `${me}_${round}`), {
+      marks: marksArr,
+      ts: Date.now()
+    });
+  }
 
-    setTimeout(() => {
-      if (round < 5) {
-        if (round < 5) navigate(`#/interlude/${round}`);
-      } else {
-        navigate('#/jemima');
+  function watchMarkingAndReveal() {
+    let meDone = false;
+    let themDone = false;
+
+    const meRef = doc(db, 'rooms', roomCode, 'marking', `${me}_${round}`);
+    const thRef = doc(db, 'rooms', roomCode, 'marking', `${them}_${round}`);
+
+    const maybeReveal = async () => {
+      if (!(meDone && themDone)) return;
+
+      // Compute my true correct total (independent of opponent's marking)
+      const seedSnap = await getDoc(doc(db, 'rooms', roomCode, 'seed', 'questions'));
+      const allRounds = (seedSnap.data()?.rounds) || [];
+      const rObj = allRounds.find((r) => Number(r.round) === round);
+      const qArr = rObj?.questions || [];
+
+      // Load my answers (if not already)
+      if (!myAnswers.length || !myIndices.length) {
+        const mySnap = await getDoc(doc(db, 'rooms', roomCode, 'answers', `${me}_${round}`));
+        if (mySnap.exists()) {
+          myIndices = (mySnap.data()?.indices) || [];
+          myAnswers = (mySnap.data()?.answers) || [];
+        }
       }
-    }, 4000);
-  }
 
-  function oppName() {
-    return state.playerId === 'daniel' ? 'jaime' : 'daniel';
+      const myQs = myIndices.map((i) => qArr[i]).filter(Boolean);
+      let myCorrect = 0;
+      for (let i = 0; i < Math.min(3, myQs.length, myAnswers.length); i++) {
+        const q = myQs[i];
+        const picked = myAnswers[i]; // 'a1' | 'a2'
+        if (picked === q?.correct) myCorrect++;
+      }
+
+      // Reveal
+      card.innerHTML = '';
+      const reveal = document.createElement('div');
+      reveal.className = 'panel-title accent-white';
+      reveal.textContent = `You got ${myCorrect}/3 correct`;
+      card.appendChild(reveal);
+
+      // bump local banner score
+      try {
+        state.scores[me] = (state.scores[me] || 0) + myCorrect;
+        banner.textContent = `Daniel ${state.scores.daniel || 0} | Jaime ${state.scores.jaime || 0}`;
+      } catch {}
+
+      // proceed after 4s
+      setTimeout(() => {
+        if (round < 5) navigate(`#/interlude/${round}`);
+        else navigate('#/jemima');
+      }, 4000);
+    };
+
+    onSnapshot(meRef, (sn) => {
+      meDone = sn.exists();
+      if (meDone) note.textContent = `${capitalise(me)} scored them.`;
+      maybeReveal();
+    });
+    onSnapshot(thRef, (sn) => {
+      themDone = sn.exists();
+      if (themDone) note.textContent = `${capitalise(them)} scored you.`;
+      maybeReveal();
+    });
   }
 }
+
+function capitalise(s = '') { return s.charAt(0).toUpperCase() + s.slice(1); }
