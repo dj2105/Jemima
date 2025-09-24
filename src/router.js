@@ -61,23 +61,33 @@ const routes = [
       return placeholder('Joining…', `Room ${code}`);
     }
   },
+    {
+    name: 'join',
+    re: /^#\/join\/([A-Z0-9]{4,10})$/,
+    load: async ({ params }) => {
+      const code = (params[0] || '').toUpperCase();
+      if (code) localStorage.setItem('lastGameCode', code);
+-     // If role not set yet, default to guest for safety.
+-     if (!localStorage.getItem('playerRole')) localStorage.setItem('playerRole', 'guest');
++     // Always force guest on /join
++     localStorage.setItem('playerRole', 'guest');
+      location.hash = '#/gen';
+      return placeholder('Joining…', `Room ${code}`);
+    }
+  },
   {
-    // Rejoin keeps existing role; just restores code and goes to Generation.
     name: 'rejoin',
     re: /^#\/rejoin\/([A-Z0-9]{4,10})$/,
     load: async ({ params }) => {
       const code = (params[0] || '').toUpperCase();
-      if (code) setLS('lastGameCode', code);
-      navigate('#/gen');
+      if (code) localStorage.setItem('lastGameCode', code);
+-     // keep role as-is
++     // Default to guest if role missing (avoid stale 'host')
++     if (!localStorage.getItem('playerRole')) {
++       localStorage.setItem('playerRole', 'guest');
++     }
+      location.hash = '#/gen';
       return placeholder('Rejoining…', `Room ${code}`);
-    }
-  },
-  {
-    name: 'gen',
-    re: /^#\/gen$/,
-    load: async () => {
-      const mod = await import('./views/Generation.js');
-      return mod.default({ navigate });
     }
   },
   {
