@@ -1,6 +1,6 @@
 // /src/router.js
-// Tiny hash router. Real views: Lobby, KeyRoom, Generation.
-// Remaining routes are clean placeholders for now.
+// Hash router with real screens wired: Lobby, KeyRoom, Generation, Countdown,
+// QuestionRoom, MarkingRoom, Interlude, JemimaQuiz, FinalResults.
 
 let _mount = null;
 
@@ -14,17 +14,15 @@ function normalizeHash() {
   }
   return h;
 }
-
 function scrollTop() {
   try { window.scrollTo({ top: 0, behavior: 'instant' }); } catch { window.scrollTo(0,0); }
 }
-
 function ctxNavigate(hash) {
   if (typeof hash !== 'string' || !hash.length) return;
   location.hash = hash.startsWith('#') ? hash : `#${hash}`;
 }
 
-/* ---------- Placeholder screen ---------- */
+/* ---------- Fallback placeholder ---------- */
 
 function Placeholder({ title = 'Screen', subtitle = '', action = null } = {}) {
   const wrap = document.createElement('div');
@@ -110,66 +108,58 @@ const routes = [
   {
     name: 'countdown',
     re: /^#\/countdown$/,
-    load: () =>
-      Placeholder({
-        title: '3 · 2 · 1',
-        subtitle: 'Countdown to the question room.',
-        action: () => ctxNavigate('#/q/1')
-      })
+    load: async () => {
+      const mod = await import('./views/Countdown.js');
+      return mod.default({ navigate: ctxNavigate, nextHash: '#/q/1' });
+    }
   },
   {
     name: 'question',
     re: /^#\/q\/([1-5])$/,
-    load: ({ params }) =>
-      Placeholder({
-        title: `ROUND ${params[0]} — QUESTIONS`,
-        subtitle: 'Pick answers for 3 questions.',
-        action: () => ctxNavigate(`#/mark/${params[0]}`)
-      })
+    load: async ({ params }) => {
+      const round = Number(params[0]);
+      const mod = await import('./views/QuestionRoom.js');
+      return mod.default({ navigate: ctxNavigate, round });
+    }
   },
   {
     name: 'marking',
     re: /^#\/mark\/([1-5])$/,
-    load: ({ params }) =>
-      Placeholder({
-        title: `ROUND ${params[0]} — MARKING`,
-        subtitle: 'Mark opponent answers.',
-        action: () => {
-          const r = Number(params[0]);
-          if (r < 5) ctxNavigate('#/interlude/' + r);
-          else ctxNavigate('#/jemima');
-        }
-      })
+    load: async ({ params }) => {
+      const round = Number(params[0]);
+      const mod = await import('./views/MarkingRoom.js');
+      return mod.default({ navigate: ctxNavigate, round });
+    }
   },
   {
     name: 'interlude',
     re: /^#\/interlude\/([1-4])$/,
-    load: ({ params }) =>
-      Placeholder({
-        title: `JEMIMA INTERLUDE ${params[0]}`,
-        subtitle: 'A passage appears. READY → WAITING → Next round.',
-        action: () => ctxNavigate('#/countdown')
-      })
+    load: async ({ params }) => {
+      const round = Number(params[0]);
+      const mod = await import('./views/Interlude.js');
+      return mod.default({ navigate: ctxNavigate, round });
+    }
   },
   {
     name: 'jemima-quiz',
     re: /^#\/jemima$/,
-    load: () =>
-      Placeholder({
-        title: 'JEMIMA QUIZ',
-        subtitle: 'Two numeric questions. +2 exact, +1 closest (tie +1 each).',
-        action: () => ctxNavigate('#/final')
-      })
+    load: async () => {
+      const mod = await import('./views/JemimaQuiz.js');
+      return mod.default({ navigate: ctxNavigate });
+    }
   },
   {
     name: 'final',
     re: /^#\/final$/,
-    load: () =>
-      Placeholder({
+    load: async () => {
+      const mod = await import('./views/FinalResults.js').catch(() => null);
+      if (mod && mod.default) return mod.default({ navigate: ctxNavigate });
+      return Placeholder({
         title: 'FINAL RESULTS',
         subtitle: 'Totals & winner.',
         action: () => ctxNavigate('#/')
-      })
+      });
+    }
   },
   {
     name: 'error',
