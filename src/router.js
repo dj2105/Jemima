@@ -1,6 +1,6 @@
 // /src/router.js
-// Tiny hash router. Loads Lobby now; other routes show clean placeholders
-// until their real views arrive. Keeps everything deployable from day one.
+// Tiny hash router. Real views: Lobby, KeyRoom, Generation.
+// Remaining routes are clean placeholders for now.
 
 let _mount = null;
 
@@ -8,7 +8,6 @@ let _mount = null;
 
 function normalizeHash() {
   const h = location.hash || '#/';
-  // ensure leading "#/" form
   if (!h.startsWith('#/')) {
     location.hash = h.replace(/^#?/, '#/');
     return location.hash;
@@ -25,7 +24,7 @@ function ctxNavigate(hash) {
   location.hash = hash.startsWith('#') ? hash : `#${hash}`;
 }
 
-/* ---------- Placeholder screens (until real ones are added) ---------- */
+/* ---------- Placeholder screen ---------- */
 
 function Placeholder({ title = 'Screen', subtitle = '', action = null } = {}) {
   const wrap = document.createElement('div');
@@ -53,9 +52,7 @@ function Placeholder({ title = 'Screen', subtitle = '', action = null } = {}) {
   const btn = document.createElement('button');
   btn.className = 'btn btn-go';
   btn.textContent = 'GO';
-  btn.addEventListener('click', () => {
-    if (typeof action === 'function') action();
-  });
+  btn.addEventListener('click', () => { if (typeof action === 'function') action(); });
 
   row.appendChild(btn);
   box.append(h1, sub, row);
@@ -64,7 +61,6 @@ function Placeholder({ title = 'Screen', subtitle = '', action = null } = {}) {
 }
 
 /* ---------- Route table ---------- */
-/* Each entry: { re: RegExp, load: ({params}) => Promise<Node> | Node } */
 
 const routes = [
   {
@@ -72,19 +68,16 @@ const routes = [
     re: /^#\/$/,
     load: async () => {
       const mod = await import('./views/Lobby.js');
-      const view = mod.default;
-      return view({ navigate: ctxNavigate });
+      return mod.default({ navigate: ctxNavigate });
     }
   },
   {
     name: 'key',
     re: /^#\/key$/,
-    load: () =>
-      Placeholder({
-        title: 'KEY ROOM',
-        subtitle: 'Paste Gemini key, Firebase config, and optional JSON specs.',
-        action: () => ctxNavigate('#/gen')
-      })
+    load: async () => {
+      const mod = await import('./views/KeyRoom.js');
+      return mod.default({ navigate: ctxNavigate });
+    }
   },
   {
     name: 'join',
@@ -109,12 +102,10 @@ const routes = [
   {
     name: 'generation',
     re: /^#\/gen$/,
-    load: () =>
-      Placeholder({
-        title: 'GENERATING…',
-        subtitle: 'Seeding questions and Jemima passages.',
-        action: () => ctxNavigate('#/countdown')
-      })
+    load: async () => {
+      const mod = await import('./views/Generation.js');
+      return mod.default({ navigate: ctxNavigate });
+    }
   },
   {
     name: 'countdown',
@@ -207,7 +198,6 @@ async function renderFromHash() {
     }
   }
 
-  // No match → go home
   _mount?.(
     Placeholder({
       title: 'Not Found',
@@ -219,23 +209,12 @@ async function renderFromHash() {
 
 /* ---------- Public API ---------- */
 
-export function startRouter({ mount, initialView } = {}) {
+export function startRouter({ mount } = {}) {
   _mount = mount;
-
-  // If first load has no hash, go to Lobby.
-  if (!location.hash) {
-    location.hash = '#/';
-  }
+  if (!location.hash) location.hash = '#/';
 
   window.addEventListener('hashchange', renderFromHash);
   window.addEventListener('DOMContentLoaded', renderFromHash);
 
-  // Initial paint (if DOMContentLoaded already fired, this still works)
   renderFromHash();
-
-  // Optional: render initial view immediately if someone imported router late.
-  // (Not strictly necessary, but harmless.)
-  if (initialView && typeof initialView === 'function' && location.hash === '#/__boot') {
-    _mount(initialView({ navigate: ctxNavigate }));
-  }
 }
