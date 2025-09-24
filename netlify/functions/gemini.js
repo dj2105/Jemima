@@ -33,6 +33,10 @@ export const handler = async (event) => {
     // Build instructions for the model (force JSON-only output)
     const header = 'Respond with ONE valid JSON object. No prose. No code fences.';
     const task = prompt || buildTask(kind, spec);
+    if (!task) {
+      console.error('[gemini] No task built for kind:', kind);
+      return cors(500, JSON.stringify({ ok: false, error: 'No task built' }));
+    }
 
     const contents = [];
     if (system) contents.push({ role: 'user', parts: [{ text: `SYSTEM:\n${system}` }] });
@@ -51,6 +55,12 @@ export const handler = async (event) => {
     const url = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=' +
                 encodeURIComponent(apiKey);
 
+    // ---------- DEBUG LOGS ----------
+    console.log('[gemini] kind:', kind);
+    console.log('[gemini] url:', '...gemini-2.0-flash:generateContent');
+    console.log('[gemini] payload (first 500):', JSON.stringify(payload).slice(0, 500));
+    // --------------------------------
+
     const r = await fetch(url, {
       method: 'POST',
       headers: { 'content-type': 'application/json' },
@@ -58,8 +68,13 @@ export const handler = async (event) => {
     });
 
     const raw = await r.text();
+
+    // ---------- DEBUG LOGS ----------
+    console.log('[gemini] response status:', r.status);
+    console.log('[gemini] response body (first 500):', raw.slice(0, 500));
+    // --------------------------------
+
     if (!r.ok) {
-      console.error('[gemini] HTTP', r.status, raw.slice(0, 500));
       return cors(500, JSON.stringify({ ok: false, error: `HTTP ${r.status}`, detail: raw }));
     }
 
@@ -83,7 +98,7 @@ export const handler = async (event) => {
       const cleaned = text.replace(/^[\s\S]*?{/, '{').replace(/}[\s\S]*$/, '}');
       try { parsed = JSON.parse(cleaned); }
       catch {
-        console.error('[gemini] Invalid JSON from model:', text.slice(0, 200));
+        console.error('[gemini] Invalid JSON from model (first 200):', text.slice(0, 200));
         return cors(500, JSON.stringify({ ok: false, error: 'Model returned invalid JSON' }));
       }
     }
@@ -106,7 +121,7 @@ function buildTask(kind, spec) {
       'Each question has EXACTLY two options and a correct key ("a1" or "a2").',
       'Output JSON matching this schema exactly:',
       '{ "rounds":[ { "round":1, "questions":[ { "q":"", "a1":"", "a2":"", "correct":"a1" } ] } ] }',
-      'Use British English. Keep each question one clear fact, ≤160 chars.',
+      'Use British English. Keep each question one clear fact, <=160 chars.',
       'Caller mechanics to guide subject mix and difficulty:',
       safeStringify(spec)
     ].join('\n');
