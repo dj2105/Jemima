@@ -1,94 +1,123 @@
-// Lobby screen — three panels (JAIME join, DANIEL host, REJOIN)
-// Minimal, self-contained: sets location.hash for navigation.
-// Reads/writes only localStorage key: "lastGameCode".
+// /src/views/Lobby.js
+// Pure UI for the Lobby screen (JAIME / DANIEL / REJOIN).
+// No Firebase or Gemini here. Minimal logic + localStorage read/write.
 
-function h(tag, attrs = {}, ...children){
-  const el = document.createElement(tag);
-  Object.entries(attrs).forEach(([k,v])=>{
-    if(k === "class") el.className = v;
-    else if(k.startsWith("on") && typeof v === "function") el.addEventListener(k.slice(2).toLowerCase(), v);
-    else if(v !== false && v != null) el.setAttribute(k, v);
+export default function Lobby(ctx = {}) {
+  // ctx.navigate('#/route') is called by buttons if provided (from router).
+  // If not provided, we fall back to setting location.hash directly.
+  const navigate = (hash) => {
+    if (ctx && typeof ctx.navigate === 'function') ctx.navigate(hash);
+    else location.hash = hash;
+  };
+
+  // Local storage helpers (safe for beginners)
+  const get = (k, d = '') => {
+    try { return localStorage.getItem(k) || d; } catch { return d; }
+  };
+  const set = (k, v) => {
+    try { localStorage.setItem(k, v); } catch {}
+  };
+
+  const lastCode = get('lastGameCode', '').toUpperCase();
+
+  // ---------- Root ----------
+  const root = document.createElement('div');
+  root.className = 'wrap';
+
+  // ---------- Panel: JAIME (Join) ----------
+  const pJoin = document.createElement('section');
+  pJoin.className = 'panel';
+
+  const hJoin = document.createElement('h2');
+  hJoin.className = 'panel-title accent-jaime';
+  hJoin.textContent = 'JAIME';
+  pJoin.appendChild(hJoin);
+
+  const rowJoin = document.createElement('div');
+  rowJoin.className = 'input-row mt-4';
+  const inputCode = document.createElement('input');
+  inputCode.className = 'input-field uppercase';
+  inputCode.placeholder = 'ENTER CODE';
+  inputCode.autocomplete = 'off';
+  inputCode.maxLength = 6;
+  inputCode.value = '';
+  inputCode.style.textTransform = 'uppercase';
+  inputCode.addEventListener('input', () => {
+    inputCode.value = inputCode.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
   });
-  children.flat().forEach(c => el.appendChild(typeof c === "string" ? document.createTextNode(c) : c));
-  return el;
-}
 
-function rightButtons(...btns){
-  return h("div", { class:"btn-row" }, ...btns);
-}
-
-function codeInput(id, placeholder = "ENTER CODE"){
-  return h("input", {
-    id, class:"input-field", type:"text", inputmode:"latin", maxlength:"5",
-    placeholder, autocomplete:"off", spellcheck:"false"
+  const btnJoin = document.createElement('button');
+  btnJoin.className = 'btn btn-go jaime';
+  btnJoin.textContent = 'GO';
+  btnJoin.addEventListener('click', () => {
+    const code = (inputCode.value || '').trim().toUpperCase();
+    if (!code || code.length < 4) {
+      inputCode.focus();
+      inputCode.select?.();
+      return;
+    }
+    set('lastGameCode', code);
+    navigate(`#/join/${code}`);
   });
-}
 
-function goTo(hash){ location.hash = hash; }
+  rowJoin.append(inputCode, btnJoin);
+  pJoin.append(rowJoin);
 
-// Exported render:
-export default function renderLobby(root = document.getElementById("app")){
-  root.innerHTML = "";
-  const wrap = h("main", { class:"wrap" });
+  // ---------- Panel: DANIEL (Host) ----------
+  const pHost = document.createElement('section');
+  pHost.className = 'panel';
 
-  // === JAIME (Join) ===
-  const jaimeTitle = h("h2", { class:"panel-title accent-jaime" }, "JAIME");
-  const joinInput = codeInput("joinCode");
-  const joinBtn = h("button", {
-    class:"btn btn-go jaime", onclick: () => {
-      const code = (joinInput.value || "").trim().toUpperCase();
-      if(code.length >= 4){ localStorage.setItem("lastGameCode", code); goTo(`#/join/${code}`); }
-      else joinInput.focus();
-    }
-  }, "Join");
+  const hHost = document.createElement('h2');
+  hHost.className = 'panel-title accent-daniel';
+  hHost.innerHTML = `DANIEL <span class="badge">HOST</span>`;
+  pHost.appendChild(hHost);
 
-  const jaimePanel = h("section", { class:"panel" },
-    jaimeTitle,
-    h("div", { class:"input-row mt-4" }, joinInput, h("div", { class:"btn-row" }, joinBtn))
-  );
+  const btnHostGo = document.createElement('div');
+  btnHostGo.className = 'btn-row';
+  const btnHost = document.createElement('button');
+  btnHost.className = 'btn btn-go daniel';
+  btnHost.textContent = 'GO';
+  btnHost.addEventListener('click', () => navigate('#/key'));
+  btnHostGo.append(btnHost);
+  pHost.append(btnHostGo);
 
-  // === DANIEL (Host) ===
-  const danielTitle = h("h2", { class:"panel-title accent-daniel" }, "DANIEL");
-  const hostBadge = h("span", { class:"badge", style:"margin-left:8px" }, "HOST");
-  danielTitle.appendChild(hostBadge);
+  // ---------- Panel: REJOIN ----------
+  const pRejoin = document.createElement('section');
+  pRejoin.className = 'panel';
 
-  const hostGo = h("button", {
-    class:"btn btn-go daniel", onclick: () => goTo("#/key")
-  }, "Go");
+  const hRe = document.createElement('h2');
+  hRe.className = 'panel-title accent-white';
+  hRe.textContent = 'REJOIN';
+  pRejoin.appendChild(hRe);
 
-  const danielPanel = h("section", { class:"panel" },
-    danielTitle,
-    rightButtons(hostGo)
-  );
+  // Last code display + go
+  const rowRe = document.createElement('div');
+  rowRe.className = 'input-row mt-4';
 
-  // === REJOIN ===
-  const rejoinTitle = h("h2", { class:"panel-title accent-white" }, "REJOIN");
-  const lastCode = (localStorage.getItem("lastGameCode") || "").toUpperCase();
-  const lastCodeField = codeInput("lastCode");
-  lastCodeField.value = lastCode;
+  const codeBox = document.createElement('input');
+  codeBox.className = 'input-field';
+  codeBox.placeholder = 'LAST CODE';
+  codeBox.value = lastCode;
+  codeBox.style.textTransform = 'uppercase';
+  codeBox.addEventListener('input', () => {
+    codeBox.value = codeBox.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
+  });
 
-  const rejoinBtn = h("button", {
-    class:"btn btn-go", onclick: () => {
-      const code = (lastCodeField.value || "").trim().toUpperCase();
-      if(code){ localStorage.setItem("lastGameCode", code); goTo(`#/rejoin/${code}`); }
-      else lastCodeField.focus();
-    }
-  }, "Go");
+  const btnRe = document.createElement('button');
+  btnRe.className = 'btn btn-go';
+  btnRe.textContent = 'GO';
+  btnRe.disabled = !lastCode;
+  btnRe.addEventListener('click', () => {
+    const code = (codeBox.value || '').trim().toUpperCase();
+    if (!code || code.length < 4) return;
+    set('lastGameCode', code);
+    navigate(`#/rejoin/${code}`);
+  });
 
-  const clearBtn = h("button", {
-    class:"btn btn-outline", onclick: () => { localStorage.removeItem("lastGameCode"); lastCodeField.value = ""; }
-  }, "Clear");
+  rowRe.append(codeBox, btnRe);
+  pRejoin.append(rowRe);
 
-  const rejoinPanel = h("section", { class:"panel" },
-    rejoinTitle,
-    h("div", { class:"input-row mt-4" }, lastCodeField),
-    rightButtons(rejoinBtn, clearBtn)
-  );
-
-  // Layout (stacked on mobile; two columns on wide)
-  const grid = h("div", { class:"grid-2" }, jaimePanel, danielPanel);
-  wrap.appendChild(grid);
-  wrap.appendChild(rejoinPanel);
-
-  root.appendChild(wrap);
+  // ---------- Assemble ----------
+  root.append(pJoin, pHost, pRejoin);
+  return root;
 }
