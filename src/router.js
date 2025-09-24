@@ -1,10 +1,9 @@
 // /src/router.js
-// Minimal hash router with lazy imports for all views.
-// Usage: startRouter({ mount, initialView })
+// Hash router with lazy imports for all views, including join/rejoin flows.
 
 let _mount = null;
 
-// ---------- utilities ----------
+// ---------- helpers ----------
 function navigate(hash) {
   if (!hash) return;
   location.hash = hash.startsWith('#') ? hash : `#${hash}`;
@@ -29,8 +28,10 @@ function placeholder(title = 'Loading…', subtitle = '') {
   wrap.append(h1, sub);
   return wrap;
 }
+function setLS(k, v) { try { localStorage.setItem(k, v); } catch {} }
+function getLS(k, d = '') { try { return localStorage.getItem(k) ?? d; } catch { return d; } }
 
-// ---------- route table ----------
+// ---------- routes ----------
 const routes = [
   {
     name: 'home',
@@ -46,6 +47,33 @@ const routes = [
     load: async () => {
       const mod = await import('./views/KeyRoom.js');
       return mod.default({ navigate });
+    }
+  },
+  {
+    // Jaime enters a code on Lobby and comes here; we persist it and jump to Generation.
+    name: 'join',
+    re: /^#\/join\/([A-Z0-9]{4,10})$/,
+    load: async ({ params }) => {
+      const code = (params[0] || '').toUpperCase();
+      if (code) {
+        setLS('lastGameCode', code);
+        // If role not set yet, default to guest for safety.
+        if (!getLS('playerRole')) setLS('playerRole', 'guest');
+      }
+      // Auto-forward to generation screen
+      navigate('#/gen');
+      return placeholder('Joining…', `Room ${code}`);
+    }
+  },
+  {
+    // Rejoin keeps existing role; just restores code and goes to Generation.
+    name: 'rejoin',
+    re: /^#\/rejoin\/([A-Z0-9]{4,10})$/,
+    load: async ({ params }) => {
+      const code = (params[0] || '').toUpperCase();
+      if (code) setLS('lastGameCode', code);
+      navigate('#/gen');
+      return placeholder('Rejoining…', `Room ${code}`);
     }
   },
   {
@@ -123,7 +151,7 @@ async function render() {
         _mount(node);
       } catch (err) {
         console.error('[router] route load failed', err);
-        _mount(placeholder('Error', String(err && err.message || err)));
+        _mount(placeholder('Error', String((err && err.message) || err)));
       }
       return;
     }
@@ -135,7 +163,7 @@ async function render() {
 }
 
 // ---------- public API ----------
-export function startRouter({ mount /*, initialView*/ } = {}) {
+export function startRouter({ mount } = {}) {
   _mount = mount;
   if (!location.hash) location.hash = '#/';
 
