@@ -1,14 +1,17 @@
 // /src/lib/firebase.js
-// Firestore adapter. Defaults to Daniel’s provided config.
-// If host pasted a JSON config in Key Room, it overrides.
+// Firestore + Anonymous Auth. Defaults to your provided config, but allows
+// override from Key Room (JSON). Ensures we are signed in before any writes.
 
 import { initializeApp } from 'firebase/app';
 import {
   getFirestore, doc, collection, setDoc, getDoc,
   updateDoc, onSnapshot
 } from 'firebase/firestore';
+import {
+  getAuth, onAuthStateChanged, signInAnonymously
+} from 'firebase/auth';
 
-// --- Default config (replace if override exists in localStorage) ---
+// --- Default config (Daniel’s) ---
 const defaultConfig = {
   apiKey: "AIzaSyBvJcSjv0scpaoGjKZDW93NLK9HvVeuHFo",
   authDomain: "jemima-asks.firebaseapp.com",
@@ -19,38 +22,43 @@ const defaultConfig = {
   measurementId: "G-22H4H6DWXH"
 };
 
-let app, db;
+let app, db, auth, authReadyPromise;
 
-/**
- * Initialise Firebase app + Firestore
- * Will only run once (idempotent).
- */
+/** Initialise Firebase + Firestore + Anonymous Auth (idempotent). */
 export function initFirebase() {
   if (db) return db;
 
   let cfg = defaultConfig;
-
-  // Check for override from KeyRoom
   try {
     const saved = JSON.parse(localStorage.getItem('keyRoom') || '{}');
     if (saved.firebaseConfig) {
       const parsed = JSON.parse(saved.firebaseConfig);
-      if (parsed && parsed.apiKey && parsed.projectId) {
-        cfg = parsed;
-        console.log('[firebase] Using override config from KeyRoom');
-      }
+      if (parsed && parsed.apiKey && parsed.projectId) cfg = parsed;
     }
-  } catch (err) {
-    console.warn('[firebase] Failed to parse override config, using default.', err);
-  }
+  } catch {}
 
   app = initializeApp(cfg);
   db = getFirestore(app);
+  auth = getAuth(app);
+
+  // Ensure anonymous sign-in (so rules with request.auth != null pass)
+  if (!authReadyPromise) {
+    authReadyPromise = new Promise((resolve) => {
+      onAuthStateChanged(auth, (u) => resolve(u || null));
+      // If no user, sign in anonymously
+      signInAnonymously(auth).catch(() => {/* ignore: onAuthStateChanged will still fire */});
+    });
+  }
   return db;
 }
 
-// Expose helpers for rest of app
+/** Await auth being available (Anonymous). */
+export async function ensureAuth() {
+  if (!authReadyPromise) initFirebase();
+  return authReadyPromise;
+}
+
+// Expose helpers
 export {
-  db, doc, collection, setDoc, getDoc,
-  updateDoc, onSnapshot
+  db, doc, collection, setDoc, getDoc, updateDoc, onSnapshot, auth
 };
