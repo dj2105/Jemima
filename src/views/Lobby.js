@@ -1,16 +1,13 @@
 // /src/views/Lobby.js
 // Pure UI for the Lobby screen (JAIME / DANIEL / REJOIN).
-// No Firebase or Gemini here. Minimal logic + localStorage read/write.
+// Stores room code + role in localStorage for later screens.
 
 export default function Lobby(ctx = {}) {
-  // ctx.navigate('#/route') is called by buttons if provided (from router).
-  // If not provided, we fall back to setting location.hash directly.
   const navigate = (hash) => {
     if (ctx && typeof ctx.navigate === 'function') ctx.navigate(hash);
     else location.hash = hash;
   };
 
-  // Local storage helpers (safe for beginners)
   const get = (k, d = '') => {
     try { return localStorage.getItem(k) || d; } catch { return d; }
   };
@@ -20,11 +17,10 @@ export default function Lobby(ctx = {}) {
 
   const lastCode = get('lastGameCode', '').toUpperCase();
 
-  // ---------- Root ----------
   const root = document.createElement('div');
   root.className = 'wrap';
 
-  // ---------- Panel: JAIME (Join) ----------
+  // ---------- JAIME (Join) ----------
   const pJoin = document.createElement('section');
   pJoin.className = 'panel';
 
@@ -35,6 +31,7 @@ export default function Lobby(ctx = {}) {
 
   const rowJoin = document.createElement('div');
   rowJoin.className = 'input-row mt-4';
+
   const inputCode = document.createElement('input');
   inputCode.className = 'input-field uppercase';
   inputCode.placeholder = 'ENTER CODE';
@@ -52,18 +49,17 @@ export default function Lobby(ctx = {}) {
   btnJoin.addEventListener('click', () => {
     const code = (inputCode.value || '').trim().toUpperCase();
     if (!code || code.length < 4) {
-      inputCode.focus();
-      inputCode.select?.();
-      return;
+      inputCode.focus(); inputCode.select?.(); return;
     }
     set('lastGameCode', code);
+    set('playerRole', 'guest');       // <-- important
     navigate(`#/join/${code}`);
   });
 
   rowJoin.append(inputCode, btnJoin);
   pJoin.append(rowJoin);
 
-  // ---------- Panel: DANIEL (Host) ----------
+  // ---------- DANIEL (Host) ----------
   const pHost = document.createElement('section');
   pHost.className = 'panel';
 
@@ -72,16 +68,21 @@ export default function Lobby(ctx = {}) {
   hHost.innerHTML = `DANIEL <span class="badge">HOST</span>`;
   pHost.appendChild(hHost);
 
-  const btnHostGo = document.createElement('div');
-  btnHostGo.className = 'btn-row';
+  const btnHostRow = document.createElement('div');
+  btnHostRow.className = 'btn-row';
+
   const btnHost = document.createElement('button');
   btnHost.className = 'btn btn-go daniel';
   btnHost.textContent = 'GO';
-  btnHost.addEventListener('click', () => navigate('#/key'));
-  btnHostGo.append(btnHost);
-  pHost.append(btnHostGo);
+  btnHost.addEventListener('click', () => {
+    set('playerRole', 'host');        // <-- important
+    navigate('#/key');
+  });
 
-  // ---------- Panel: REJOIN ----------
+  btnHostRow.append(btnHost);
+  pHost.append(btnHostRow);
+
+  // ---------- REJOIN ----------
   const pRejoin = document.createElement('section');
   pRejoin.className = 'panel';
 
@@ -90,7 +91,6 @@ export default function Lobby(ctx = {}) {
   hRe.textContent = 'REJOIN';
   pRejoin.appendChild(hRe);
 
-  // Last code display + go
   const rowRe = document.createElement('div');
   rowRe.className = 'input-row mt-4';
 
@@ -111,6 +111,7 @@ export default function Lobby(ctx = {}) {
     const code = (codeBox.value || '').trim().toUpperCase();
     if (!code || code.length < 4) return;
     set('lastGameCode', code);
+    // do NOT override playerRole here; we reuse whatever was last set
     navigate(`#/rejoin/${code}`);
   });
 
