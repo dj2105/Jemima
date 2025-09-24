@@ -12,6 +12,10 @@ export default function Countdown(ctx = {}) {
     try { return localStorage.getItem(k) ?? d; } catch { return d; }
   };
 
+  // ---- Clear stale flags so we don't loop back here ----
+  try { localStorage.removeItem('advanceNext'); } catch {}
+  try { localStorage.removeItem('nextHash'); } catch {}
+
   // Where to go after the countdown
   const nextHash =
     (ctx && ctx.nextHash) ||
@@ -35,7 +39,7 @@ export default function Countdown(ctx = {}) {
   function tick() {
     if (idx < steps.length) {
       num.textContent = steps[idx++];
-      // Subtle pop
+      // Subtle pop animation
       num.style.transform = 'scale(1.05)';
       setTimeout(() => { num.style.transform = 'scale(1)'; }, 90);
       setTimeout(tick, 800); // speed of the countdown
