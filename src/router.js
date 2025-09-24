@@ -50,17 +50,13 @@ const routes = [
     }
   },
   {
-    // Jaime enters a code on Lobby and comes here; we persist it and jump to Generation.
+    // Joiner ALWAYS becomes guest and goes to Generation.
     name: 'join',
     re: /^#\/join\/([A-Z0-9]{4,10})$/,
     load: async ({ params }) => {
       const code = (params[0] || '').toUpperCase();
-      if (code) {
-        setLS('lastGameCode', code);
-        // If role not set yet, default to guest for safety.
-        if (!getLS('playerRole')) setLS('playerRole', 'guest');
-      }
-      // Auto-forward to generation screen
+      if (code) setLS('lastGameCode', code);
+      setLS('playerRole', 'guest');   // <-- force guest (fix for stale host role)
       navigate('#/gen');
       return placeholder('Joining…', `Room ${code}`);
     }
