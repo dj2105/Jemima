@@ -1,2 +1,0 @@
-export function generateCode({exclude=[]}={}){ const chars="ABCDEFGHJKLMNPQRSTUVWXYZ123456789".split("").filter(c=>!exclude.includes(c)); let out=""; for(let i=0;i<4;i++) out+=chars[Math.floor(Math.random()*chars.length)]; return out; }
-export function validateCodeInput(s){ return /^[A-NP-Z1-9]{4}$/i.test(s||""); }

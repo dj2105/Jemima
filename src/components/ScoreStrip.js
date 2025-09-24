@@ -1,3 +1,0 @@
-import { state } from "../state.js";
-export function ScoreStrip(){ const d=document.createElement("div"); d.className="score-strip"; d.innerHTML=`<span><strong>Daniel</strong>: <span id="scoreDaniel">${state.perceivedScores.Daniel}</span></span><span>•</span><span><strong>Jaime</strong>: <span id="scoreJaime">${state.perceivedScores.Jaime}</span></span>`; return d; }
-export function updateScoreStrip(root=document){ const d=root.querySelector("#scoreDaniel"); if(d) d.textContent=state.perceivedScores.Daniel; const j=root.querySelector("#scoreJaime"); if(j) j.textContent=state.perceivedScores.Jaime; }
