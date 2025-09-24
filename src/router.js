@@ -1,72 +1,43 @@
 // /src/router.js
-// Hash router with real screens wired: Lobby, KeyRoom, Generation, Countdown,
-// QuestionRoom, MarkingRoom, Interlude, JemimaQuiz, FinalResults.
+// Minimal hash router with lazy imports for all views.
+// Usage: startRouter({ mount, initialView })
 
 let _mount = null;
 
-/* ---------- Helpers ---------- */
-
-function normalizeHash() {
-  const h = location.hash || '#/';
-  if (!h.startsWith('#/')) {
-    location.hash = h.replace(/^#?/, '#/');
-    return location.hash;
-  }
-  return h;
-}
-function scrollTop() {
-  try { window.scrollTo({ top: 0, behavior: 'instant' }); } catch { window.scrollTo(0,0); }
-}
-function ctxNavigate(hash) {
-  if (typeof hash !== 'string' || !hash.length) return;
+// ---------- utilities ----------
+function navigate(hash) {
+  if (!hash) return;
   location.hash = hash.startsWith('#') ? hash : `#${hash}`;
 }
-
-/* ---------- Fallback placeholder ---------- */
-
-function Placeholder({ title = 'Screen', subtitle = '', action = null } = {}) {
+function scrollTop() {
+  try { window.scrollTo({ top: 0, behavior: 'instant' }); } catch { window.scrollTo(0, 0); }
+}
+function normHash() {
+  let h = location.hash || '#/';
+  if (!h.startsWith('#/')) h = '#/';
+  return h;
+}
+function placeholder(title = 'Loading…', subtitle = '') {
   const wrap = document.createElement('div');
   wrap.className = 'center-stage';
-
-  const box = document.createElement('div');
-  box.style.maxWidth = '860px';
-  box.style.margin = '0 auto';
-  box.style.textAlign = 'center';
-
   const h1 = document.createElement('div');
   h1.className = 'panel-title accent-white';
-  h1.style.marginBottom = '8px';
   h1.textContent = title;
-
   const sub = document.createElement('div');
   sub.className = 'note';
-  sub.style.marginBottom = '18px';
   sub.textContent = subtitle;
-
-  const row = document.createElement('div');
-  row.className = 'btn-row';
-  row.style.justifyContent = 'center';
-
-  const btn = document.createElement('button');
-  btn.className = 'btn btn-go';
-  btn.textContent = 'GO';
-  btn.addEventListener('click', () => { if (typeof action === 'function') action(); });
-
-  row.appendChild(btn);
-  box.append(h1, sub, row);
-  wrap.appendChild(box);
+  wrap.append(h1, sub);
   return wrap;
 }
 
-/* ---------- Route table ---------- */
-
+// ---------- route table ----------
 const routes = [
   {
-    name: 'lobby',
+    name: 'home',
     re: /^#\/$/,
     load: async () => {
       const mod = await import('./views/Lobby.js');
-      return mod.default({ navigate: ctxNavigate });
+      return mod.default({ navigate });
     }
   },
   {
@@ -74,35 +45,15 @@ const routes = [
     re: /^#\/key$/,
     load: async () => {
       const mod = await import('./views/KeyRoom.js');
-      return mod.default({ navigate: ctxNavigate });
+      return mod.default({ navigate });
     }
   },
   {
-    name: 'join',
-    re: /^#\/join\/([A-Z0-9]{4,10})$/,
-    load: ({ params }) =>
-      Placeholder({
-        title: `JOIN: ${params[0]}`,
-        subtitle: 'Waiting to connect…',
-        action: () => ctxNavigate('#/gen')
-      })
-  },
-  {
-    name: 'rejoin',
-    re: /^#\/rejoin\/([A-Z0-9]{4,10})$/,
-    load: ({ params }) =>
-      Placeholder({
-        title: `REJOIN: ${params[0]}`,
-        subtitle: 'Re-entering room…',
-        action: () => ctxNavigate('#/gen')
-      })
-  },
-  {
-    name: 'generation',
+    name: 'gen',
     re: /^#\/gen$/,
     load: async () => {
       const mod = await import('./views/Generation.js');
-      return mod.default({ navigate: ctxNavigate });
+      return mod.default({ navigate });
     }
   },
   {
@@ -110,7 +61,7 @@ const routes = [
     re: /^#\/countdown$/,
     load: async () => {
       const mod = await import('./views/Countdown.js');
-      return mod.default({ navigate: ctxNavigate, nextHash: '#/q/1' });
+      return mod.default({ navigate, nextHash: '#/q/1' });
     }
   },
   {
@@ -119,16 +70,16 @@ const routes = [
     load: async ({ params }) => {
       const round = Number(params[0]);
       const mod = await import('./views/QuestionRoom.js');
-      return mod.default({ navigate: ctxNavigate, round });
+      return mod.default({ navigate, round });
     }
   },
   {
-    name: 'marking',
+    name: 'mark',
     re: /^#\/mark\/([1-5])$/,
     load: async ({ params }) => {
       const round = Number(params[0]);
       const mod = await import('./views/MarkingRoom.js');
-      return mod.default({ navigate: ctxNavigate, round });
+      return mod.default({ navigate, round });
     }
   },
   {
@@ -137,74 +88,59 @@ const routes = [
     load: async ({ params }) => {
       const round = Number(params[0]);
       const mod = await import('./views/Interlude.js');
-      return mod.default({ navigate: ctxNavigate, round });
+      return mod.default({ navigate, round });
     }
   },
   {
-    name: 'jemima-quiz',
+    name: 'jemima',
     re: /^#\/jemima$/,
     load: async () => {
       const mod = await import('./views/JemimaQuiz.js');
-      return mod.default({ navigate: ctxNavigate });
+      return mod.default({ navigate });
     }
   },
   {
     name: 'final',
     re: /^#\/final$/,
     load: async () => {
-      const mod = await import('./views/FinalResults.js').catch(() => null);
-      if (mod && mod.default) return mod.default({ navigate: ctxNavigate });
-      return Placeholder({
-        title: 'FINAL RESULTS',
-        subtitle: 'Totals & winner.',
-        action: () => ctxNavigate('#/')
-      });
+      const mod = await import('./views/FinalResults.js');
+      return mod.default({ navigate });
     }
-  },
-  {
-    name: 'error',
-    re: /^#\/error$/,
-    load: () =>
-      Placeholder({
-        title: 'ERROR',
-        subtitle: 'Something went wrong.',
-        action: () => ctxNavigate('#/')
-      })
   }
 ];
 
-/* ---------- Core matcher ---------- */
-
-async function renderFromHash() {
-  const hash = normalizeHash();
+// ---------- core ----------
+async function render() {
+  const h = normHash();
   scrollTop();
 
   for (const r of routes) {
-    const m = hash.match(r.re);
+    const m = h.match(r.re);
     if (m) {
-      const node = await r.load({ params: m.slice(1) });
-      _mount?.(node);
+      try {
+        _mount(placeholder('Loading…'));
+        const node = await r.load({ params: m.slice(1) });
+        _mount(node);
+      } catch (err) {
+        console.error('[router] route load failed', err);
+        _mount(placeholder('Error', String(err && err.message || err)));
+      }
       return;
     }
   }
 
-  _mount?.(
-    Placeholder({
-      title: 'Not Found',
-      subtitle: `Unknown route: ${hash}`,
-      action: () => ctxNavigate('#/')
-    })
-  );
+  // 404 → Lobby
+  const mod = await import('./views/Lobby.js');
+  _mount(mod.default({ navigate }));
 }
 
-/* ---------- Public API ---------- */
-
-export function startRouter({ mount } = {}) {
+// ---------- public API ----------
+export function startRouter({ mount /*, initialView*/ } = {}) {
   _mount = mount;
   if (!location.hash) location.hash = '#/';
 
-  window.addEventListener('hashchange', renderFromHash);
-  window.addEventListener('DOMContentLoaded', renderFromHash);
+  window.addEventListener('hashchange', render);
+  window.addEventListener('DOMContentLoaded', render);
 
-  renderFromHash();
+  render();
 }
