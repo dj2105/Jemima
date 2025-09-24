@@ -1,27 +1,49 @@
 // /src/views/QuestionRoom.js
-// Shows 3 questions for the given round. Options are 2-choice.
-// Reads from Firestore seeds (rooms/{code}/seed/questions).
-// Saves answers under rooms/{code}/answers/{player_round}.
+// Round screen: loads 3 questions for the given round from Firestore seeds,
+// lets the current player answer, then saves answers to
+//   rooms/{code}/answers/{player_round}  (player in {daniel|jaime})
+//
+// Fixes:
+// - Falls back to localStorage for room code if state is empty.
+// - Infers player role from localStorage ('playerRole' = host/guest → daniel/jaime).
+// - Ensures Anonymous Auth before Firestore ops.
 
-import { initFirebase, db, doc, getDoc } from '../lib/firebase.js';
-import { saveAnswers, state } from '../state.js';
+import {
+  initFirebase, ensureAuth, db, doc, getDoc, setDoc
+} from '../lib/firebase.js';
+import { state } from '../state.js';
 
 export default function QuestionRoom(ctx = {}) {
   const navigate = ctx.navigate || ((h) => (location.hash = h));
-  const round = ctx.round || 1;
+  const round = Number(ctx.round || 1);
 
-  // Root UI
+  // ---- Resolve room + player from state OR localStorage ----
+  const ls = (k, d = '') => { try { return localStorage.getItem(k) ?? d; } catch { return d; } };
+
+  const roomCode = (state.roomCode || ls('lastGameCode', '')).toUpperCase();
+  if (!state.roomCode && roomCode) state.roomCode = roomCode;
+
+  const roleRaw = (state.playerId || ls('playerRole', 'host')).toLowerCase();
+  // Map to canonical ids
+  const playerId = roleRaw === 'guest' ? 'jaime'
+                  : roleRaw === 'jaime' ? 'jaime'
+                  : 'daniel'; // default host→daniel
+
+  if (!state.playerId) state.playerId = playerId;
+  if (!state.scores) state.scores = { daniel: 0, jaime: 0 };
+
+  // ---- UI scaffolding ----
   const root = document.createElement('div');
   root.className = 'wrap';
 
-  const header = document.createElement('div');
-  header.className = 'score-strip';
-  header.textContent = `Daniel ${state.scores.daniel} | Jaime ${state.scores.jaime}`;
-  root.appendChild(header);
+  const banner = document.createElement('div');
+  banner.className = 'score-strip';
+  banner.textContent = `Daniel ${state.scores.daniel || 0} | Jaime ${state.scores.jaime || 0}`;
+  root.appendChild(banner);
 
   const title = document.createElement('div');
   title.className = 'panel-title accent-white mt-4';
-  title.textContent = `Round ${round}`;
+  title.textContent = `ROUND ${round}`;
   root.appendChild(title);
 
   const card = document.createElement('div');
@@ -38,42 +60,50 @@ export default function QuestionRoom(ctx = {}) {
   row.appendChild(btn);
   root.appendChild(row);
 
-  // State
+  // ---- Local state ----
   const answers = [null, null, null];
 
   btn.addEventListener('click', async () => {
-    await saveAnswers(round, answers);
-    navigate(`#/mark/${round}`);
+    try {
+      await saveAnswersToFirestore(roomCode, playerId, round, answers);
+      navigate(`#/mark/${round}`);
+    } catch (err) {
+      card.textContent = 'Failed to save answers: ' + (err.message || err);
+    }
   });
 
-  // Async: load questions for this round
+  // ---- Load questions ----
   void load();
 
   return root;
 
   async function load() {
-    initFirebase();
-    if (!state.roomCode) {
+    if (!roomCode) {
       card.textContent = 'Error: no room joined.';
       return;
     }
 
     try {
-      const ref = doc(db, 'rooms', state.roomCode, 'seed', 'questions');
+      initFirebase();
+      await ensureAuth();
+
+      const ref = doc(db, 'rooms', roomCode, 'seed', 'questions');
       const snap = await getDoc(ref);
       if (!snap.exists()) {
-        card.textContent = 'Questions not found in Firestore.';
-        return;
-      }
-      const data = snap.data();
-      const rounds = data.rounds || [];
-      const rObj = rounds.find((r) => Number(r.round) === Number(round));
-      if (!rObj) {
-        card.textContent = `No questions for round ${round}.`;
+        card.textContent = 'Questions not found for this room.';
         return;
       }
 
-      renderQuestions(rObj.questions || []);
+      const data = snap.data() || {};
+      const rounds = Array.isArray(data.rounds) ? data.rounds : [];
+      const rObj = rounds.find((r) => Number(r.round) === round);
+
+      if (!rObj || !Array.isArray(rObj.questions) || rObj.questions.length < 3) {
+        card.textContent = `No questions available for round ${round}.`;
+        return;
+      }
+
+      renderQuestions(rObj.questions.slice(0, 3));
     } catch (err) {
       card.textContent = 'Failed to load questions: ' + (err.message || err);
     }
@@ -81,27 +111,29 @@ export default function QuestionRoom(ctx = {}) {
 
   function renderQuestions(qs) {
     card.innerHTML = '';
-    qs.slice(0, 3).forEach((q, idx) => {
+
+    qs.forEach((q, idx) => {
       const block = document.createElement('div');
-      block.className = idx ? 'mt-6' : '';
+      if (idx) block.className = 'mt-6';
 
       const qtext = document.createElement('div');
       qtext.style.fontWeight = '700';
       qtext.textContent = `${idx + 1}. ${q.q}`;
+      block.appendChild(qtext);
 
       const opts = document.createElement('div');
       opts.className = 'mt-2';
 
-      const b1 = mkBtn(q.a1, () => choose(idx, 'a1', b1, b2));
-      const b2 = mkBtn(q.a2, () => choose(idx, 'a2', b1, b2));
+      const b1 = optionButton(q.a1, () => choose(idx, 'a1', b1, b2));
+      const b2 = optionButton(q.a2, () => choose(idx, 'a2', b1, b2));
 
       opts.append(b1, b2);
-      block.append(qtext, opts);
+      block.appendChild(opts);
       card.appendChild(block);
     });
   }
 
-  function mkBtn(label, onClick) {
+  function optionButton(label, onClick) {
     const b = document.createElement('button');
     b.className = 'btn btn-opt';
     b.style.display = 'block';
@@ -118,6 +150,14 @@ export default function QuestionRoom(ctx = {}) {
     if (val === 'a1') b1.classList.add('btn-active');
     if (val === 'a2') b2.classList.add('btn-active');
 
-    btn.disabled = !answers.every((a) => a !== null);
+    btn.disabled = answers.some((a) => a === null);
   }
+}
+
+// ---- Firestore write helper ----
+async function saveAnswersToFirestore(roomCode, playerId, round, answers) {
+  initFirebase();
+  await ensureAuth();
+  const ref = doc(db, 'rooms', roomCode, 'answers', `${playerId}_${round}`);
+  await setDoc(ref, { answers, ts: Date.now() });
 }
