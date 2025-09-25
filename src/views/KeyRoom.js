@@ -55,7 +55,7 @@ export default function KeyRoom(ctx = {}) {
   try { $('#qcfg').value  = localStorage.getItem('qcfg.json') || $('#qcfg').value; } catch {}
   try { $('#jcfg').value  = localStorage.getItem('jmaths.json') || $('#jcfg').value; } catch {}
 
-  // --- Zod (from CDN), tiny schemas, and full seed schema ---
+  // --- Zod (from CDN), schemas ---
   let z = null, QCfgSchema = null, JMathsSchema = null, SeedSchema = null;
 
   async function loadSchemas() {
@@ -72,6 +72,8 @@ export default function KeyRoom(ctx = {}) {
       round: _z.number().int().min(1).max(5),
       level: _z.enum(['easy','easy+','medium','hard','hard+'])
     });
+
+    // Extended QCfgSchema
     QCfgSchema = _z.object({
       version: _z.literal('qcfg-1'),
       topics: _z.array(Topic).min(1),
@@ -82,12 +84,21 @@ export default function KeyRoom(ctx = {}) {
           guest: _z.object({ count: _z.literal(3) })
         })
       }),
-      global: _z.object({
-        language: _z.string().optional(),
-        twoChoiceOnly: _z.boolean().optional(),
-        maxQuestionChars: _z.number().int().optional(),
-        maxAnswerChars: _z.number().int().optional()
-      }).optional()
+
+      // accept extras from your full config
+      global: _z.record(_z.any()).optional(),
+      delivery_format: _z.record(_z.any()).optional(),
+      selection_rules: _z.record(_z.any()).optional(),
+      constraints: _z.record(_z.any()).optional(),
+      screening_and_verification: _z.record(_z.any()).optional(),
+      topic_catalogue: _z.array(_z.string()).optional(),
+      gemini_prompts: _z.record(_z.any()).optional(),
+      question_blueprints: _z.array(_z.record(_z.any())).optional(),
+      post_generation_checks: _z.record(_z.any()).optional(),
+      examples: _z.array(_z.record(_z.any())).optional(),
+      pseudocode_pipeline: _z.record(_z.any()).optional(),
+      api_contract: _z.record(_z.any()).optional(),
+      runtime_enforcement: _z.record(_z.any()).optional()
     });
 
     const NumberSpec = _z.object({
@@ -263,7 +274,7 @@ export default function KeyRoom(ctx = {}) {
     try {
       log('Contacting Gemini for main questions…');
       const { generateSeedQuestions } = await import('/src/adapters/questions-adapter.js');
-      const qSeed = await generateSeedQuestions(apiKey, qv.data); // throws on error
+      const qSeed = await generateSeedQuestions(apiKey, qv.data);
 
       log('Generating Jemima passages + maths…');
       const { generateJemimaMaths } = await import('/src/adapters/jemima-adapter.js');
@@ -301,7 +312,6 @@ export default function KeyRoom(ctx = {}) {
       navigate('#/countdown');
     } catch (e) {
       log('Generation failed: ' + (e?.message || e), 'error');
-      // Leave the room in 'generating' so you can try again without clobbering seed.
     }
   });
 
