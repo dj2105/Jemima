@@ -1,226 +1,339 @@
 // /src/views/MarkingRoom.js
-// Marking Phase (OFFLINE): you judge your opponent's 3 answers.
-// Role split (as in Questions Phase):
-// - Daniel (host) answered indices [0,1,2]; Jaime (guest) answered [3,4,5].
-// This screen shows the opponent's 3 questions + the answer they chose.
-// You mark each as Correct / Incorrect. Your marks are saved to Firestore, but
-// your own awarded score is based solely on how your opponent marked YOU.
-// After BOTH have submitted marks, we show “You were awarded X/3”, then set
-// nextHash and send both through the Countdown to keep in sync.
+// Offline Marking phase for the current round (mark_rN).
+// - Renders opponent's 3 questions + their chosen answers.
+// - Saves draft marks to localStorage as the user clicks.
+// - On Submit, writes a single atomic doc to Firestore and shows awards.
+// - When both players have submitted, Host advances to Interlude (r1–r4) or Maths (after r5).
 
 import {
-  initFirebase, ensureAuth, db, doc, getDoc, setDoc, onSnapshot
+  initFirebase, ensureAuth, db, doc, onSnapshot, setDoc, getDoc
 } from '../lib/firebase.js';
 
 export default function MarkingRoom(ctx = {}) {
-  const navigate = ctx.navigate || ((h) => (location.hash = h));
-  const lsGet = (k, d='') => { try { return localStorage.getItem(k) ?? d; } catch { return d; } };
-  const lsSet = (k, v) => { try { localStorage.setItem(k, v); } catch {} };
+  const navigate = (hash) =>
+    (ctx && typeof ctx.navigate === 'function') ? ctx.navigate(hash) : (location.hash = hash);
 
-  const round = Number(ctx.round || 1);
-  const roomCode = (lsGet('lastGameCode','') || '').toUpperCase();
-  const roleRaw  = (lsGet('playerRole','host') || '').toLowerCase();
-  const me       = (roleRaw === 'host' || roleRaw === 'daniel') ? 'daniel' : 'jaime';
-  const them     = (me === 'daniel') ? 'jaime' : 'daniel';
+  const role = (localStorage.getItem('playerRole') || 'guest').toLowerCase(); // 'host' | 'guest'
+  const oppRole = role === 'host' ? 'guest' : 'host';
+  const code = (localStorage.getItem('lastGameCode') || '').toUpperCase();
 
-  const root = document.createElement('div');
-  root.className = 'wrap';
+  const el = document.createElement('section');
+  el.className = 'panel';
+  el.innerHTML = `
+    <h2>Round — Marking</h2>
+    <p class="status" id="roomInfo"></p>
 
-  const title = document.createElement('div');
-  title.className = 'panel-title accent-white';
-  title.textContent = `Round ${round} — Marking (${me === 'daniel' ? 'Host' : 'Guest'})`;
-  root.appendChild(title);
+    <section id="mWrap" class="panel">
+      <p class="status">Loading opponent’s answers…</p>
+    </section>
 
-  const note = document.createElement('div');
-  note.className = 'mt-2';
-  note.textContent = 'This phase is offline. You both mark simultaneously.';
-  root.appendChild(note);
+    <div class="row" style="gap:0.5rem; flex-wrap:wrap;">
+      <button id="btnSubmit" class="primary">Submit Marks</button>
+      <button id="btnClear">Clear</button>
+      <a href="#/lobby" class="nav-link">Back to Lobby</a>
+    </div>
 
-  const card = document.createElement('div');
-  card.className = 'card mt-4';
-  card.style.textAlign = 'left';
-  root.appendChild(card);
+    <div class="panel">
+      <h3>Round Awards</h3>
+      <p class="status" id="awardsMine">You awarded: — / 3</p>
+      <p class="status" id="awardsForMe">You were awarded: waiting for opponent…</p>
+    </div>
 
-  const row = document.createElement('div');
-  row.className = 'btn-row mt-6';
-  const btn = document.createElement('button');
-  btn.className = 'btn btn-go';
-  btn.textContent = 'SUBMIT MARKS';
-  btn.disabled = true;
-  row.appendChild(btn);
-  root.appendChild(row);
+    <div class="log" id="log"></div>
+  `;
 
-  let oppIndices = [];
-  let oppAnswers = [];
-  let questions = [];
-  let marks     = [null, null, null];
+  const $ = (s) => el.querySelector(s);
+  const log = (msg, kind = 'info') => {
+    const d = document.createElement('div');
+    d.className = `logline ${kind}`;
+    d.textContent = msg;
+    $('#log').appendChild(d);
+  };
 
-  start();
+  $('#roomInfo').textContent = code ? `Room ${code} • You are ${role}` : 'No room code — go back to Lobby';
+  if (!code) return el;
 
-  async function start() {
+  // ------------- helpers -------------
+  const lsKey = (round) => `marks_r${round}_${role}`;
+  const loadDraft = (round) => {
     try {
-      initFirebase();
-      await ensureAuth();
+      const s = localStorage.getItem(lsKey(round));
+      if (!s) return [null, null, null];
+      const arr = JSON.parse(s);
+      if (!Array.isArray(arr) || arr.length !== 3) return [null, null, null];
+      return arr.map(v => (v === true || v === false) ? v : null);
+    } catch { return [null, null, null]; }
+  };
+  const saveDraft = (round, arr) => { try { localStorage.setItem(lsKey(round), JSON.stringify(arr)); } catch {} };
+  const clearDraft = (round) => { try { localStorage.removeItem(lsKey(round)); } catch {} };
 
-      // Load opponent’s answers (indices + their picked a1/a2)
-      const ansRef = doc(db, 'rooms', roomCode, 'answers', `${them}_${round}`);
-      const ansSnap = await getDoc(ansRef);
-      if (!ansSnap.exists()) {
-        card.textContent = 'Waiting for opponent answers…';
-        return;
-      }
-      const a = ansSnap.data() || {};
-      oppIndices = Array.isArray(a.indices) ? a.indices : [];
-      oppAnswers = Array.isArray(a.answers) ? a.answers : [];
-
-      await renderQuestions();
-
-      btn.disabled = marks.some(x => x !== true && x !== false);
-      btn.onclick = onSubmit;
-
-      // After submit, we wait for both to finish, then reveal awarded score and resync.
-    } catch (e) {
-      console.error('[MarkingRoom] start error', e);
-      card.textContent = 'Could not load marking data.';
-    }
+  function escapeHTML(s) {
+    return String(s)
+      .replaceAll('&', '&amp;')
+      .replaceAll('<', '&lt;')
+      .replaceAll('>', '&gt;');
   }
 
-  async function renderQuestions() {
-    // Get seeded questions for this round (same shape as QuestionRoom)
-    const seed = await getDoc(doc(db, 'rooms', roomCode, 'seed', 'questions'));
-    const data = seed.exists() ? (seed.data() || {}) : {};
-    const rKey = `round_${round}`;
-    questions = Array.isArray(data[rKey]) ? data[rKey] : [];
+  function parseRoundFromState(state) {
+    let m = /^mark_r(\d+)$/.exec(state || '');
+    if (m) return parseInt(m[1], 10);
+    m = /^q_r(\d+)$/.exec(state || '');
+    if (m) return parseInt(m[1], 10);
+    return null;
+  }
 
-    card.innerHTML = '';
-    marks = [null, null, null];
+  function countTrue(arr) { return arr.filter(v => v === true).length; }
 
-    if (!oppIndices.length || !questions.length) {
-      const d = document.createElement('div');
-      d.textContent = 'No items to mark yet.';
-      card.appendChild(d);
+  // ------------- rendering -------------
+  function renderMarking(opponentQs, opponentAnswers, round) {
+    const draft = loadDraft(round);
+    const wrap = $('#mWrap');
+    wrap.innerHTML = '';
+
+    if (!opponentQs || opponentQs.length !== 3) {
+      wrap.innerHTML = `<p class="status">Opponent questions missing for this round.</p>`;
+      return;
+    }
+    if (!opponentAnswers || opponentAnswers.length !== 3) {
+      wrap.innerHTML = `<p class="status">Opponent hasn’t submitted answers yet. Wait…</p>`;
       return;
     }
 
-    // Build 3 marking blocks showing opponent’s chosen answer
-    oppIndices.slice(0,3).forEach((qIndex, i) => {
-      const q = questions[qIndex] || {};
-      const picked = oppAnswers[i]; // 'a1' | 'a2'
+    opponentQs.forEach((item, idx) => {
+      const chosen = opponentAnswers[idx]; // 0 or 1
+      const chosenLabel = chosen === 0 ? 'A' : (chosen === 1 ? 'B' : '—');
 
-      const block = document.createElement('div');
-      block.className = 'mt-4';
+      const card = document.createElement('div');
+      card.className = 'panel';
+      card.innerHTML = `
+        <h3>Q${idx + 1}</h3>
+        <p style="margin-top:0.25rem;">${escapeHTML(item.q)}</p>
 
-      const h = document.createElement('div');
-      h.style.fontWeight = '700';
-      h.style.marginBottom = '6px';
-      h.textContent = `${i + 1}. ${q?.question || '(missing question)'}`;
-      block.appendChild(h);
+        <div class="row" style="gap:0.5rem; margin-top:0.5rem; flex-wrap:wrap;">
+          <div style="min-width:48px;text-align:center;font-weight:700;">A</div>
+          <div style="flex:1;min-width:160px;">${escapeHTML(item.a1)}</div>
+          <div class="status">${chosenLabel === 'A' ? '← Opponent chose this' : ''}</div>
+        </div>
 
-      const sel = document.createElement('div');
-      sel.className = 'mt-1';
-      sel.textContent = `Their answer: ${picked === 'a2' ? (q?.a2 ?? 'B') : (q?.a1 ?? 'A')}`;
-      block.appendChild(sel);
+        <div class="row" style="gap:0.5rem; margin-top:0.5rem; flex-wrap:wrap;">
+          <div style="min-width:48px;text-align:center;font-weight:700;">B</div>
+          <div style="flex:1;min-width:160px;">${escapeHTML(item.a2)}</div>
+          <div class="status">${chosenLabel === 'B' ? '← Opponent chose this' : ''}</div>
+        </div>
 
-      const btnRow = document.createElement('div');
-      btnRow.className = 'mt-2';
-
-      const bYes = makeSmall('Mark Correct', () => choose(i, true, bYes, bNo));
-      const bNo  = makeSmall('Mark Incorrect', () => choose(i, false, bYes, bNo));
-
-      btnRow.appendChild(bYes);
-      btnRow.appendChild(bNo);
-      block.appendChild(btnRow);
-
-      card.appendChild(block);
+        <div class="row" style="gap:0.5rem; margin-top:0.75rem; flex-wrap:wrap;">
+          <button class="mk" data-i="${idx}" data-v="true">Mark Correct</button>
+          <button class="mk" data-i="${idx}" data-v="false">Mark Incorrect</button>
+          <div class="status" id="mk-${idx}">${draft[idx] === null ? 'No mark yet' : (draft[idx] ? 'Marked: Correct' : 'Marked: Incorrect')}</div>
+        </div>
+      `;
+      wrap.appendChild(card);
     });
-  }
 
-  function makeSmall(label, onClick) {
-    const b = document.createElement('button');
-    b.className = 'btn btn-outline';
-    b.style.marginRight = '8px';
-    b.textContent = label;
-    b.addEventListener('click', onClick);
-    return b;
-  }
-
-  function choose(idx, val, yesBtn, noBtn) {
-    marks[idx] = val;
-    // visual toggle
-    if (val) {
-      yesBtn.classList.add('selected');
-      noBtn.classList.remove('selected');
-    } else {
-      noBtn.classList.add('selected');
-      yesBtn.classList.remove('selected');
+    function updateUI() {
+      for (let i = 0; i < 3; i++) {
+        const lab = document.getElementById(`mk-${i}`);
+        lab && (lab.textContent = draft[i] === null ? 'No mark yet' : (draft[i] ? 'Marked: Correct' : 'Marked: Incorrect'));
+      }
+      // Also update "You awarded" preview
+      $('#awardsMine').textContent = `You awarded: ${countTrue(draft)}/3`;
     }
-    btn.disabled = marks.filter(v => v === true || v === false).length !== 3;
+
+    wrap.addEventListener('click', (e) => {
+      const t = e.target;
+      if (!(t instanceof HTMLElement)) return;
+      if (!t.classList.contains('mk')) return;
+      const i = parseInt(t.getAttribute('data-i'), 10);
+      const v = t.getAttribute('data-v') === 'true';
+      if (Number.isInteger(i)) {
+        draft[i] = v;
+        saveDraft(round, draft);
+        updateUI();
+      }
+    });
+
+    updateUI();
   }
 
-  async function onSubmit() {
+  // ------------- submit -------------
+  async function submitMarks(round) {
+    const draft = loadDraft(round);
+    if (draft.some(v => v !== true && v !== false)) {
+      log('Please mark all three answers before submitting.', 'error');
+      return;
+    }
     try {
-      const myRef = doc(db, 'rooms', roomCode, 'marking', `${me}_${round}`);
-      await setDoc(myRef, { marks, ts: Date.now() }, { merge: true });
+      await initFirebase();
+      await ensureAuth();
     } catch (e) {
-      console.error('[MarkingRoom] save marks error', e);
-      // keep going; other side may still award us
+      log('Firebase not ready: ' + (e?.message || e), 'error');
+      return;
     }
-
-    // Now wait for both sides to finish and then reveal perceived award for ME
-    waitForBothThenReveal();
+    const playerRef = doc(db, 'rooms', code, 'players', role);
+    const payload = {
+      marks: { [`r${round}`]: draft },
+      awardsGiven: { [`r${round}`]: countTrue(draft) },
+      timestamps: { [`r${round}_marked`]: new Date().toISOString() }
+    };
+    try {
+      await setDoc(playerRef, payload, { merge: true });
+      log('✅ Marks submitted.');
+      // After submit, we remain in this screen so we can show both awards.
+      $('#awardsMine').textContent = `You awarded: ${countTrue(draft)}/3`;
+    } catch (e) {
+      log('Submit failed: ' + (e?.message || e), 'error');
+    }
   }
 
-  function waitForBothThenReveal() {
-    const meRef = doc(db, 'rooms', roomCode, 'marking', `${me}_${round}`);
-    const thRef = doc(db, 'rooms', roomCode, 'marking', `${them}_${round}`);
+  // ------------- host auto-advance once both submitted -------------
+  async function maybeAdvance(state, round, hostHasControl, playersData) {
+    if (!hostHasControl) return;
+    // Both marks present?
+    const hostMarks = playersData.host?.marks?.[`r${round}`];
+    const guestMarks = playersData.guest?.marks?.[`r${round}`];
+    if (!Array.isArray(hostMarks) || hostMarks.length !== 3) return;
+    if (!Array.isArray(guestMarks) || guestMarks.length !== 3) return;
 
-    let meDone = false;
-    let themDone = false;
+    // Decide next state
+    let nextState, nextInfo;
+    if (round <= 4) {
+      nextState = `interlude_r${round}`;
+      nextInfo = 'Interlude';
+    } else {
+      nextState = 'maths';
+      nextInfo = 'Jemima Maths';
+    }
+    try {
+      await setDoc(doc(db, 'rooms', code), {
+        state: nextState,
+        countdownT0: new Date(Date.now() + 3500)
+      }, { merge: true });
+      log(`Host advanced to ${nextInfo}.`);
+    } catch (e) {
+      log('Advance failed: ' + (e?.message || e), 'error');
+    }
+  }
 
-    const maybeReveal = async () => {
-      if (!(meDone && themDone)) return;
+  // ------------- live room + players + seed -------------
+  let unsubRoom = null, unsubHost = null, unsubGuest = null;
 
-      // Opponent's marks determine *my* perceived award this round
-      let awarded = 0;
-      try {
-        const thSnap = await getDoc(thRef);
-        if (thSnap.exists()) {
-          const thMarks = Array.isArray(thSnap.data()?.marks) ? thSnap.data().marks : [];
-          // Opponent marked *my* 3 answers; count trues
-          awarded = thMarks.slice(0,3).filter(Boolean).length;
-        }
-      } catch (e) {
-        console.error('[MarkingRoom] read opponent marks', e);
+  (async () => {
+    try {
+      await initFirebase();
+      await ensureAuth();
+    } catch (e) {
+      log('Firebase error: ' + (e?.message || e), 'error');
+      return;
+    }
+
+    const roomRef = doc(db, 'rooms', code);
+    let currentRound = null;
+    let players = { host: {}, guest: {} };
+    let seedCache = null;
+
+    function recomputeUI(roomData) {
+      const state = roomData?.state || '';
+      const r = parseRoundFromState(state);
+      if (!r) {
+        $('#mWrap').innerHTML = `<p class="status">Waiting for marking round to start…</p>`;
+        return;
+      }
+      currentRound = r;
+
+      // Load opponent questions & answers
+      if (!seedCache || !Array.isArray(seedCache.rounds) || seedCache.rounds.length < r) {
+        $('#mWrap').innerHTML = `<p class="status">Seed missing or incomplete for this round.</p>`;
+        return;
+      }
+      const entry = seedCache.rounds[r - 1];
+      const oppQs = role === 'host' ? entry.guestQ : entry.hostQ;
+
+      const oppAnswers = players[oppRole]?.answers?.[`r${r}`];
+      renderMarking(oppQs, oppAnswers, r);
+
+      // Update awards panel
+      const mine = loadDraft(r);
+      $('#awardsMine').textContent = `You awarded: ${countTrue(mine)}/3`;
+
+      const oppMarksForMe = players[oppRole]?.marks?.[`r${r}`];
+      if (Array.isArray(oppMarksForMe) && oppMarksForMe.length === 3) {
+        $('#awardsForMe').textContent = `You were awarded: ${countTrue(oppMarksForMe)}/3`;
+      } else {
+        $('#awardsForMe').textContent = `You were awarded: waiting for opponent…`;
       }
 
-      // Update perceived totals in localStorage
-      const key = (me === 'daniel') ? 'perceived_daniel' : 'perceived_jaime';
-      const cur = Number(lsGet(key, '0')) || 0;
-      const nextTotal = cur + awarded;
-      lsSet(key, String(nextTotal));
+      // Host auto-advance when both submitted
+      const hostHasControl = role === 'host';
+      maybeAdvance(state, r, hostHasControl, players);
+    }
 
-      // Reveal
-      card.innerHTML = '';
-      const reveal = document.createElement('div');
-      reveal.className = 'panel-title accent-white';
-      reveal.textContent = `You were awarded ${awarded}/3`;
-      card.appendChild(reveal);
+    unsubRoom = onSnapshot(roomRef, async (snap) => {
+      if (!snap.exists()) {
+        $('#mWrap').innerHTML = `<p class="status">Room not found.</p>`;
+        return;
+      }
+      const data = snap.data() || {};
+      // Transition follow
+      if (data.state?.startsWith('countdown_r')) return navigate('#/countdown');
+      if (data.state?.startsWith('interlude_r')) return navigate('#/interlude');
+      if (data.state === 'maths') return navigate('#/maths');
+      if (data.state === 'final') return navigate('#/final');
 
-      // After 4s, resynchronise via Countdown
-      const target = (round < 5) ? `#/interlude/${round}` : '#/jemima';
-      lsSet('nextHash', target);
-      setTimeout(() => navigate('#/countdown'), 4000);
+      // If still in q_rN and we are Host, flip to mark_rN once
+      const rFromQ = /^q_r(\d+)$/.exec(data.state || '');
+      if (rFromQ && role === 'host') {
+        try {
+          await setDoc(roomRef, { state: `mark_r${parseInt(rFromQ[1], 10)}` }, { merge: true });
+        } catch (e) {
+          log('Failed to enter Marking: ' + (e?.message || e), 'error');
+        }
+      }
+
+      // Cache seed (lazy)
+      seedCache = data.seed || seedCache || (await getDoc(roomRef).then(s => s.data()?.seed).catch(() => null));
+
+      // Recompute UI with latest info
+      recomputeUI(data);
+    }, (err) => {
+      console.error('[marking] room snapshot error', err);
+      log('Sync error: ' + (err?.message || err), 'error');
+    });
+
+    // Players listeners (to know when answers/marks arrive)
+    unsubHost = onSnapshot(doc(db, 'rooms', code, 'players', 'host'), (snap) => {
+      players.host = snap.exists() ? (snap.data() || {}) : {};
+      const rd = (document.getElementById('mWrap') && currentRound) ? currentRound : null;
+      if (rd) recomputeUI((seedCache && { state: `mark_r${rd}` }) || {});
+    });
+    unsubGuest = onSnapshot(doc(db, 'rooms', code, 'players', 'guest'), (snap) => {
+      players.guest = snap.exists() ? (snap.data() || {}) : {};
+      const rd = (document.getElementById('mWrap') && currentRound) ? currentRound : null;
+      if (rd) recomputeUI((seedCache && { state: `mark_r${rd}` }) || {});
+    });
+
+    // Wire buttons after Firebase init
+    $('#btnSubmit').onclick = () => {
+      const rd = currentRound || 1;
+      submitMarks(rd);
     };
+    $('#btnClear').onclick = () => {
+      const rd = currentRound || 1;
+      clearDraft(rd);
+      // Re-render using whatever opponent data we currently have
+      const entry = seedCache?.rounds?.[rd - 1];
+      const oppQs = role === 'host' ? entry?.guestQ : entry?.hostQ;
+      const oppAnswers = (role === 'host' ? players.guest : players.host)?.answers?.[`r${rd}`];
+      renderMarking(oppQs, oppAnswers, rd);
+      $('#awardsMine').textContent = `You awarded: 0/3`;
+    };
+  })();
 
-    onSnapshot(meRef, (sn) => {
-      meDone = sn.exists();
-      maybeReveal();
-    });
-    onSnapshot(thRef, (sn) => {
-      themDone = sn.exists();
-      maybeReveal();
-    });
-  }
+  // Cleanup
+  el._destroy = () => {
+    try { unsubRoom && unsubRoom(); } catch {}
+    try { unsubHost && unsubHost(); } catch {}
+    try { unsubGuest && unsubGuest(); } catch {}
+  };
+
+  return el;
 }
-
-function capitalize(s=''){ return s.charAt(0).toUpperCase() + s.slice(1); }
