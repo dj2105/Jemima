@@ -1,22 +1,62 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1, viewport-fit=cover"
-    />
-    <title>Jemima’s Asking</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap"
-      rel="stylesheet"
-    />
-    <link rel="icon" href="data:," />
-  </head>
-  <body>
-    <div id="app"></div>
-    <script type="module" src="/src/main.js"></script>
-  </body>
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Jemima’s Asking — Two-Player Trivia</title>
+
+  <!-- Fonts (optional; you can swap later) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+
+  <!-- App styles -->
+  <link rel="stylesheet" href="./styles.css" />
+
+  <!-- Basic SEO / PWA bits (optional for now) -->
+  <meta name="theme-color" content="#0e0e0e" />
+  <meta name="description" content="A tightly-synchronised two-player trivia duel hosted by Jemima." />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container row between center">
+      <h1 class="app-title">Jemima’s Asking</h1>
+      <nav class="nav">
+        <a href="#/lobby" class="nav-link">Lobby</a>
+        <a href="#/keyroom" class="nav-link">Key Room</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="app" class="container">
+    <!-- The router will render views into this element -->
+    <noscript>
+      <p>Please enable JavaScript to play.</p>
+    </noscript>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <small>© <span id="year"></span> Jemima’s Asking • Two-player prototype</small>
+    </div>
+  </footer>
+
+  <!-- Entry point (ESM). This file will mount the router and first view. -->
+  <script type="module">
+    // Lightweight boot to avoid a blank screen on first load
+    document.getElementById('year').textContent = new Date().getFullYear().toString();
+
+    // Load the actual app from /src/main.js (we’ll add this file next)
+    import('./src/main.js').catch(err => {
+      const app = document.getElementById('app');
+      app.innerHTML = `
+        <section class="panel error">
+          <h2>Load error</h2>
+          <p>${(err && err.message) ? err.message : 'Could not load app modules.'}</p>
+          <p>Check that <code>/src/main.js</code> exists and paths are correct.</p>
+        </section>`;
+      console.error(err);
+    });
+  </script>
+</body>
 </html>
