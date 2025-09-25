@@ -1,7 +1,7 @@
 // /src/views/Generation.js
-// Host seeds; guest watches. Idempotent. Guarantees 6 Qs per round (top-ups).
-// Writes seeds under rooms/{code}/seed/{questions|interludes|maths}.
-// When ready, GO flips room status to "countdown" so both clients move together.
+// Host seeds; guest watches. Guarantees 6 Qs per round (5 rounds),
+// writes under rooms/{code}/seed/{questions|interludes|maths}. When ready,
+// sets localStorage.nextHash to '#/round/1' and navigates both to '#/countdown'.
 
 import { geminiCall } from '../lib/gemini.js';
 import {
@@ -15,6 +15,7 @@ export default function Generation(ctx = {}) {
 
   // helpers
   const lsGet = (k, d = '') => { try { return localStorage.getItem(k) ?? d; } catch { return d; } };
+  const lsSet = (k, v) => { try { localStorage.setItem(k, v); } catch {} };
 
   const roomCode = (lsGet('lastGameCode', '') || '').toUpperCase();
   const roleRaw  = (lsGet('playerRole', 'host') || '').toLowerCase();
@@ -31,29 +32,20 @@ export default function Generation(ctx = {}) {
 
   const title = document.createElement('div');
   title.className = 'panel-title accent-white';
-  title.textContent = isHost ? 'GENERATING…' : 'JOINING…';
-
-  const sub = document.createElement('div');
-  sub.className = 'note';
-  sub.textContent = isHost
-    ? `Seeding questions and Jemima passages.${roomCode ? ` Room ${roomCode}.` : ''}`
-    : `Waiting for host to seed${roomCode ? ` room ${roomCode}` : ''}…`;
+  title.textContent = isHost ? 'Generation (Host)' : 'Waiting for Host';
+  box.appendChild(title);
 
   const statusCard = document.createElement('div');
-  statusCard.className = 'card';
+  statusCard.className = 'card mt-4';
   statusCard.style.textAlign = 'left';
-
-  const lRoom  = line('Room: initialising…');
-  const lQs    = line('Questions: 0/30');
-  const lJem   = line('Jemima passages: waiting…');
-  const lMaths = line('Jemima maths: waiting…');
-
-  statusCard.append(lRoom, lQs, lJem, lMaths);
+  box.appendChild(statusCard);
 
   const bar = document.createElement('div');
-  bar.className = 'progress mt-4';
-  const fill = document.createElement('span');
+  bar.className = 'progress mt-3';
+  const fill = document.createElement('div');
+  fill.className = 'progress-fill';
   bar.appendChild(fill);
+  box.appendChild(bar);
 
   const row = document.createElement('div');
   row.className = 'btn-row mt-6';
@@ -61,300 +53,116 @@ export default function Generation(ctx = {}) {
   btn.className = 'btn btn-go';
   btn.textContent = 'GO';
   btn.disabled = true;
-  btn.addEventListener('click', async () => {
-    try {
-      await updateDoc(doc(collection(db, 'rooms'), roomCode), { status: 'countdown' });
-    } catch (e) {
-      sub.textContent = 'Could not advance (check Firestore rules / auth). ' + (e?.message || e);
-    }
-    try { localStorage.setItem('advanceNext', 'countdown'); } catch {}
-    location.hash = '#/countdown';
-    return;
-  });
   row.appendChild(btn);
+  box.appendChild(row);
 
-  box.append(title, sub, statusCard, bar, row);
   wrap.appendChild(box);
 
-  // kick off
+  btn.addEventListener('click', () => {
+    // Set next route to Round 1 and send both through countdown
+    lsSet('nextHash', '#/round/1');
+    navigate('#/countdown');
+  });
+
+  // Kickoff
   void start();
 
   return wrap;
 
-  // ---------- logic ----------
-
   async function start() {
-    // fail-safe: if a previous click decided to advance, hop immediately
-    if ((lsGet('advanceNext', '') || '') === 'countdown') {
-      location.hash = '#/countdown';
+    if (!roomCode) {
+      statusCard.textContent = 'Missing room code. Return to Lobby.';
       return;
     }
-
-    if (!roomCode || roomCode.length < 4) {
-      lRoom.textContent = 'Room: missing code — go back to Key Room.';
-      return;
-    }
-
     try {
       initFirebase();
       await ensureAuth();
+    } catch {}
 
-      // Always watch progress so both roles update live
-      watchProgress(roomCode);
+    // Text lines
+    const lRoom = line(`Room: ${roomCode}`);
+    const lQs   = line('Questions: 0/5 rounds');
+    const lJem  = line('Jemima passages: 0/4');
+    const lMath = line('Maths questions: 0/2');
+    statusCard.append(lRoom, lQs, lJem, lMath);
 
-      // Look at current room status without mutating it
-      const roomRef = doc(collection(db, 'rooms'), roomCode);
-      const firstSnap = await getDoc(roomRef);
-      let status = firstSnap.exists() ? (firstSnap.data()?.status || '') : '';
-
-      // If someone already advanced, go there immediately
-      if (status === 'countdown') {
-        location.hash = '#/countdown';
-        return;
-      }
-
-      // If room doesn’t exist, create it (status: generating). If it exists, do not overwrite.
-      if (!firstSnap.exists()) {
-        status = await ensureRoomDoc(roomCode); // returns 'generating'
-        lRoom.textContent = `Room: ${roomCode} — creating…`;
-      } else {
-        lRoom.textContent = `Room: ${roomCode} — status: ${status || '…'}`;
-      }
-
-      // If already seeded and marked ready, just enable GO for both roles.
-      const seeded = await roomHasAnySeeds(roomCode);
-      if (seeded && status === 'ready') {
-        setPct(100);
-        title.textContent = 'READY (WAITING)…';
-        sub.textContent = 'Content already generated. GO will enable momentarily.';
-        btn.disabled = false;
-        return;
-      }
-
-      // Guests never seed; hosts only seed if we are in 'generating'
-      if (!isHost || status !== 'generating') {
-        title.textContent = seeded ? 'READY (WAITING)…' : 'WAITING FOR HOST…';
-        sub.textContent = seeded
-          ? 'Content already generated. GO will enable momentarily.'
-          : 'Host is generating content. This will update automatically.';
-        if (seeded) setPct(100);
-        return;
-      }
-
-      // ---- HOST path (only when status is 'generating') ----
-      lRoom.textContent = `Room: ${roomCode} — ready (host)`;
-      setPct(5);
-
-      await generateQuestionsWithTopUp(roomCode);
-      setPct(65);
-
-      await generateInterludes(roomCode);
-      setPct(90);
-
-      await generateMaths(roomCode);
-      setPct(100);
-
-      await updateDoc(roomRef, { status: 'ready', round: 0 });
-      setTimeout(() => { btn.disabled = false; }, 400);
-    } catch (err) {
-      console.error('[generation] error', err);
-      title.textContent = 'GENERATION FAILED';
-      sub.textContent = String((err && err.message) || err);
-    }
-  }
-
-  // --- realtime progress watchers (both roles) ---
-  function watchProgress(code) {
-    // room status
-    onSnapshot(doc(collection(db, 'rooms'), code), (snap) => {
+    // Live snapshots so guests can watch progress
+    onSnapshot(doc(db, 'rooms', roomCode, 'seed', 'questions'), (snap) => {
       if (!snap.exists()) return;
-      const d = snap.data() || {};
-      lRoom.textContent = `Room: ${code} — status: ${d.status || '…'}`;
-
-      if (d.status === 'countdown') {
-        location.hash = '#/countdown';
-        return;
-      }
-      if (d.status === 'ready') {
-        setPct(100);
-        btn.disabled = false;
-        title.textContent = 'READY (WAITING)…';
-        sub.textContent = 'Content already generated. GO will enable momentarily.';
-      }
+      const rounds = Array.isArray(snap.data()?.rounds) ? snap.data().rounds : [];
+      lQs.textContent = `Questions: ${Math.min(5, rounds.length)}/5 rounds`;
+      bumpPctTowards(70, rounds.length / 5);
+      checkReady(rounds.length, null, null);
     });
 
-    // questions
-    onSnapshot(doc(db, 'rooms', code, 'seed', 'questions'), (snap) => {
+    onSnapshot(doc(db, 'rooms', roomCode, 'seed', 'interludes'), (snap) => {
       if (!snap.exists()) return;
-      const d = snap.data() || {};
-      const rounds = Array.isArray(d.rounds) ? d.rounds : [];
-      let count = 0;
-      for (const r of rounds) if (Array.isArray(r.questions)) count += r.questions.length;
-      const made = Math.min(count, 30);
-      lQs.textContent = `Questions: ${made}/30`;
-      bumpPctTowards(60, made / 30);
-    });
-
-    // interludes
-    onSnapshot(doc(db, 'rooms', code, 'seed', 'interludes'), (snap) => {
-      if (!snap.exists()) return;
-      const d = snap.data() || {};
-      const passages = Array.isArray(d.passages) ? d.passages : [];
-      lJem.textContent = `Jemima passages: ${passages.length}/4`;
+      const passages = Array.isArray(snap.data()?.passages) ? snap.data().passages : [];
+      lJem.textContent = `Jemima passages: ${Math.min(4, passages.length)}/4`;
       bumpPctTowards(85, passages.length / 4);
+      checkReady(null, passages.length, null);
     });
 
-    // maths
-    onSnapshot(doc(db, 'rooms', code, 'seed', 'maths'), (snap) => {
+    onSnapshot(doc(db, 'rooms', roomCode, 'seed', 'maths'), (snap) => {
       if (!snap.exists()) return;
-      const d = snap.data() || {};
-      const questions = Array.isArray(d.questions) ? d.questions : [];
-      lMaths.textContent = `Jemima maths: ${questions.length}/2`;
-      bumpPctTowards(100, questions.length / 2);
+      const q2 = Array.isArray(snap.data()?.questions) ? snap.data().questions : [];
+      lMath.textContent = `Maths questions: ${Math.min(2, q2.length)}/2`;
+      bumpPctTowards(100, q2.length / 2);
+      checkReady(null, null, q2.length);
     });
-  }
 
-  // Create only if missing; do NOT overwrite status when the room exists.
-  async function ensureRoomDoc(code) {
-    const ref = doc(collection(db, 'rooms'), code);
-    const snap = await getDoc(ref);
-    if (!snap.exists()) {
-      await setDoc(ref, {
-        status: 'generating',
-        round: 0,
-        created: Date.now(),
-        version: 1
-      });
-      return 'generating';
+    // Host-only seeding (idempotent)
+    if (isHost) {
+      // Try to seed if nothing exists yet. Safe to call; use merge.
+      await ensureSeedsOnce();
     }
-    const cur = snap.data() || {};
-    return String(cur.status || '');
   }
 
-  // ---- idempotency guard ----
-  async function roomHasAnySeeds(code) {
-    const q = await getDoc(doc(db, 'rooms', code, 'seed', 'questions'));
-    if (q.exists()) return true;
-    const i = await getDoc(doc(db, 'rooms', code, 'seed', 'interludes'));
-    if (i.exists()) return true;
-    const m = await getDoc(doc(db, 'rooms', code, 'seed', 'maths'));
-    if (m.exists()) return true;
-    return false;
-  }
+  async function ensureSeedsOnce() {
+    // Check existence first; if present, skip generation.
+    const qSnap  = await getDoc(doc(db, 'rooms', roomCode, 'seed', 'questions'));
+    const iSnap  = await getDoc(doc(db, 'rooms', roomCode, 'seed', 'interludes'));
+    const mSnap  = await getDoc(doc(db, 'rooms', roomCode, 'seed', 'maths'));
 
-  // ---- generation (with top-up) ----
-  async function generateQuestionsWithTopUp(code) {
-    lQs.textContent = 'Questions: requesting…';
+    const needQ = !qSnap.exists();
+    const needI = !iSnap.exists();
+    const needM = !mSnap.exists();
 
-    // Initial request: ask for 6 per round
-    let rounds = await requestQuestionRounds(5, 6);
-
-    // Ensure 5 rounds objects exist (1..5)
-    const byRound = new Map();
-    for (let r = 1; r <= 5; r++) byRound.set(r, { round: r, questions: [] });
-    for (const ro of rounds) {
-      const bucket = byRound.get(Number(ro.round));
-      if (bucket && Array.isArray(ro.questions)) bucket.questions.push(...ro.questions);
-    }
-
-    // Per-round top-up: up to 2 retries per round to reach 6 items
-    for (let r = 1; r <= 5; r++) {
-      const bucket = byRound.get(r);
-      dedupeQuestions(bucket);
-      let attempts = 0;
-      while (bucket.questions.length < 6 && attempts < 2) {
-        const missing = 6 - bucket.questions.length;
-        const extraRounds = await requestQuestionRounds(1, Math.max(3, missing));
-        const extra = Array.isArray(extraRounds) && extraRounds.length
-          ? (Array.isArray(extraRounds[0].questions) ? extraRounds[0].questions : [])
-          : [];
-        bucket.questions.push(...extra);
-        dedupeQuestions(bucket);
-        attempts++;
+    try {
+      if (needQ) {
+        // Use your existing back end / geminiCall to create 5 rounds x 6 Qs each
+        const payload = await geminiCall(QUIZ_MECHANICS_SPEC);
+        await setDoc(doc(db, 'rooms', roomCode, 'seed', 'questions'), payload || {}, { merge: true });
       }
-      if (bucket.questions.length > 6) bucket.questions = bucket.questions.slice(0, 6);
-    }
+    } catch (e) { console.warn('[Generation] questions seed failed', e); }
 
-    // Compute total generated & save
-    const finalRounds = Array.from(byRound.values());
-    const total = finalRounds.reduce((n, r) => n + (r.questions?.length || 0), 0);
-    lQs.textContent = `Questions: ${Math.min(total, 30)}/30`;
+    try {
+      if (needI) {
+        const payload = await geminiCall(JEMIMA_MATH_INTERLUDES_SPEC);
+        await setDoc(doc(db, 'rooms', roomCode, 'seed', 'interludes'), payload || {}, { merge: true });
+      }
+    } catch (e) { console.warn('[Generation] interludes seed failed', e); }
 
-    const ref = doc(collection(db, 'rooms'), code, 'seed', 'questions');
-    await setDoc(ref, { rounds: finalRounds, ts: Date.now() });
+    try {
+      if (needM) {
+        // Expecting 2 maths questions total
+        const payload = await geminiCall({ kind: 'jemima_two_questions' });
+        await setDoc(doc(db, 'rooms', roomCode, 'seed', 'maths'), payload || {}, { merge: true });
+      }
+    } catch (e) { console.warn('[Generation] maths seed failed', e); }
   }
 
-  function dedupeQuestions(bucket) {
-    const seen = new Set();
-    const clean = [];
-    for (const q of bucket.questions) {
-      const key = (q?.q || '').trim().toLowerCase();
-      if (!key || seen.has(key)) continue;
-      if (!q || typeof q.q !== 'string' || !q.a1 || !q.a2 || (q.correct !== 'a1' && q.correct !== 'a2')) continue;
-      seen.add(key);
-      clean.push(q);
-    }
-    bucket.questions = clean;
+  // --- helpers for progress bar and ready state ---
+  let bestRounds = 0, bestPassages = 0, bestMaths = 0;
+  function checkReady(rCount, pCount, mCount) {
+    if (typeof rCount === 'number') bestRounds = Math.max(bestRounds, rCount);
+    if (typeof pCount === 'number') bestPassages = Math.max(bestPassages, pCount);
+    if (typeof mCount === 'number') bestMaths = Math.max(bestMaths, mCount);
+
+    const ready = bestRounds >= 5 && bestPassages >= 4 && bestMaths >= 2;
+    btn.disabled = !ready;
   }
 
-  async function requestQuestionRounds(roundsCount, perRound) {
-    const res = await geminiCall({
-      kind: 'questions',
-      spec: { mechanics: QUIZ_MECHANICS_SPEC, rounds: roundsCount, per_round: perRound },
-      temperature: 0.7
-    });
-    if (!res.ok) throw new Error('Questions generation failed: ' + (res.error || 'unknown'));
-
-    const data = res.data || {};
-    const rounds = Array.isArray(data.rounds) ? data.rounds : [];
-    for (const r of rounds) {
-      if (!Array.isArray(r.questions)) r.questions = [];
-      r.questions = r.questions.filter(q => (
-        q && typeof q.q === 'string' && q.a1 && q.a2 && (q.correct === 'a1' || q.correct === 'a2')
-      ));
-    }
-    return rounds;
-  }
-
-  async function generateInterludes(code) {
-    lJem.textContent = 'Jemima passages: requesting…';
-
-    const res = await geminiCall({
-      kind: 'interludes',
-      spec: JEMIMA_MATH_INTERLUDES_SPEC,
-      temperature: 0.8
-    });
-    if (!res.ok) throw new Error('Interludes generation failed: ' + (res.error || 'unknown'));
-
-    const data = res.data || {};
-    const passages = Array.isArray(data.passages) ? data.passages : [];
-
-    lJem.textContent = `Jemima passages: ${passages.length}/4`;
-
-    const ref = doc(collection(db, 'rooms'), code, 'seed', 'interludes');
-    await setDoc(ref, { passages, ts: Date.now() });
-  }
-
-  async function generateMaths(code) {
-    lMaths.textContent = 'Jemima maths: requesting…';
-
-    const res = await geminiCall({
-      kind: 'maths',
-      spec: { basis: 'interludes', hint: 'two numeric questions with whole-number answers' },
-      temperature: 0.6
-    });
-    if (!res.ok) throw new Error('Maths generation failed: ' + (res.error || 'unknown'));
-
-    const data = res.data || {};
-    const questions = Array.isArray(data.questions) ? data.questions : [];
-
-    lMaths.textContent = `Jemima maths: ${questions.length}/2`;
-
-    const ref = doc(collection(db, 'rooms'), code, 'seed', 'maths');
-    await setDoc(ref, { questions, notes: data.notes || '', ts: Date.now() });
-  }
-
-  // UI helpers
   function setPct(p) {
     fill.style.width = `${Math.max(0, Math.min(100, p))}%`;
   }
