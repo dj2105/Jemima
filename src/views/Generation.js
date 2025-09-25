@@ -61,17 +61,16 @@ export default function Generation(ctx = {}) {
   btn.className = 'btn btn-go';
   btn.textContent = 'GO';
   btn.disabled = true;
-btn.addEventListener('click', async () => {
-  try {
-    await updateDoc(doc(collection(db, 'rooms'), roomCode), { status: 'countdown' });
-  } catch (e) {
-    // Surface rule errors so we know
-    sub.textContent = 'Could not advance (check Firestore rules / auth). ' + (e.message || e);
-  }
-  try { localStorage.setItem('advanceNext', 'countdown'); } catch {}
-  location.hash = '#/countdown';
-  return;
-});
+  btn.addEventListener('click', async () => {
+    try {
+      await updateDoc(doc(collection(db, 'rooms'), roomCode), { status: 'countdown' });
+    } catch (e) {
+      sub.textContent = 'Could not advance (check Firestore rules / auth). ' + (e?.message || e);
+    }
+    try { localStorage.setItem('advanceNext', 'countdown'); } catch {}
+    location.hash = '#/countdown';
+    return;
+  });
   row.appendChild(btn);
 
   box.append(title, sub, statusCard, bar, row);
@@ -100,14 +99,40 @@ btn.addEventListener('click', async () => {
       initFirebase();
       await ensureAuth();
 
-      // Always watch progress so guests update live
+      // Always watch progress so both roles update live
       watchProgress(roomCode);
 
-      // Do not reseed if any seed already exists
-      const seeded = await roomHasAnySeeds(roomCode);
+      // Look at current room status without mutating it
+      const roomRef = doc(collection(db, 'rooms'), roomCode);
+      const firstSnap = await getDoc(roomRef);
+      let status = firstSnap.exists() ? (firstSnap.data()?.status || '') : '';
 
-      if (!isHost || seeded) {
-        lRoom.textContent = `Room: ${roomCode} — ${seeded ? 'seeded' : 'connected'} (${isHost ? 'host' : 'guest'})`;
+      // If someone already advanced, go there immediately
+      if (status === 'countdown') {
+        location.hash = '#/countdown';
+        return;
+      }
+
+      // If room doesn’t exist, create it (status: generating). If it exists, do not overwrite.
+      if (!firstSnap.exists()) {
+        status = await ensureRoomDoc(roomCode); // returns 'generating'
+        lRoom.textContent = `Room: ${roomCode} — creating…`;
+      } else {
+        lRoom.textContent = `Room: ${roomCode} — status: ${status || '…'}`;
+      }
+
+      // If already seeded and marked ready, just enable GO for both roles.
+      const seeded = await roomHasAnySeeds(roomCode);
+      if (seeded && status === 'ready') {
+        setPct(100);
+        title.textContent = 'READY (WAITING)…';
+        sub.textContent = 'Content already generated. GO will enable momentarily.';
+        btn.disabled = false;
+        return;
+      }
+
+      // Guests never seed; hosts only seed if we are in 'generating'
+      if (!isHost || status !== 'generating') {
         title.textContent = seeded ? 'READY (WAITING)…' : 'WAITING FOR HOST…';
         sub.textContent = seeded
           ? 'Content already generated. GO will enable momentarily.'
@@ -116,13 +141,11 @@ btn.addEventListener('click', async () => {
         return;
       }
 
-      // HOST path
-      await ensureRoomDoc(roomCode);
+      // ---- HOST path (only when status is 'generating') ----
       lRoom.textContent = `Room: ${roomCode} — ready (host)`;
-
       setPct(5);
 
-      await generateQuestionsWithTopUp(roomCode);  // 6 per round, guaranteed-ish
+      await generateQuestionsWithTopUp(roomCode);
       setPct(65);
 
       await generateInterludes(roomCode);
@@ -131,7 +154,7 @@ btn.addEventListener('click', async () => {
       await generateMaths(roomCode);
       setPct(100);
 
-      await updateDoc(doc(collection(db, 'rooms'), roomCode), { status: 'ready', round: 0 });
+      await updateDoc(roomRef, { status: 'ready', round: 0 });
       setTimeout(() => { btn.disabled = false; }, 400);
     } catch (err) {
       console.error('[generation] error', err);
@@ -191,6 +214,7 @@ btn.addEventListener('click', async () => {
     });
   }
 
+  // Create only if missing; do NOT overwrite status when the room exists.
   async function ensureRoomDoc(code) {
     const ref = doc(collection(db, 'rooms'), code);
     const snap = await getDoc(ref);
@@ -201,9 +225,10 @@ btn.addEventListener('click', async () => {
         created: Date.now(),
         version: 1
       });
-    } else {
-      await updateDoc(ref, { status: 'generating', round: 0 });
+      return 'generating';
     }
+    const cur = snap.data() || {};
+    return String(cur.status || '');
   }
 
   // ---- idempotency guard ----
@@ -229,9 +254,7 @@ btn.addEventListener('click', async () => {
     for (let r = 1; r <= 5; r++) byRound.set(r, { round: r, questions: [] });
     for (const ro of rounds) {
       const bucket = byRound.get(Number(ro.round));
-      if (bucket && Array.isArray(ro.questions)) {
-        bucket.questions.push(...ro.questions);
-      }
+      if (bucket && Array.isArray(ro.questions)) bucket.questions.push(...ro.questions);
     }
 
     // Per-round top-up: up to 2 retries per round to reach 6 items
