@@ -1,6 +1,10 @@
 // /src/views/Lobby.js
 // Real lobby: pick role (Host/Guest), create or join a room code, then move on.
 
+import {
+  initFirebase, ensureAuth, db, doc, setDoc
+} from '../lib/firebase.js';
+
 export default function Lobby(ctx = {}) {
   const navigate = (hash) =>
     (ctx && typeof ctx.navigate === 'function') ? ctx.navigate(hash) : (location.hash = hash);
@@ -82,7 +86,7 @@ export default function Lobby(ctx = {}) {
     $('#hostStatus').textContent = `Room code created: ${code}`;
   });
 
-  $('#btnHostGo').addEventListener('click', () => {
+  $('#btnHostGo').addEventListener('click', async () => {
     const code = normCode($('#hostCode').value);
     if (!code || code.length < 4) {
       $('#hostStatus').textContent = 'Please create or enter a valid 4–5 letter code.';
@@ -91,12 +95,23 @@ export default function Lobby(ctx = {}) {
     saveRole('host');
     saveCode(code);
     $('#hostStatus').textContent = `You are Host. Room: ${code}`;
-    // Next: go to Key Room to paste Gemini key + JSON configs
+
+    // Stamp host UID
+    try {
+      const { auth } = await initFirebase();
+      await ensureAuth();
+      await setDoc(doc(db, 'rooms', code), {
+        meta: { hostUid: auth.currentUser.uid }
+      }, { merge: true });
+    } catch (e) {
+      console.error('[Lobby] Failed to stamp hostUid', e);
+    }
+
     navigate('#/keyroom');
   });
 
   // --- Guest flow ---
-  $('#btnGuestJoin').addEventListener('click', () => {
+  $('#btnGuestJoin').addEventListener('click', async () => {
     const code = normCode($('#guestCode').value);
     if (!code || code.length < 4) {
       $('#guestStatus').textContent = 'Please enter a valid 4–5 letter code.';
@@ -105,8 +120,18 @@ export default function Lobby(ctx = {}) {
     saveRole('guest');
     saveCode(code);
     $('#guestStatus').textContent = `Joined room: ${code}. Waiting for Host…`;
-    // For now we simply stay here or could navigate to a waiting screen.
-    // Once Countdown exists, you might navigate('#/countdown');
+
+    // Stamp guest UID
+    try {
+      const { auth } = await initFirebase();
+      await ensureAuth();
+      await setDoc(doc(db, 'rooms', code), {
+        meta: { guestUid: auth.currentUser.uid }
+      }, { merge: true });
+    } catch (e) {
+      console.error('[Lobby] Failed to stamp guestUid', e);
+    }
+
     alert(`Guest ready. Room: ${code}. Wait for Host to start.`);
   });
 
