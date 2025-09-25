@@ -1,197 +1,201 @@
 // /src/views/KeyRoom.js
-// Host setup: enter keys/config, create a room code, then proceed via Countdown
-// → Generation → (later) Round 1.
-// Rules per spec:
-//   • Text boxes for: Gemini API key, Firebase config (JSON), Question-gen JSON, Jemima-clues JSON.
-//   • All are stored locally. Gemini key must be valid to continue.
-//   • On GO: set nextHash -> '#/generate' and navigate to '#/countdown' (both players resync there).
-
-import { initFirebase } from '../lib/firebase.js';
-import { geminiCall } from '../lib/gemini.js';
+// Key Room (phase 1): paste Gemini key + two JSON configs, validate & save locally.
+// This version does NOT contact Gemini or Firebase yet. That's the next file.
 
 export default function KeyRoom(ctx = {}) {
-  const navigate = (h) => (ctx && ctx.navigate ? ctx.navigate(h) : (location.hash = h));
-  const lsSet = (k, v) => { try { localStorage.setItem(k, v); } catch {} };
-  const lsGet = (k, d = '') => { try { return localStorage.getItem(k) ?? d; } catch { return d; } };
+  const navigate = (hash) =>
+    (ctx && typeof ctx.navigate === 'function') ? ctx.navigate(hash) : (location.hash = hash);
 
-  initFirebase(); // safe no-op if already initialised
+  const el = document.createElement('section');
+  el.className = 'panel';
+  el.innerHTML = `
+    <h2>Key Room</h2>
+    <p class="status">Paste your Gemini API key and the two JSON configs. Click “Validate & Save”.</p>
 
-  // ---------- UI ----------
-  const root = document.createElement('div');
-  root.className = 'wrap';
+    <div class="panel">
+      <label for="apiKey"><strong>Gemini API Key</strong></label>
+      <input id="apiKey" type="password" placeholder="AIza…" autocomplete="off" />
+      <small class="status">Stored locally only (on this device).</small>
+    </div>
 
-  const title = document.createElement('h2');
-  title.className = 'panel-title accent-white';
-  title.textContent = 'Key Room — Host Setup';
-  root.appendChild(title);
+    <div class="panel">
+      <h3>Main Questions Config (<code>version: "qcfg-1"</code>)</h3>
+      <textarea id="qcfg" rows="12" placeholder='{"version":"qcfg-1","topics":[{"name":"World Capitals","weight":1}]}'></textarea>
+      <div class="status" id="qcfgStatus"></div>
+    </div>
 
-  const card = document.createElement('div');
-  card.className = 'card mt-4';
-  card.style.textAlign = 'left';
-  root.appendChild(card);
+    <div class="panel">
+      <h3>Jemima Maths Config (<code>version: "jmaths-1"</code>)</h3>
+      <textarea id="jcfg" rows="12" placeholder='{"version":"jmaths-1","roundPlan":[{"round":1,"templateId":"shopping"},{"round":2,"templateId":"shopping"},{"round":3,"templateId":"shopping"},{"round":4,"templateId":"shopping"}]}'></textarea>
+      <div class="status" id="jcfgStatus"></div>
+    </div>
 
-  // Room code row
-  const codeRow = document.createElement('div');
-  codeRow.style.display = 'flex';
-  codeRow.style.gap = '8px';
-  codeRow.style.alignItems = 'center';
+    <div class="row" style="gap:0.5rem; flex-wrap:wrap;">
+      <button id="btnValidate">Validate & Save</button>
+      <button id="btnGenerate" class="primary" disabled title="Coming next step">Generate Seed (next step)</button>
+      <a href="#/lobby" class="nav-link">Back to Lobby</a>
+    </div>
 
-  const codeLabel = document.createElement('div');
-  codeLabel.style.minWidth = '110px';
-  codeLabel.style.fontWeight = '700';
-  codeLabel.textContent = 'Room Code';
-  codeRow.appendChild(codeLabel);
+    <div class="log" id="log"></div>
+  `;
 
-  const codeBox = document.createElement('input');
-  codeBox.type = 'text';
-  codeBox.maxLength = 8;
-  codeBox.className = 'input-field';
-  codeBox.style.flex = '1 1 auto';
-  codeBox.value = (lsGet('lastGameCode', '') || '').toUpperCase() || makeCode(4);
-  codeRow.appendChild(codeBox);
+  const $ = (sel) => el.querySelector(sel);
+  const log = (msg, kind = 'info') => {
+    const d = document.createElement('div');
+    d.className = `logline ${kind}`;
+    d.textContent = msg;
+    $('#log').appendChild(d);
+  };
 
-  const genBtn = document.createElement('button');
-  genBtn.className = 'btn btn-outline';
-  genBtn.textContent = 'Generate';
-  genBtn.addEventListener('click', () => {
-    codeBox.value = makeCode(4);
-  });
-  codeRow.appendChild(genBtn);
-
-  card.appendChild(codeRow);
-
-  // Gemini API key (required)
-  const gk = field('Gemini API Key (required)', lsGet('geminiApiKey', ''), false, 'text');
-  card.appendChild(gk.wrap);
-
-  // Firebase config JSON (optional)
-  const fb = area('Firebase Config (JSON)', lsGet('firebaseConfigJson', '{\n  "apiKey": "",\n  "authDomain": "",\n  "projectId": ""\n}'));
-  card.appendChild(fb.wrap);
-
-  // Question generation JSON (optional)
-  const qspec = area('Question-Generation JSON (optional)', lsGet('questionsSpecJson', '{\n  "topics": ["General Knowledge"]\n}'));
-  card.appendChild(qspec.wrap);
-
-  // Jemima clues (interludes) JSON (optional)
-  const ispec = area('Jemima Clues JSON (optional)', lsGet('interludesSpecJson', '{\n  "style": "succinct-numeric-beats"\n}'));
-  card.appendChild(ispec.wrap);
-
-  // Status + GO
-  const status = document.createElement('div');
-  status.className = 'note mt-3';
-  status.textContent = 'Enter details. Gemini key must be valid to continue.';
-  card.appendChild(status);
-
-  const row = document.createElement('div');
-  row.className = 'btn-row mt-6';
-
-  const backBtn = document.createElement('button');
-  backBtn.className = 'btn btn-outline';
-  backBtn.textContent = 'Back to Lobby';
-  backBtn.addEventListener('click', () => navigate('#/'));
-  row.appendChild(backBtn);
-
-  const goBtn = document.createElement('button');
-  goBtn.className = 'btn btn-go';
-  goBtn.textContent = 'GO';
-  goBtn.disabled = true;
-  row.appendChild(goBtn);
-
-  root.appendChild(row);
-
-  // Live validation for Gemini key presence
-  function reassess() {
-    goBtn.disabled = !gk.input.value.trim();
+  // Load Zod dynamically (CDN) so we don’t need any build tools.
+  let z = null;
+  async function loadZod() {
+    if (z) return z;
+    const mod = await import('https://esm.sh/zod@3.23.8');
+    z = mod;
+    return z;
   }
-  gk.input.addEventListener('input', reassess);
-  reassess();
 
-  // GO click => save, validate Gemini, set next, countdown
-  goBtn.addEventListener('click', async () => {
-    const code = (codeBox.value || '').trim().toUpperCase();
-    if (!code || code.length < 4) {
-      status.textContent = 'Please provide a 4+ character room code.';
+  // Very small schemas (we’ll harden later). These catch common mistakes now.
+  let QCfgSchema, JMathsSchema;
+  function initSchemas() {
+    const { z: _z } = z;
+
+    const Topic = _z.object({
+      name: _z.string().min(1),
+      weight: _z.number().positive().max(2).optional()
+    });
+
+    const Diff = _z.object({
+      round: _z.number().int().min(1).max(5),
+      level: _z.enum(['easy','easy+','medium','hard','hard+'])
+    });
+
+    QCfgSchema = _z.object({
+      version: _z.literal('qcfg-1'),
+      topics: _z.array(Topic).min(1),
+      difficultyCurve: _z.array(Diff).length(5).optional(),
+      composition: _z.object({
+        perRound: _z.object({
+          host: _z.object({ count: _z.literal(3) }).optional(),
+          guest: _z.object({ count: _z.literal(3) }).optional()
+        }).optional()
+      }).optional(),
+      global: _z.object({
+        language: _z.string().optional(),
+        twoChoiceOnly: _z.boolean().optional(),
+        maxQuestionChars: _z.number().int().optional(),
+        maxAnswerChars: _z.number().int().optional()
+      }).optional()
+    });
+
+    const NumberSpec = _z.object({
+      name: _z.string().min(1),
+      min: _z.number().int(),
+      max: _z.number().int()
+    }).refine(v => v.max >= v.min, { message: 'numberSpec.max must be ≥ min' });
+
+    const Template = _z.object({
+      id: _z.string().min(1),
+      settingChoices: _z.array(_z.string().min(1)).min(1).optional(),
+      requiredNumbers: _z.array(NumberSpec).min(1).optional(),
+      textPattern: _z.string().min(10).optional()
+    });
+
+    JMathsSchema = _z.object({
+      version: _z.literal('jmaths-1'),
+      passageTemplates: _z.array(Template).optional(),
+      roundPlan: _z.array(_z.object({
+        round: _z.number().int().min(1).max(4),
+        templateId: _z.string().min(1)
+      })).length(4),
+      finalQuestionRecipes: _z.array(_z.object({
+        id: _z.string().min(1),
+        promptPattern: _z.string().min(10),
+        compute: _z.string().min(1)
+      })).length(2).optional(),
+      global: _z.object({
+        language: _z.string().optional(),
+        answerType: _z.string().optional(),
+        allowZero: _z.boolean().optional(),
+        range: _z.object({ min: _z.number().int(), max: _z.number().int() }).optional()
+      }).optional()
+    });
+  }
+
+  function firstIssue(err) {
+    const i = err?.issues?.[0];
+    if (!i) return 'Invalid data';
+    const path = i.path?.length ? ` at ${i.path.join('.')}` : '';
+    return `${i.message}${path}`;
+  }
+
+  // Prefill from localStorage (if any)
+  try { $('#apiKey').value = localStorage.getItem('geminiApiKey') || ''; } catch {}
+  try { $('#qcfg').value  = localStorage.getItem('qcfg.json') || ''; } catch {}
+  try { $('#jcfg').value  = localStorage.getItem('jmaths.json') || ''; } catch {}
+
+  $('#btnValidate').addEventListener('click', async () => {
+    $('#qcfgStatus').textContent = '';
+    $('#jcfgStatus').textContent = '';
+    $('#log').innerHTML = '';
+
+    try {
+      await loadZod();
+      initSchemas();
+    } catch (e) {
+      log('Failed to load validator (Zod). Check your internet connection.', 'error');
+      console.error(e);
       return;
     }
 
-    // Persist everything locally
-    lsSet('lastGameCode', code);
-    lsSet('playerRole', 'host');           // ensure host role
-    lsSet('geminiApiKey', gk.input.value || '');
-    lsSet('firebaseConfigJson', fb.input.value || '');
-    lsSet('questionsSpecJson', qspec.input.value || '');
-    lsSet('interludesSpecJson', ispec.input.value || '');
-
-    // Basic Gemini validation: ping the proxy function
-    status.textContent = 'Validating Gemini key…';
-    goBtn.disabled = true;
-
-    // NOTE: The Netlify function reads GEMINI_API_KEY from server env.
-    // We still do a small no-op call to confirm the path is live.
-    const ping = await geminiCall({ kind: 'generic', prompt: 'ping' });
-
-    if (!ping || ping.ok === false) {
-      status.textContent = 'Gemini validation failed. Check server key or try again.';
-      goBtn.disabled = false;
-      return;
-    }
-
-    status.textContent = 'Valid! Preparing…';
-
-    // Set next to Generation and resync via Countdown
-    try { localStorage.setItem('nextHash', '#/generate'); } catch {}
-    navigate('#/countdown');
-  });
-
-  return root;
-
-  // ---------- helpers ----------
-
-  function field(label, value = '', isTextarea = false, type = 'text') {
-    const wrap = document.createElement('div');
-    wrap.className = 'mt-3';
-    const lab = document.createElement('div');
-    lab.style.fontWeight = '700';
-    lab.textContent = label;
-    wrap.appendChild(lab);
-
-    let input;
-    if (isTextarea) {
-      input = document.createElement('textarea');
-      input.className = 'input-field';
-      input.value = value;
-      input.rows = 2;
+    // Save API key locally (optional)
+    const key = ($('#apiKey').value || '').trim();
+    if (key) {
+      try { localStorage.setItem('geminiApiKey', key); } catch {}
+      log('✅ Gemini API key saved locally.');
     } else {
-      input = document.createElement('input');
-      input.type = type;
-      input.className = 'input-field';
-      input.value = value;
+      log('ℹ️ No Gemini key entered (you can add it later).');
     }
-    wrap.appendChild(input);
 
-    return { wrap, input };
-  }
+    // Parse + validate configs
+    let qcfgRaw, jcfgRaw;
+    try { qcfgRaw = $('#qcfg').value ? JSON.parse($('#qcfg').value) : null; } catch { qcfgRaw = null; }
+    try { jcfgRaw = $('#jcfg').value ? JSON.parse($('#jcfg').value) : null; } catch { jcfgRaw = null; }
 
-  function area(label, value = '') {
-    const wrap = document.createElement('div');
-    wrap.className = 'mt-3';
-    const lab = document.createElement('div');
-    lab.style.fontWeight = '700';
-    lab.textContent = label;
-    wrap.appendChild(lab);
+    // qcfg
+    if (!qcfgRaw) {
+      $('#qcfgStatus').textContent = '❌ Please paste JSON for Main Questions (qcfg-1).';
+    } else {
+      const res = QCfgSchema.safeParse(qcfgRaw);
+      if (res.success) {
+        $('#qcfgStatus').textContent = '✅ Valid qcfg-1 saved.';
+        try { localStorage.setItem('qcfg.json', JSON.stringify(res.data, null, 2)); } catch {}
+      } else {
+        $('#qcfgStatus').textContent = '❌ ' + firstIssue(res.error);
+      }
+    }
 
-    const input = document.createElement('textarea');
-    input.className = 'input-field';
-    input.style.minHeight = '110px';
-    input.value = value;
-    wrap.appendChild(input);
-    return { wrap, input };
-  }
+    // jmaths
+    if (!jcfgRaw) {
+      $('#jcfgStatus').textContent = '❌ Please paste JSON for Jemima Maths (jmaths-1).';
+    } else {
+      const res = JMathsSchema.safeParse(jcfgRaw);
+      if (res.success) {
+        $('#jcfgStatus').textContent = '✅ Valid jmaths-1 saved.';
+        try { localStorage.setItem('jmaths.json', JSON.stringify(res.data, null, 2)); } catch {}
+      } else {
+        $('#jcfgStatus').textContent = '❌ ' + firstIssue(res.error);
+      }
+    }
 
-  function makeCode(n = 4) {
-    const chars = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789';
-    let s = '';
-    for (let i = 0; i < n; i++) s += chars[Math.floor(Math.random() * chars.length)];
-    return s;
-  }
+    log('Validation complete.');
+  });
+
+  // Generate button is disabled in this step—will be enabled after we add Firebase + adapters.
+  $('#btnGenerate').addEventListener('click', () => {
+    alert('We’ll enable generation after we add Firebase and the adapters in the next step.');
+  });
+
+  return el;
 }
