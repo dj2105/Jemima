@@ -1,128 +1,114 @@
 // /src/views/Lobby.js
-// Lobby: choose role and enter/join code. Minimal logic; no Firebase here.
-// - JAIME (guest): enters host's code, stores role+code, and goes to Countdown.
-//   Generation screen will set nextHash; otherwise Countdown falls back sensibly.
-// - DANIEL (host): sets role and goes to Key Room to enter keys and seed content.
-// - REJOIN: keeps previous role, just restores code and jumps to /rejoin/<code>.
+// Real lobby: pick role (Host/Guest), create or join a room code, then move on.
 
 export default function Lobby(ctx = {}) {
-  const navigate = (hash) => {
-    if (ctx && typeof ctx.navigate === 'function') ctx.navigate(hash);
-    else location.hash = hash;
-  };
+  const navigate = (hash) =>
+    (ctx && typeof ctx.navigate === 'function') ? ctx.navigate(hash) : (location.hash = hash);
 
-  const get = (k, d = '') => { try { return localStorage.getItem(k) || d; } catch { return d; } };
-  const set = (k, v) => { try { localStorage.setItem(k, v); } catch {} };
+  const el = document.createElement('section');
+  el.className = 'panel';
 
-  const root = document.createElement('div');
-  root.className = 'wrap';
+  el.innerHTML = `
+    <h2>Lobby</h2>
+    <p class="status">Choose your role. The Host creates a room code; the Guest joins using that code.</p>
 
-  const title = document.createElement('div');
-  title.className = 'panel-title accent-white';
-  title.textContent = 'Jemima’s Asking — Lobby';
-  root.appendChild(title);
+    <div class="panel" id="hostPanel">
+      <h3>Host</h3>
+      <p>Generate a new room and share the code with your opponent.</p>
+      <div class="row" style="gap:0.5rem; flex-wrap:wrap;">
+        <button id="btnMakeCode" class="primary">Create Room Code</button>
+        <input id="hostCode" type="text" placeholder="CODE" maxlength="5" inputmode="latin" style="max-width:120px;" />
+        <button id="btnHostGo">Go to Key Room</button>
+      </div>
+      <small class="status" id="hostStatus"></small>
+    </div>
 
-  // --- Join as JAIME ---
-  const pJoin = document.createElement('div');
-  pJoin.className = 'panel panel-soft mt-4';
-  const hJoin = document.createElement('div');
-  hJoin.className = 'accent-blue';
-  hJoin.textContent = 'JAIME — Join a Game';
-  pJoin.appendChild(hJoin);
+    <div class="panel" id="guestPanel">
+      <h3>Guest</h3>
+      <p>Enter the room code you received from the Host.</p>
+      <div class="row" style="gap:0.5rem; flex-wrap:wrap;">
+        <input id="guestCode" type="text" placeholder="ENTER CODE" maxlength="5" inputmode="latin" style="max-width:160px;" />
+        <button id="btnGuestJoin">Join</button>
+      </div>
+      <small class="status" id="guestStatus"></small>
+    </div>
 
-  const rowJoin = document.createElement('div');
-  rowJoin.className = 'btn-row mt-3';
+    <div class="panel">
+      <h3>Tips</h3>
+      <ul>
+        <li>Use two browsers/devices for Host and Guest.</li>
+        <li>Codes are 4–5 letters (A–Z). Not case sensitive.</li>
+        <li>You can paste a known code into either box and press the button.</li>
+      </ul>
+    </div>
+  `;
 
-  const codeInput = document.createElement('input');
-  codeInput.className = 'input-field uppercase tracking';
-  codeInput.placeholder = 'ENTER CODE';
-  codeInput.maxLength = 10;
-  codeInput.autocomplete = 'off';
-  codeInput.inputMode = 'latin';
-  codeInput.value = get('lastGameCode','');
-  rowJoin.appendChild(codeInput);
+  const $ = (sel) => el.querySelector(sel);
 
-  const btnJoin = document.createElement('button');
-  btnJoin.className = 'btn';
-  btnJoin.textContent = 'GO';
-  rowJoin.appendChild(btnJoin);
+  // --- Helpers ---
+  function randCode(len = 4 + Math.floor(Math.random() * 2)) {
+    const A = 'ABCDEFGHJKLMNPQRSTUVWXYZ'; // no I/O to reduce confusion
+    let s = '';
+    for (let i = 0; i < len; i++) s += A[Math.floor(Math.random() * A.length)];
+    return s;
+  }
 
-  // Pressing Enter triggers GO
-  codeInput.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') btnJoin.click();
+  function normCode(raw) {
+    const s = (raw || '').toUpperCase().replace(/[^A-Z]/g, '');
+    return s.slice(0, 5);
+  }
+
+  function saveRole(role) {
+    try { localStorage.setItem('playerRole', role); } catch {}
+  }
+
+  function saveCode(code) {
+    try { localStorage.setItem('lastGameCode', code); } catch {}
+  }
+
+  // Prefill if present
+  try {
+    const last = localStorage.getItem('lastGameCode');
+    if (last) {
+      $('#hostCode').value = last;
+      $('#guestCode').value = last;
+    }
+  } catch {}
+
+  // --- Host flow ---
+  $('#btnMakeCode').addEventListener('click', () => {
+    const code = randCode();
+    $('#hostCode').value = code;
+    $('#hostStatus').textContent = `Room code created: ${code}`;
   });
 
-  btnJoin.addEventListener('click', (e) => {
-    e.preventDefault();
-    const code = (codeInput.value || '').trim().toUpperCase();
-    if (!code || code.length < 4) return;
-    set('lastGameCode', code);
-    set('playerRole', 'jaime'); // guest
-    // Guest waits at Countdown; Generation/Marking/Interlude set nextHash
-    navigate('#/countdown');
+  $('#btnHostGo').addEventListener('click', () => {
+    const code = normCode($('#hostCode').value);
+    if (!code || code.length < 4) {
+      $('#hostStatus').textContent = 'Please create or enter a valid 4–5 letter code.';
+      return;
+    }
+    saveRole('host');
+    saveCode(code);
+    $('#hostStatus').textContent = `You are Host. Room: ${code}`;
+    // Next: go to Key Room to paste Gemini key + JSON configs
+    navigate('#/keyroom');
   });
 
-  pJoin.appendChild(rowJoin);
-
-  // --- Host (DANIEL) ---
-  const pHost = document.createElement('div');
-  pHost.className = 'panel panel-soft mt-4';
-  const hHost = document.createElement('div');
-  hHost.className = 'accent-yellow';
-  hHost.textContent = 'DANIEL — Host a Game';
-  pHost.appendChild(hHost);
-
-  const rowHost = document.createElement('div');
-  rowHost.className = 'btn-row mt-3';
-
-  const btnHost = document.createElement('button');
-  btnHost.className = 'btn btn-go';
-  btnHost.textContent = 'HOST';
-  rowHost.appendChild(btnHost);
-  pHost.appendChild(rowHost);
-
-  btnHost.addEventListener('click', (e) => {
-    e.preventDefault();
-    set('playerRole', 'daniel'); // host
-    // Host chooses/enters keys in Key Room, then proceeds to Generation
-    navigate('#/key');
+  // --- Guest flow ---
+  $('#btnGuestJoin').addEventListener('click', () => {
+    const code = normCode($('#guestCode').value);
+    if (!code || code.length < 4) {
+      $('#guestStatus').textContent = 'Please enter a valid 4–5 letter code.';
+      return;
+    }
+    saveRole('guest');
+    saveCode(code);
+    $('#guestStatus').textContent = `Joined room: ${code}. Waiting for Host…`;
+    // For now we simply stay here or could navigate to a waiting screen.
+    // Once Countdown exists, you might navigate('#/countdown');
+    alert(`Guest ready. Room: ${code}. Wait for Host to start.`);
   });
 
-  // --- Rejoin (either role) ---
-  const pRejoin = document.createElement('div');
-  pRejoin.className = 'panel panel-soft mt-4';
-  const hRe = document.createElement('div');
-  hRe.className = 'accent-white';
-  hRe.textContent = 'Rejoin';
-  pRejoin.appendChild(hRe);
-
-  const rowRe = document.createElement('div');
-  rowRe.className = 'btn-row mt-3';
-
-  const codeBox = document.createElement('input');
-  codeBox.className = 'input-field uppercase tracking';
-  codeBox.placeholder = 'ENTER CODE';
-  codeBox.maxLength = 10;
-  codeBox.value = get('lastGameCode','');
-  rowRe.appendChild(codeBox);
-
-  const btnRe = document.createElement('button');
-  btnRe.className = 'btn';
-  btnRe.textContent = 'REJOIN';
-  rowRe.appendChild(btnRe);
-
-  btnRe.addEventListener('click', (e) => {
-    e.preventDefault();
-    const code = (codeBox.value || '').trim().toUpperCase();
-    if (!code || code.length < 4) return;
-    set('lastGameCode', code);
-    // Do NOT override role on rejoin; router will bounce us to Lobby if invalid
-    navigate(`#/rejoin/${code}`);
-  });
-
-  pRejoin.appendChild(rowRe);
-
-  // Assemble
-  root.append(pJoin, pHost, pRejoin);
-  return root;
+  return el;
 }
