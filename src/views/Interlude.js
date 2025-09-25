@@ -1,89 +1,138 @@
 // /src/views/Interlude.js
-// After each round (1–4): shows Jemima passage beats (numbers to remember).
-// When the player taps READY, we set nextHash to the next Questions round
-// and send both players through the Countdown to stay in sync.
+// Jemima’s Maths Interludes after rounds 1–4.
+// Shows the passage with vital numbers. Host can start the next synced countdown.
 
-import { initFirebase, db, doc, getDoc } from '../lib/firebase.js';
+import {
+  initFirebase, ensureAuth, db, doc, onSnapshot, setDoc, getDoc
+} from '../lib/firebase.js';
 
 export default function Interlude(ctx = {}) {
-  const navigate = ctx.navigate || ((h) => (location.hash = h));
-  const lsGet = (k, d='') => { try { return localStorage.getItem(k) ?? d; } catch { return d; } };
-  const lsSet = (k, v) => { try { localStorage.setItem(k, v); } catch {} };
+  const navigate = (hash) =>
+    (ctx && typeof ctx.navigate === 'function') ? ctx.navigate(hash) : (location.hash = hash);
 
-  const round = Number(ctx.round || 1);
-  const roomCode = (lsGet('lastGameCode','') || '').toUpperCase();
+  const role = (localStorage.getItem('playerRole') || 'guest').toLowerCase(); // 'host' | 'guest'
+  const code = (localStorage.getItem('lastGameCode') || '').toUpperCase();
 
-  const root = document.createElement('div');
-  root.className = 'wrap';
+  const el = document.createElement('section');
+  el.className = 'panel';
+  el.innerHTML = `
+    <h2>Interlude</h2>
+    <p class="status" id="roomInfo"></p>
 
-  const h = document.createElement('div');
-  h.className = 'panel-title accent-white';
-  h.textContent = `Jemima Interlude ${round}`;
-  root.appendChild(h);
+    <section id="passagePanel" class="panel">
+      <p class="status">Loading passage…</p>
+    </section>
 
-  const card = document.createElement('div');
-  card.className = 'card mt-4';
-  card.style.textAlign = 'left';
-  card.textContent = 'Loading Jemima’s beats…';
-  root.appendChild(card);
+    <div class="row" style="gap:0.5rem; flex-wrap:wrap;">
+      <button id="btnStartNext" class="primary" style="display:none">Start Next Countdown</button>
+      <a href="#/lobby" class="nav-link">Back to Lobby</a>
+    </div>
 
-  const row = document.createElement('div');
-  row.className = 'btn-row mt-6';
+    <div class="log" id="log"></div>
+  `;
 
-  const btn = document.createElement('button');
-  btn.className = 'btn btn-go';
-  btn.textContent = 'READY';
-  btn.disabled = true;
-  row.appendChild(btn);
-  root.appendChild(row);
+  const $ = (s) => el.querySelector(s);
+  const log = (msg, kind = 'info') => {
+    const d = document.createElement('div');
+    d.className = `logline ${kind}`;
+    d.textContent = msg;
+    $('#log').appendChild(d);
+  };
 
-  btn.addEventListener('click', () => {
-    btn.disabled = true;
-    btn.textContent = 'WAITING…';
-    // Next: advance to next Questions round (round+1)
-    const nextRound = Math.min(5, round + 1);
-    lsSet('nextHash', `#/round/${nextRound}`);
-    navigate('#/countdown');
-  });
+  $('#roomInfo').textContent = code ? `Room ${code} • You are ${role}` : 'No room code — go back to Lobby';
+  if (!code) return el;
 
-  // load passage
-  void load();
+  function parseInterludeRound(state) {
+    const m = /^interlude_r(\d+)$/.exec(state || '');
+    return m ? parseInt(m[1], 10) : null;
+  }
 
-  return root;
+  function escapeHTML(s) {
+    return String(s)
+      .replaceAll('&', '&amp;')
+      .replaceAll('<', '&lt;')
+      .replaceAll('>', '&gt;');
+  }
 
-  async function load() {
+  async function startNextCountdown(n) {
+    // Host-only: interlude_rN -> countdown_r(N+1)
+    const next = `countdown_r${Math.min(n + 1, 5)}`;
     try {
-      initFirebase();
-      // No auth required for reading public data in many setups; if needed, add ensureAuth()
-
-      const snap = await getDoc(doc(db, 'rooms', roomCode, 'seed', 'interludes'));
-      if (!snap.exists()) {
-        card.textContent = 'No Jemima passages found.';
-        return;
-      }
-      const data = snap.data();
-      const passages = Array.isArray(data.passages) ? data.passages : [];
-      const item = passages.find((p) => Number(p.round) === Number(round));
-
-      if (!item) {
-        card.textContent = `No passage for round ${round}.`;
-        return;
-      }
-
-      renderBeats(item.beats || []);
-      btn.disabled = false;
-    } catch (err) {
-      card.textContent = 'Failed to load Jemima passage: ' + (err.message || err);
+      await setDoc(doc(db, 'rooms', code), {
+        state: next,
+        countdownT0: new Date(Date.now() + 3500)
+      }, { merge: true });
+      log(`Advancing to ${next}…`);
+      navigate('#/countdown');
+    } catch (e) {
+      log('Failed to start next countdown: ' + (e?.message || e), 'error');
     }
   }
 
-  function renderBeats(beats) {
-    card.innerHTML = '';
-    beats.forEach((line, i) => {
-      const p = document.createElement('div');
-      p.style.margin = i ? '10px 0 0 0' : '0';
-      p.textContent = `• ${line}`;
-      card.appendChild(p);
+  let unsub = null;
+
+  (async () => {
+    try {
+      await initFirebase();
+      await ensureAuth();
+    } catch (e) {
+      $('#passagePanel').innerHTML = `<p class="status">Firebase error: ${e?.message || e}</p>`;
+      return;
+    }
+
+    const roomRef = doc(db, 'rooms', code);
+    unsub = onSnapshot(roomRef, async (snap) => {
+      if (!snap.exists()) {
+        $('#passagePanel').innerHTML = `<p class="status">Room not found.</p>`;
+        return;
+      }
+      const data = snap.data() || {};
+      const state = data.state || '';
+
+      // Follow FSM if host already moved on
+      if (state.startsWith('countdown_r')) return navigate('#/countdown');
+      if (state.startsWith('q_r')) return navigate('#/questions');
+      if (state.startsWith('mark_r')) return navigate('#/marking');
+      if (state === 'maths') return navigate('#/maths');
+      if (state === 'final') return navigate('#/final');
+
+      const n = parseInterludeRound(state);
+      if (!n) {
+        $('#passagePanel').innerHTML = `<p class="status">Waiting for Interlude to begin…</p>`;
+        $('#btnStartNext').style.display = 'none';
+        return;
+      }
+
+      // Read seed (from snapshot or fetch once)
+      const seed = data.seed || (await getDoc(roomRef).then(s => s.data()?.seed).catch(() => null));
+      const inter = Array.isArray(seed?.interludes) ? seed.interludes[n - 1] : null;
+
+      if (!inter) {
+        $('#passagePanel').innerHTML = `<p class="status">Interlude ${n} is missing from the seed.</p>`;
+        $('#btnStartNext').style.display = 'none';
+        return;
+      }
+
+      $('#passagePanel').innerHTML = `
+        <h3>Interlude ${n} of 4</h3>
+        <p style="white-space:pre-wrap; margin-top:0.5rem;">${escapeHTML(inter.passage)}</p>
+        <small class="status">Tip: you won’t be asked questions yet — just remember the numbers.</small>
+      `;
+
+      // Host sees button to start the next countdown
+      if (role === 'host') {
+        $('#btnStartNext').style.display = 'inline-block';
+        $('#btnStartNext').onclick = () => startNextCountdown(n);
+      } else {
+        $('#btnStartNext').style.display = 'none';
+      }
+    }, (err) => {
+      console.error('[interlude] snapshot error', err);
+      log('Sync error: ' + (err?.message || err), 'error');
     });
-  }
+  })();
+
+  el._destroy = () => { try { unsub && unsub(); } catch {} };
+
+  return el;
 }
