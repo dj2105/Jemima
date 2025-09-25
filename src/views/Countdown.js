@@ -1,6 +1,7 @@
 // /src/views/Countdown.js
 // Full-screen centred numerals 3 → 2 → 1 (no 0).
-// Auto-advances to the next route.
+// Auto-advances to the next route stored in localStorage.nextHash,
+// falling back to '#/round/1'.
 
 export default function Countdown(ctx = {}) {
   const navigate = (hash) => {
@@ -11,16 +12,14 @@ export default function Countdown(ctx = {}) {
   const get = (k, d = '') => {
     try { return localStorage.getItem(k) ?? d; } catch { return d; }
   };
+  const set = (k, v) => { try { localStorage.setItem(k, v); } catch {} };
+  const del = (k) => { try { localStorage.removeItem(k); } catch {} };
 
-  // ---- Clear stale flags so we don't loop back here ----
-  try { localStorage.removeItem('advanceNext'); } catch {}
-  try { localStorage.removeItem('nextHash'); } catch {}
-
-  // Where to go after the countdown
-  const nextHash =
-    (ctx && ctx.nextHash) ||
-    get('nextHash', '#/q/1') ||
-    '#/q/1';
+  // Determine next route BEFORE clearing anything
+  const storedNext = (ctx && ctx.nextHash) || get('nextHash', '');
+  const nextHash = storedNext && typeof storedNext === 'string'
+    ? storedNext
+    : '#/round/1';
 
   // Root
   const stage = document.createElement('div');
@@ -29,7 +28,6 @@ export default function Countdown(ctx = {}) {
   const num = document.createElement('div');
   num.className = 'countdown';
   num.textContent = '3';
-
   stage.appendChild(num);
 
   // Countdown logic
@@ -39,13 +37,14 @@ export default function Countdown(ctx = {}) {
   function tick() {
     if (idx < steps.length) {
       num.textContent = steps[idx++];
-      // Subtle pop animation
       num.style.transform = 'scale(1.05)';
       setTimeout(() => { num.style.transform = 'scale(1)'; }, 90);
-      setTimeout(tick, 800); // speed of the countdown
+      setTimeout(tick, 800);
       return;
     }
-    // After "1" (no 0), navigate
+    // After "1" (no 0), advance together
+    // Clear only after we’ve used it, so re-renders don’t lose the target.
+    del('nextHash');
     navigate(nextHash);
   }
 
