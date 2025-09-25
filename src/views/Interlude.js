@@ -1,13 +1,17 @@
 // /src/views/Interlude.js
-// After each round (1–4): shows Jemima passage beats.
-// Reads from Firestore seeds (rooms/{code}/seed/interludes).
+// After each round (1–4): shows Jemima passage beats (numbers to remember).
+// When the player taps READY, we set nextHash to the next Questions round
+// and send both players through the Countdown to stay in sync.
 
 import { initFirebase, db, doc, getDoc } from '../lib/firebase.js';
-import { state } from '../state.js';
 
 export default function Interlude(ctx = {}) {
   const navigate = ctx.navigate || ((h) => (location.hash = h));
-  const round = ctx.round || 1;
+  const lsGet = (k, d='') => { try { return localStorage.getItem(k) ?? d; } catch { return d; } };
+  const lsSet = (k, v) => { try { localStorage.setItem(k, v); } catch {} };
+
+  const round = Number(ctx.round || 1);
+  const roomCode = (lsGet('lastGameCode','') || '').toUpperCase();
 
   const root = document.createElement('div');
   root.className = 'wrap';
@@ -36,29 +40,23 @@ export default function Interlude(ctx = {}) {
   btn.addEventListener('click', () => {
     btn.disabled = true;
     btn.textContent = 'WAITING…';
-    const hold = document.createElement('div');
-    hold.className = 'note mt-3';
-    hold.textContent = 'Jemima is stretching her whiskers…';
-    root.appendChild(hold);
-
-    setTimeout(() => navigate('#/countdown'), 2000);
+    // Next: advance to next Questions round (round+1)
+    const nextRound = Math.min(5, round + 1);
+    lsSet('nextHash', `#/round/${nextRound}`);
+    navigate('#/countdown');
   });
 
-  // Async load from Firestore
+  // load passage
   void load();
 
   return root;
 
   async function load() {
-    initFirebase();
-    if (!state.roomCode) {
-      card.textContent = 'Error: no room joined.';
-      return;
-    }
-
     try {
-      const ref = doc(db, 'rooms', state.roomCode, 'seed', 'interludes');
-      const snap = await getDoc(ref);
+      initFirebase();
+      // No auth required for reading public data in many setups; if needed, add ensureAuth()
+
+      const snap = await getDoc(doc(db, 'rooms', roomCode, 'seed', 'interludes'));
       if (!snap.exists()) {
         card.textContent = 'No Jemima passages found.';
         return;
