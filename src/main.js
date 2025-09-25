@@ -13,8 +13,28 @@ function mount(node){
   app.appendChild(node);
 }
 
+// Normalise legacy/alias hashes (e.g., '#/mark/3' -> '#/marking/3')
+function normaliseHashOnce() {
+  const h = location.hash || '';
+  const m = h.match(/^#\/mark\/(\d)$/);
+  if (m) {
+    const target = `#/marking/${m[1]}`;
+    if (h !== target) {
+      location.replace(target);
+      return true; // changed
+    }
+  }
+  return false;
+}
+
+// Run now and also on future hash changes before the router processes them
+normaliseHashOnce();
+window.addEventListener('hashchange', () => {
+  if (normaliseHashOnce()) return;
+});
+
 // Try to use router (if present). If it fails, show Lobby so nothing breaks.
-(async () => {
+(async function start(){
   document.title = "Jemima’s Asking";
 
   try {
