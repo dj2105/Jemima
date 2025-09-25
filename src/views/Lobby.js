@@ -1,6 +1,9 @@
 // /src/views/Lobby.js
-// Pure UI for the Lobby screen (JAIME / DANIEL / REJOIN).
-// Stores room code + role in localStorage for later screens.
+// Lobby: choose role and enter/join code. Minimal logic; no Firebase here.
+// - JAIME (guest): enters host's code, stores role+code, and goes to Countdown.
+//   Generation screen will set nextHash; otherwise Countdown falls back sensibly.
+// - DANIEL (host): sets role and goes to Key Room to enter keys and seed content.
+// - REJOIN: keeps previous role, just restores code and jumps to /rejoin/<code>.
 
 export default function Lobby(ctx = {}) {
   const navigate = (hash) => {
@@ -8,117 +11,118 @@ export default function Lobby(ctx = {}) {
     else location.hash = hash;
   };
 
-  const get = (k, d = '') => {
-    try { return localStorage.getItem(k) || d; } catch { return d; }
-  };
-  const set = (k, v) => {
-    try { localStorage.setItem(k, v); } catch {}
-  };
-
-  const lastCode = get('lastGameCode', '').toUpperCase();
+  const get = (k, d = '') => { try { return localStorage.getItem(k) || d; } catch { return d; } };
+  const set = (k, v) => { try { localStorage.setItem(k, v); } catch {} };
 
   const root = document.createElement('div');
   root.className = 'wrap';
 
-  // ---------- JAIME (Join) ----------
-  const pJoin = document.createElement('section');
-  pJoin.className = 'panel';
+  const title = document.createElement('div');
+  title.className = 'panel-title accent-white';
+  title.textContent = 'Jemima’s Asking — Lobby';
+  root.appendChild(title);
 
-  const hJoin = document.createElement('h2');
-  hJoin.className = 'panel-title accent-jaime';
-  hJoin.textContent = 'JAIME';
+  // --- Join as JAIME ---
+  const pJoin = document.createElement('div');
+  pJoin.className = 'panel panel-soft mt-4';
+  const hJoin = document.createElement('div');
+  hJoin.className = 'accent-blue';
+  hJoin.textContent = 'JAIME — Join a Game';
   pJoin.appendChild(hJoin);
 
   const rowJoin = document.createElement('div');
-  rowJoin.className = 'input-row mt-4';
+  rowJoin.className = 'btn-row mt-3';
 
-  const inputCode = document.createElement('input');
-  inputCode.className = 'input-field uppercase';
-  inputCode.placeholder = 'ENTER CODE';
-  inputCode.autocomplete = 'off';
-  inputCode.maxLength = 6;
-  inputCode.value = '';
-  inputCode.style.textTransform = 'uppercase';
-  inputCode.addEventListener('input', () => {
-    inputCode.value = inputCode.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
-  });
+  const codeInput = document.createElement('input');
+  codeInput.className = 'input-field uppercase tracking';
+  codeInput.placeholder = 'ENTER CODE';
+  codeInput.maxLength = 10;
+  codeInput.autocomplete = 'off';
+  codeInput.inputMode = 'latin';
+  codeInput.value = get('lastGameCode','');
+  rowJoin.appendChild(codeInput);
 
   const btnJoin = document.createElement('button');
-  btnJoin.className = 'btn btn-go jaime';
+  btnJoin.className = 'btn';
   btnJoin.textContent = 'GO';
-  btnJoin.addEventListener('click', () => {
-    const code = (inputCode.value || '').trim().toUpperCase();
-    if (!code || code.length < 4) {
-      inputCode.focus(); inputCode.select?.(); return;
-    }
-    set('lastGameCode', code);
-    set('playerRole', 'guest');       // <-- important
-    navigate(`#/join/${code}`);
+  rowJoin.appendChild(btnJoin);
+
+  // Pressing Enter triggers GO
+  codeInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') btnJoin.click();
   });
 
-  rowJoin.append(inputCode, btnJoin);
-  pJoin.append(rowJoin);
+  btnJoin.addEventListener('click', (e) => {
+    e.preventDefault();
+    const code = (codeInput.value || '').trim().toUpperCase();
+    if (!code || code.length < 4) return;
+    set('lastGameCode', code);
+    set('playerRole', 'jaime'); // guest
+    // Guest waits at Countdown; Generation/Marking/Interlude set nextHash
+    navigate('#/countdown');
+  });
 
-  // ---------- DANIEL (Host) ----------
-  const pHost = document.createElement('section');
-  pHost.className = 'panel';
+  pJoin.appendChild(rowJoin);
 
-  const hHost = document.createElement('h2');
-  hHost.className = 'panel-title accent-daniel';
-  hHost.innerHTML = `DANIEL <span class="badge">HOST</span>`;
+  // --- Host (DANIEL) ---
+  const pHost = document.createElement('div');
+  pHost.className = 'panel panel-soft mt-4';
+  const hHost = document.createElement('div');
+  hHost.className = 'accent-yellow';
+  hHost.textContent = 'DANIEL — Host a Game';
   pHost.appendChild(hHost);
 
-  const btnHostRow = document.createElement('div');
-  btnHostRow.className = 'btn-row';
+  const rowHost = document.createElement('div');
+  rowHost.className = 'btn-row mt-3';
 
   const btnHost = document.createElement('button');
-  btnHost.className = 'btn btn-go daniel';
-  btnHost.textContent = 'GO';
-  btnHost.addEventListener('click', () => {
-    set('playerRole', 'host');        // <-- important
+  btnHost.className = 'btn btn-go';
+  btnHost.textContent = 'HOST';
+  rowHost.appendChild(btnHost);
+  pHost.appendChild(rowHost);
+
+  btnHost.addEventListener('click', (e) => {
+    e.preventDefault();
+    set('playerRole', 'daniel'); // host
+    // Host chooses/enters keys in Key Room, then proceeds to Generation
     navigate('#/key');
   });
 
-  btnHostRow.append(btnHost);
-  pHost.append(btnHostRow);
-
-  // ---------- REJOIN ----------
-  const pRejoin = document.createElement('section');
-  pRejoin.className = 'panel';
-
-  const hRe = document.createElement('h2');
-  hRe.className = 'panel-title accent-white';
-  hRe.textContent = 'REJOIN';
+  // --- Rejoin (either role) ---
+  const pRejoin = document.createElement('div');
+  pRejoin.className = 'panel panel-soft mt-4';
+  const hRe = document.createElement('div');
+  hRe.className = 'accent-white';
+  hRe.textContent = 'Rejoin';
   pRejoin.appendChild(hRe);
 
   const rowRe = document.createElement('div');
-  rowRe.className = 'input-row mt-4';
+  rowRe.className = 'btn-row mt-3';
 
   const codeBox = document.createElement('input');
-  codeBox.className = 'input-field';
-  codeBox.placeholder = 'LAST CODE';
-  codeBox.value = lastCode;
-  codeBox.style.textTransform = 'uppercase';
-  codeBox.addEventListener('input', () => {
-    codeBox.value = codeBox.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
-  });
+  codeBox.className = 'input-field uppercase tracking';
+  codeBox.placeholder = 'ENTER CODE';
+  codeBox.maxLength = 10;
+  codeBox.value = get('lastGameCode','');
+  rowRe.appendChild(codeBox);
 
   const btnRe = document.createElement('button');
-  btnRe.className = 'btn btn-go';
-  btnRe.textContent = 'GO';
-  btnRe.disabled = !lastCode;
-  btnRe.addEventListener('click', () => {
+  btnRe.className = 'btn';
+  btnRe.textContent = 'REJOIN';
+  rowRe.appendChild(btnRe);
+
+  btnRe.addEventListener('click', (e) => {
+    e.preventDefault();
     const code = (codeBox.value || '').trim().toUpperCase();
     if (!code || code.length < 4) return;
     set('lastGameCode', code);
-    // do NOT override playerRole here; we reuse whatever was last set
+    // Do NOT override role on rejoin; router will bounce us to Lobby if invalid
     navigate(`#/rejoin/${code}`);
   });
 
-  rowRe.append(codeBox, btnRe);
-  pRejoin.append(rowRe);
+  pRejoin.appendChild(rowRe);
 
-  // ---------- Assemble ----------
+  // Assemble
   root.append(pJoin, pHost, pRejoin);
   return root;
 }
