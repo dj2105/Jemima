@@ -1,82 +1,190 @@
 // /src/views/KeyRoom.js
-// Host setup: enter keys/config, create a room code, then proceed to Generation.
+// Host setup: enter keys/config, create a room code, then proceed via Countdown
+// → Generation → (later) Round 1.
+// Rules per spec:
+//   • Text boxes for: Gemini API key, Firebase config (JSON), Question-gen JSON, Jemima-clues JSON.
+//   • All are stored locally. Gemini key must be valid to continue.
+//   • On GO: set nextHash -> '#/generate' and navigate to '#/countdown' (both players resync there).
 
 import { initFirebase } from '../lib/firebase.js';
+import { geminiCall } from '../lib/gemini.js';
 
 export default function KeyRoom(ctx = {}) {
   const navigate = (h) => (ctx && ctx.navigate ? ctx.navigate(h) : (location.hash = h));
-  const set = (k, v) => { try { localStorage.setItem(k, v); } catch {} };
-  const get = (k, d = '') => { try { return localStorage.getItem(k) ?? d; } catch { return d; } };
+  const lsSet = (k, v) => { try { localStorage.setItem(k, v); } catch {} };
+  const lsGet = (k, d = '') => { try { return localStorage.getItem(k) ?? d; } catch { return d; } };
 
-  initFirebase(); // safe to call; no-ops if already initialised
+  initFirebase(); // safe no-op if already initialised
 
+  // ---------- UI ----------
   const root = document.createElement('div');
   root.className = 'wrap';
 
   const title = document.createElement('h2');
-  title.className = 'panel-title accent-daniel';
-  title.textContent = 'KEY ROOM';
+  title.className = 'panel-title accent-white';
+  title.textContent = 'Key Room — Host Setup';
   root.appendChild(title);
 
-  const pane = document.createElement('div');
-  pane.className = 'panel mt-4';
-  root.appendChild(pane);
+  const card = document.createElement('div');
+  card.className = 'card mt-4';
+  card.style.textAlign = 'left';
+  root.appendChild(card);
 
-  // Gemini key
-  const keyBox = textarea('Gemini API Key', get('geminiKey', ''));
-  pane.appendChild(keyBox.wrap);
+  // Room code row
+  const codeRow = document.createElement('div');
+  codeRow.style.display = 'flex';
+  codeRow.style.gap = '8px';
+  codeRow.style.alignItems = 'center';
 
-  // Optional config/specs
-  const fbBox = textarea('Firebase config JSON (optional)', get('firebaseConfig', ''));
-  pane.appendChild(fbBox.wrap);
+  const codeLabel = document.createElement('div');
+  codeLabel.style.minWidth = '110px';
+  codeLabel.style.fontWeight = '700';
+  codeLabel.textContent = 'Room Code';
+  codeRow.appendChild(codeLabel);
 
-  const qBox = textarea('Question JSON spec (optional)', get('questionSpec', ''));
-  pane.appendChild(qBox.wrap);
+  const codeBox = document.createElement('input');
+  codeBox.type = 'text';
+  codeBox.maxLength = 8;
+  codeBox.className = 'input-field';
+  codeBox.style.flex = '1 1 auto';
+  codeBox.value = (lsGet('lastGameCode', '') || '').toUpperCase() || makeCode(4);
+  codeRow.appendChild(codeBox);
 
-  const jBox = textarea('Jemima JSON spec (optional)', get('jemimaSpec', ''));
-  pane.appendChild(jBox.wrap);
+  const genBtn = document.createElement('button');
+  genBtn.className = 'btn btn-outline';
+  genBtn.textContent = 'Generate';
+  genBtn.addEventListener('click', () => {
+    codeBox.value = makeCode(4);
+  });
+  codeRow.appendChild(genBtn);
 
-  // Footer buttons
+  card.appendChild(codeRow);
+
+  // Gemini API key (required)
+  const gk = field('Gemini API Key (required)', lsGet('geminiApiKey', ''), false, 'text');
+  card.appendChild(gk.wrap);
+
+  // Firebase config JSON (optional)
+  const fb = area('Firebase Config (JSON)', lsGet('firebaseConfigJson', '{\n  "apiKey": "",\n  "authDomain": "",\n  "projectId": ""\n}'));
+  card.appendChild(fb.wrap);
+
+  // Question generation JSON (optional)
+  const qspec = area('Question-Generation JSON (optional)', lsGet('questionsSpecJson', '{\n  "topics": ["General Knowledge"]\n}'));
+  card.appendChild(qspec.wrap);
+
+  // Jemima clues (interludes) JSON (optional)
+  const ispec = area('Jemima Clues JSON (optional)', lsGet('interludesSpecJson', '{\n  "style": "succinct-numeric-beats"\n}'));
+  card.appendChild(ispec.wrap);
+
+  // Status + GO
+  const status = document.createElement('div');
+  status.className = 'note mt-3';
+  status.textContent = 'Enter details. Gemini key must be valid to continue.';
+  card.appendChild(status);
+
   const row = document.createElement('div');
-  row.className = 'btn-row mt-4';
+  row.className = 'btn-row mt-6';
 
-  const btnSave = document.createElement('button');
-  btnSave.className = 'btn';
-  btnSave.textContent = 'SAVE';
-  btnSave.addEventListener('click', () => {
-    set('geminiKey', keyBox.input.value.trim());
-    set('firebaseConfig', fbBox.input.value.trim());
-    set('questionSpec', qBox.input.value.trim());
-    set('jemimaSpec', jBox.input.value.trim());
+  const backBtn = document.createElement('button');
+  backBtn.className = 'btn btn-outline';
+  backBtn.textContent = 'Back to Lobby';
+  backBtn.addEventListener('click', () => navigate('#/'));
+  row.appendChild(backBtn);
+
+  const goBtn = document.createElement('button');
+  goBtn.className = 'btn btn-go';
+  goBtn.textContent = 'GO';
+  goBtn.disabled = true;
+  row.appendChild(goBtn);
+
+  root.appendChild(row);
+
+  // Live validation for Gemini key presence
+  function reassess() {
+    goBtn.disabled = !gk.input.value.trim();
+  }
+  gk.input.addEventListener('input', reassess);
+  reassess();
+
+  // GO click => save, validate Gemini, set next, countdown
+  goBtn.addEventListener('click', async () => {
+    const code = (codeBox.value || '').trim().toUpperCase();
+    if (!code || code.length < 4) {
+      status.textContent = 'Please provide a 4+ character room code.';
+      return;
+    }
+
+    // Persist everything locally
+    lsSet('lastGameCode', code);
+    lsSet('playerRole', 'host');           // ensure host role
+    lsSet('geminiApiKey', gk.input.value || '');
+    lsSet('firebaseConfigJson', fb.input.value || '');
+    lsSet('questionsSpecJson', qspec.input.value || '');
+    lsSet('interludesSpecJson', ispec.input.value || '');
+
+    // Basic Gemini validation: ping the proxy function
+    status.textContent = 'Validating Gemini key…';
+    goBtn.disabled = true;
+
+    // NOTE: The Netlify function reads GEMINI_API_KEY from server env.
+    // We still do a small no-op call to confirm the path is live.
+    const ping = await geminiCall({ kind: 'generic', prompt: 'ping' });
+
+    if (!ping || ping.ok === false) {
+      status.textContent = 'Gemini validation failed. Check server key or try again.';
+      goBtn.disabled = false;
+      return;
+    }
+
+    status.textContent = 'Valid! Preparing…';
+
+    // Set next to Generation and resync via Countdown
+    try { localStorage.setItem('nextHash', '#/generate'); } catch {}
+    navigate('#/countdown');
   });
-
-  const btnGo = document.createElement('button');
-  btnGo.className = 'btn btn-go daniel';
-  btnGo.textContent = 'GO';
-  btnGo.addEventListener('click', () => {
-    // Create simple 4-char room code and persist + set host role
-    const code = makeCode(4);
-    set('lastGameCode', code);
-    set('playerRole', 'host');            // <-- ensure host role
-    // Show a quick room code screen then go straight to Generation
-    navigate('#/gen');
-  });
-
-  row.append(btnSave, btnGo);
-  pane.appendChild(row);
 
   return root;
 
-  function textarea(label, value) {
+  // ---------- helpers ----------
+
+  function field(label, value = '', isTextarea = false, type = 'text') {
     const wrap = document.createElement('div');
-    wrap.className = 'field mt-3';
+    wrap.className = 'mt-3';
     const lab = document.createElement('div');
-    lab.className = 'note';
+    lab.style.fontWeight = '700';
     lab.textContent = label;
+    wrap.appendChild(lab);
+
+    let input;
+    if (isTextarea) {
+      input = document.createElement('textarea');
+      input.className = 'input-field';
+      input.value = value;
+      input.rows = 2;
+    } else {
+      input = document.createElement('input');
+      input.type = type;
+      input.className = 'input-field';
+      input.value = value;
+    }
+    wrap.appendChild(input);
+
+    return { wrap, input };
+  }
+
+  function area(label, value = '') {
+    const wrap = document.createElement('div');
+    wrap.className = 'mt-3';
+    const lab = document.createElement('div');
+    lab.style.fontWeight = '700';
+    lab.textContent = label;
+    wrap.appendChild(lab);
+
     const input = document.createElement('textarea');
     input.className = 'input-field';
+    input.style.minHeight = '110px';
     input.value = value;
-    wrap.append(lab, input);
+    wrap.appendChild(input);
     return { wrap, input };
   }
 
