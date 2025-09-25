@@ -1,10 +1,19 @@
 // /src/router.js
-// Minimal hash router with strict route order and safe fallbacks.
+// Strict hash router with safe fallback. Never falls back to Generation.
 
 export function startRouter({ mount, initialView }) {
   const navigate = (hash) => { location.hash = hash; };
 
+  async function fallback() {
+    try {
+      if (initialView) return initialView({ navigate });
+    } catch {}
+    const mod = await import('./views/Lobby.js');
+    return mod.default({ navigate });
+  }
+
   const routes = [
+    // Lobby (default)
     {
       name: 'lobby',
       re: /^(?:#\/(?:lobby)?)?$/,
@@ -13,6 +22,8 @@ export function startRouter({ mount, initialView }) {
         return mod.default({ navigate });
       }
     },
+
+    // Host setup
     {
       name: 'key',
       re: /^#\/key$/,
@@ -21,7 +32,8 @@ export function startRouter({ mount, initialView }) {
         return mod.default({ navigate });
       }
     },
-    // Generation (host path) and join (guest path) both land here.
+
+    // Host generation page
     {
       name: 'generate',
       re: /^#\/(?:gen|generate)$/,
@@ -30,18 +42,22 @@ export function startRouter({ mount, initialView }) {
         return mod.default({ navigate });
       }
     },
+
+    // Guest path: /join/CODE  (force role=guest and go to Generation watcher)
     {
       name: 'join',
       re: /^#\/join\/([A-Z0-9]{4,6})$/,
       load: async (_m, code) => {
         try {
           localStorage.setItem('lastGameCode', code.toUpperCase());
-          localStorage.setItem('playerRole', 'guest'); // force guest
+          localStorage.setItem('playerRole', 'guest');
         } catch {}
-        const mod = await import('./views/Generation.js'); // guest watches host
+        const mod = await import('./views/Generation.js');
         return mod.default({ navigate });
       }
     },
+
+    // Countdown → Q1
     {
       name: 'countdown',
       re: /^#\/countdown$/,
@@ -50,15 +66,20 @@ export function startRouter({ mount, initialView }) {
         return mod.default({ navigate, nextHash: '#/q/1' });
       }
     },
-    // ------- GAME ROUTES -------
+
+    // ===== GAME ROUTES =====
+    // Questions (Rounds 1–5)
     {
       name: 'question',
       re: /^#\/q\/([1-5])$/,
       load: async (_m, round) => {
-        const mod = await import('./views/QuestionRoom.js'); // <-- IMPORTANT
+        // If your file is named differently (e.g. Question.js), change the import path below.
+        const mod = await import('./views/QuestionRoom.js');
         return mod.default({ navigate, round: Number(round) });
       }
     },
+
+    // Marking (Rounds 1–5)
     {
       name: 'marking',
       re: /^#\/mark\/([1-5])$/,
@@ -67,6 +88,8 @@ export function startRouter({ mount, initialView }) {
         return mod.default({ navigate, round: Number(round) });
       }
     },
+
+    // Jemima interludes (after R1–R4)
     {
       name: 'interlude',
       re: /^#\/interlude\/([1-4])$/,
@@ -75,6 +98,8 @@ export function startRouter({ mount, initialView }) {
         return mod.default({ navigate, idx: Number(idx) });
       }
     },
+
+    // Final results
     {
       name: 'final',
       re: /^#\/final$/,
@@ -87,21 +112,23 @@ export function startRouter({ mount, initialView }) {
 
   async function render() {
     const h = location.hash || '#/';
+    console.debug('[router] hash:', h);
     for (const r of routes) {
       const m = h.match(r.re);
       if (m) {
-        const node = await r.load(m, ...(m.slice(1)));
-        mount(node);
+        console.debug('[router] match:', r.name, m.slice(1));
+        try {
+          const node = await r.load(m, ...(m.slice(1)));
+          mount(node);
+        } catch (e) {
+          console.error('[router] load failed for', r.name, e);
+          mount(await fallback());
+        }
         return;
       }
     }
-    // Fallback: Lobby (never Generation)
-    if (initialView) {
-      mount(initialView({ navigate }));
-      return;
-    }
-    const mod = await import('./views/Lobby.js');
-    mount(mod.default({ navigate }));
+    console.warn('[router] no route matched; falling back to Lobby');
+    mount(await fallback());
   }
 
   window.addEventListener('hashchange', render);
