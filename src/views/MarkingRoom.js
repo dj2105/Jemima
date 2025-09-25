@@ -1,48 +1,43 @@
 // /src/views/MarkingRoom.js
-// Mark the opponent's 3 answers (role-based split):
-// - Daniel answers indices [0,1,2]; Jaime answers [3,4,5].
-// - This screen shows the opponent's 3 answers (pulled from their saved {indices, answers}).
-// - You choose Correct / Incorrect for each. When done, we write:
-//     rooms/{code}/marking/{me}_{round} = { marks:[true|false], ts }
-// - When both players have submitted marking, we reveal *your own* correct total (truth from seeds),
-//   wait 4s, then move on: rounds 1–4 → interlude/:round, round 5 → jemima.
+// Round N — Mark Opponent.
+// - Waits for opponent answers (answers/{host|guest}_r{round}).
+// - Lets the player mark each of the opponent's answers as Correct/Incorrect.
+// - Saves to marking/{host|guest}_r{round} with an array of booleans.
+// - When both players have submitted marks, shows how many the opponent awarded you,
+//   then advances everyone to the next phase via Countdown.
 
 import {
-  initFirebase, ensureAuth, db, doc, getDoc, setDoc, onSnapshot
+  initFirebase, ensureAuth, db, doc, collection,
+  getDoc, setDoc, onSnapshot
 } from '../lib/firebase.js';
-import { state } from '../state.js';
 
 export default function MarkingRoom(ctx = {}) {
-  const navigate = ctx.navigate || ((h) => (location.hash = h));
-  const round = Number(ctx.round || 1);
+  const navigate = (hash) =>
+    (ctx && typeof ctx.navigate === 'function') ? ctx.navigate(hash) : (location.hash = hash);
 
-  // identity
-  const ls = (k, d = '') => { try { return localStorage.getItem(k) ?? d; } catch { return d; } };
-  const roomCode = (state.roomCode || ls('lastGameCode', '')).toUpperCase();
-  if (!state.roomCode && roomCode) state.roomCode = roomCode;
+  // ---- helpers ----
+  const get = (k, d = '') => { try { return localStorage.getItem(k) ?? d; } catch { return d; } };
+  const set = (k, v)       => { try { localStorage.setItem(k, v); } catch {} };
 
-  const roleRaw = (state.playerId || ls('playerRole', 'host')).toLowerCase();
-  const me   = (roleRaw === 'guest' || roleRaw === 'jaime') ? 'jaime' : 'daniel';
-  const them = me === 'daniel' ? 'jaime' : 'daniel';
-  if (!state.playerId) state.playerId = me;
-  if (!state.scores) state.scores = { daniel: 0, jaime: 0 };
+  const roomCode = (get('lastGameCode','') || '').toUpperCase();
+  const roleRaw  = (get('playerRole','host') || '').toLowerCase();
+  const isHost   = roleRaw === 'host' || roleRaw === 'daniel';
+  const round    = Number(ctx.round || 1);
 
-  // ui
+  const myKey    = isHost ? 'host' : 'guest';
+  const oppKey   = isHost ? 'guest' : 'host';
+
+  // ---- UI scaffold ----
   const root = document.createElement('div');
   root.className = 'wrap';
 
-  const banner = document.createElement('div');
-  banner.className = 'score-strip';
-  banner.textContent = `Daniel ${state.scores.daniel || 0} | Jaime ${state.scores.jaime || 0}`;
-  root.appendChild(banner);
-
-  const title = document.createElement('div');
-  title.className = 'panel-title accent-white mt-4';
+  const title = document.createElement('h2');
+  title.className = 'panel-title accent-white';
   title.textContent = `ROUND ${round} — MARK OPPONENT`;
   root.appendChild(title);
 
   const card = document.createElement('div');
-  card.className = 'card mt-4';
+  card.className = 'card';
   card.style.textAlign = 'left';
   root.appendChild(card);
 
@@ -55,231 +50,185 @@ export default function MarkingRoom(ctx = {}) {
   row.appendChild(btn);
   root.appendChild(row);
 
-  const note = document.createElement('div');
-  note.className = 'note mt-2';
-  root.appendChild(note);
+  // ---- local state ----
+  let oppAnswers = null;        // array like ['a1','a2','a2'] (their selections)
+  let myMarks    = [null,null,null]; // booleans you choose (true=Correct, false=Incorrect)
+  let mySubmitted = false;
+  let oppSubmitted = false;
+  let myAnswers = null;         // your own answers, to read how many opp awarded you
 
-  // state
-  const marks = [null, null, null]; // true|false
-  let oppIndices = [];
-  let oppAnswers = [];
-  let questionsForOpp = []; // [{q, a1, a2, correct}, ... length 3]
-  let myAnswers = [];       // for reveal calc
-  let myIndices = [];
-
-  btn.addEventListener('click', async () => {
-    try {
-      await submitMarks(marks);
-      btn.disabled = true;
-      note.textContent = 'Submitted. Waiting for opponent…';
-    } catch (e) {
-      note.textContent = 'Failed to submit: ' + (e.message || e);
-    }
-  });
-
-  // start
-  void init();
-
+  // ---- start ----
+  void start();
   return root;
 
-  async function init() {
+  async function start() {
     if (!roomCode) {
       card.textContent = 'Error: no room joined.';
       return;
     }
-    initFirebase();
-    await ensureAuth();
 
     try {
-      // load seeds for this round
-      const seedSnap = await getDoc(doc(db, 'rooms', roomCode, 'seed', 'questions'));
-      if (!seedSnap.exists()) {
-        card.textContent = 'No question seeds found.';
-        return;
-      }
-      const allRounds = (seedSnap.data()?.rounds) || [];
-      const rObj = allRounds.find((r) => Number(r.round) === round);
-      if (!rObj || !Array.isArray(rObj.questions) || rObj.questions.length < 3) {
-        card.textContent = `No questions for round ${round}.`;
-        return;
-      }
-      const qArr = rObj.questions;
+      initFirebase();
+      await ensureAuth();
 
-      // load both answers docs (mine + theirs)
-      const mySnap  = await getDoc(doc(db, 'rooms', roomCode, 'answers', `${me}_${round}`));
-      const oppSnap = await getDoc(doc(db, 'rooms', roomCode, 'answers', `${them}_${round}`));
-      if (!oppSnap.exists()) {
-        card.textContent = `Waiting for ${capitalise(them)} to submit answers…`;
-        // also watch for their answers then re-render once available
-        onSnapshot(doc(db, 'rooms', roomCode, 'answers', `${them}_${round}`), (sn) => {
-          if (sn.exists()) { location.reload(); }
-        });
-        return;
-      }
+      // Load my own answers (so later we can show how many the opponent awarded me)
+      const myAnsRef = doc(collection(db, 'rooms'), roomCode, 'answers', `${myKey}_r${round}`);
+      const myAnsSnap = await getDoc(myAnsRef);
+      myAnswers = myAnsSnap.exists() ? (myAnsSnap.data()?.answers || null) : null;
 
-      // opponent data to mark
-      oppIndices = (oppSnap.data()?.indices) || [];
-      oppAnswers = (oppSnap.data()?.answers) || [];
-      if (oppIndices.length < 3 || oppAnswers.length < 3) {
-        card.textContent = 'Opponent answers incomplete.';
-        return;
-      }
-      questionsForOpp = oppIndices.map((i) => qArr[i]).filter(Boolean);
-      if (questionsForOpp.length < 3) {
-        card.textContent = 'Seed mismatch for opponent indices.';
-        return;
-      }
+      // Watch opponent answers
+      const oppAnsRef = doc(collection(db, 'rooms'), roomCode, 'answers', `${oppKey}_r${round}`);
+      onSnapshot(oppAnsRef, (snap) => {
+        if (!snap.exists()) {
+          renderWaiting(`Waiting for ${isHost ? 'Jaime' : 'Daniel'} to submit answers...`);
+          return;
+        }
+        const d = snap.data() || {};
+        const arr = Array.isArray(d.answers) ? d.answers : null;
+        if (!arr || arr.length < 3) {
+          renderWaiting(`Waiting for ${isHost ? 'Jaime' : 'Daniel'} to submit answers...`);
+          return;
+        }
+        oppAnswers = arr.slice(0,3);
+        renderMarkingUI();
+      });
 
-      // my data for later reveal (if missing, still allow marking)
-      if (mySnap.exists()) {
-        myIndices = (mySnap.data()?.indices) || [];
-        myAnswers = (mySnap.data()?.answers) || [];
-      }
+      // Watch marking docs (mine + opponent's)
+      const myMarkRef  = doc(collection(db,'rooms'), roomCode, 'marking', `${myKey}_r${round}`);
+      const oppMarkRef = doc(collection(db,'rooms'), roomCode, 'marking', `${oppKey}_r${round}`);
 
-      renderBlocks(questionsForOpp, oppAnswers);
+      onSnapshot(myMarkRef, (snap) => {
+        mySubmitted = snap.exists() && (snap.data()?.complete === true);
+        maybeShowResults();
+      });
+      onSnapshot(oppMarkRef, (snap) => {
+        oppSubmitted = snap.exists() && (snap.data()?.complete === true);
+        maybeShowResults();
+      });
 
-      // watch both marking docs; when both in, reveal, then proceed
-      watchMarkingAndReveal();
-    } catch (err) {
-      card.textContent = 'Failed to load marking: ' + (err.message || err);
+      // GO handler — save my marks
+      btn.addEventListener('click', async () => {
+        if (myMarks.some(x => x === null)) return;
+        btn.disabled = true;
+        try {
+          await setDoc(myMarkRef, {
+            markedBy: myKey,
+            round,
+            marks: myMarks,
+            complete: true,
+            ts: Date.now()
+          }, { merge: true });
+
+          // After submitting, show waiting-for-opponent UI
+          renderWaiting(`Waiting for ${isHost ? 'Jaime' : 'Daniel'} to score you...`);
+        } catch (e) {
+          card.textContent = 'Could not submit marks. Please try again.';
+          console.error('[Marking] submit error', e);
+          btn.disabled = false;
+        }
+      });
+
+    } catch (e) {
+      console.error('[Marking] init error', e);
+      card.textContent = 'Could not initialise marking.';
     }
   }
 
-  function renderBlocks(qs3, oppAns3) {
+  // ---- UI renderers ----
+  function renderWaiting(msg) {
     card.innerHTML = '';
-    qs3.forEach((q, i) => {
+    const d = document.createElement('div');
+    d.textContent = msg;
+    card.appendChild(d);
+    btn.disabled = true;
+  }
+
+  function renderMarkingUI() {
+    card.innerHTML = '';
+
+    const note = document.createElement('div');
+    note.className = 'note';
+    note.textContent = `Mark ${isHost ? 'Jaime' : 'Daniel'}’s answers:`;
+    card.appendChild(note);
+
+    myMarks = [null,null,null];
+
+    oppAnswers.slice(0,3).forEach((ans, idx) => {
       const block = document.createElement('div');
-      if (i) block.className = 'mt-6';
+      block.className = 'mt-4';
 
-      const qtext = document.createElement('div');
-      qtext.style.fontWeight = '700';
-      qtext.textContent = `${i + 1}. ${q.q}`;
-      block.appendChild(qtext);
+      const qlabel = document.createElement('div');
+      qlabel.style.fontWeight = '700';
+      qlabel.style.marginBottom = '8px';
+      qlabel.textContent = `${idx + 1}. Opponent chose: ${String(ans).toUpperCase()}`;
+      block.appendChild(qlabel);
 
-      const picked = oppAns3[i]; // 'a1' | 'a2'
-      const pickedLabel = picked === 'a1' ? q.a1 : q.a2;
+      const btnCorrect = document.createElement('button');
+      btnCorrect.className = 'btn btn-outline';
+      btnCorrect.textContent = 'CORRECT';
+      const btnWrong = document.createElement('button');
+      btnWrong.className = 'btn btn-outline';
+      btnWrong.textContent = 'INCORRECT';
+      btnWrong.style.marginLeft = '8px';
 
-      const pickRow = document.createElement('div');
-      pickRow.className = 'note mt-1';
-      pickRow.textContent = `Opponent chose: ${pickedLabel}`;
-      block.appendChild(pickRow);
+      btnCorrect.addEventListener('click', () => choose(idx, true, btnCorrect, btnWrong));
+      btnWrong.addEventListener('click', () => choose(idx, false, btnCorrect, btnWrong));
 
-      const btns = document.createElement('div');
-      btns.className = 'mt-2';
-
-      const bC = choiceBtn('Correct');
-      const bI = choiceBtn('Incorrect');
-
-      bC.addEventListener('click', () => choose(i, true, bC, bI));
-      bI.addEventListener('click', () => choose(i, false, bC, bI));
-
-      btns.append(bC, bI);
-      block.appendChild(btns);
-
+      block.appendChild(btnCorrect);
+      block.appendChild(btnWrong);
       card.appendChild(block);
     });
+
+    // Reset GO until three choices are made
+    btn.disabled = true;
   }
 
-  function choiceBtn(label) {
-    const b = document.createElement('button');
-    b.className = 'btn';
-    b.style.marginRight = '8px';
-    b.textContent = label;
-
-    b._setActive = (on) => {
-      if (on) {
-        b.style.background = '#fff';
-        b.style.color = '#000';
-        b.style.borderColor = '#fff';
-      } else {
-        b.style.background = 'transparent';
-        b.style.color = '#fff';
-        b.style.borderColor = '#fff';
-      }
-    };
-    b._setActive(false);
-    return b;
+  function choose(idx, val, a, b) {
+    myMarks[idx] = val;
+    if (val) {
+      a.classList.add('selected');
+      b.classList.remove('selected');
+    } else {
+      b.classList.add('selected');
+      a.classList.remove('selected');
+    }
+    if (myMarks.every(v => v !== null)) btn.disabled = false;
   }
 
-  function choose(idx, val, bc, bi) {
-    marks[idx] = val;
-    bc._setActive(val === true);
-    bi._setActive(val === false);
+  // ---- When both have submitted, show result you received and advance ----
+  async function maybeShowResults() {
+    if (!mySubmitted || !oppSubmitted) return;
 
-    btn.disabled = marks.some((m) => m === null);
-  }
+    // Read how many marks the opponent awarded to me
+    const oppMarkRef = doc(collection(db,'rooms'), roomCode, 'marking', `${oppKey}_r${round}`);
+    const oppSnap = await getDoc(oppMarkRef);
+    const theirMarks = oppSnap.exists() ? (oppSnap.data()?.marks || []) : [];
+    const correctTotal = (Array.isArray(theirMarks) ? theirMarks : []).slice(0,3)
+      .reduce((n, v) => n + (v === true ? 1 : 0), 0);
 
-  async function submitMarks(marksArr) {
-    await setDoc(doc(db, 'rooms', roomCode, 'marking', `${me}_${round}`), {
-      marks: marksArr,
-      ts: Date.now()
-    });
-  }
+    card.innerHTML = '';
+    const big = document.createElement('div');
+    big.style.fontSize = '22px';
+    big.style.fontWeight = '800';
+    big.style.marginBottom = '8px';
+    big.textContent = `You were awarded ${correctTotal} / 3`;
+    card.appendChild(big);
 
-  function watchMarkingAndReveal() {
-    let meDone = false;
-    let themDone = false;
+    const tiny = document.createElement('div');
+    tiny.className = 'note';
+    tiny.textContent = 'Next round will begin shortly…';
+    card.appendChild(tiny);
 
-    const meRef = doc(db, 'rooms', roomCode, 'marking', `${me}_${round}`);
-    const thRef = doc(db, 'rooms', roomCode, 'marking', `${them}_${round}`);
+    btn.disabled = true;
 
-    const maybeReveal = async () => {
-      if (!(meDone && themDone)) return;
-
-      // Compute my true correct total (independent of opponent's marking)
-      const seedSnap = await getDoc(doc(db, 'rooms', roomCode, 'seed', 'questions'));
-      const allRounds = (seedSnap.data()?.rounds) || [];
-      const rObj = allRounds.find((r) => Number(r.round) === round);
-      const qArr = rObj?.questions || [];
-
-      // Load my answers (if not already)
-      if (!myAnswers.length || !myIndices.length) {
-        const mySnap = await getDoc(doc(db, 'rooms', roomCode, 'answers', `${me}_${round}`));
-        if (mySnap.exists()) {
-          myIndices = (mySnap.data()?.indices) || [];
-          myAnswers = (mySnap.data()?.answers) || [];
-        }
-      }
-
-      const myQs = myIndices.map((i) => qArr[i]).filter(Boolean);
-      let myCorrect = 0;
-      for (let i = 0; i < Math.min(3, myQs.length, myAnswers.length); i++) {
-        const q = myQs[i];
-        const picked = myAnswers[i]; // 'a1' | 'a2'
-        if (picked === q?.correct) myCorrect++;
-      }
-
-      // Reveal
-      card.innerHTML = '';
-      const reveal = document.createElement('div');
-      reveal.className = 'panel-title accent-white';
-      reveal.textContent = `You got ${myCorrect}/3 correct`;
-      card.appendChild(reveal);
-
-      // bump local banner score
-      try {
-        state.scores[me] = (state.scores[me] || 0) + myCorrect;
-        banner.textContent = `Daniel ${state.scores.daniel || 0} | Jaime ${state.scores.jaime || 0}`;
-      } catch {}
-
-      // proceed after 4s
-      setTimeout(() => {
-        if (round < 5) navigate(`#/interlude/${round}`);
-        else navigate('#/jemima');
-      }, 4000);
-    };
-
-    onSnapshot(meRef, (sn) => {
-      meDone = sn.exists();
-      if (meDone) note.textContent = `${capitalise(me)} scored them.`;
-      maybeReveal();
-    });
-    onSnapshot(thRef, (sn) => {
-      themDone = sn.exists();
-      if (themDone) note.textContent = `${capitalise(them)} scored you.`;
-      maybeReveal();
-    });
+    // Decide next destination: rounds 1–4 → next round; round 5 → final (or Jemima quiz)
+    if (round < 5) {
+      set('nextHash', `#/q/${round + 1}`);
+      navigate('#/countdown');
+    } else {
+      // End of Round 5 — jump to Final (adjust if you have a distinct Jemima quiz route)
+      set('nextHash', '#/final');
+      navigate('#/countdown');
+    }
   }
 }
-
-function capitalise(s = '') { return s.charAt(0).toUpperCase() + s.slice(1); }
