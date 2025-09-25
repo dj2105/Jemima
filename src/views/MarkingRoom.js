@@ -17,98 +17,80 @@ export default function MarkingRoom(ctx = {}) {
   const lsGet = (k, d='') => { try { return localStorage.getItem(k) ?? d; } catch { return d; } };
   const lsSet = (k, v) => { try { localStorage.setItem(k, v); } catch {} };
 
+  const round = Number(ctx.round || 1);
   const roomCode = (lsGet('lastGameCode','') || '').toUpperCase();
   const roleRaw  = (lsGet('playerRole','host') || '').toLowerCase();
-  const me       = (roleRaw === 'guest' || roleRaw === 'jaime') ? 'jaime' : 'daniel';
+  const me       = (roleRaw === 'host' || roleRaw === 'daniel') ? 'daniel' : 'jaime';
   const them     = (me === 'daniel') ? 'jaime' : 'daniel';
-  const round    = Number(ctx.round || 1);
 
-  // ---- UI scaffold ----
   const root = document.createElement('div');
   root.className = 'wrap';
 
-  const banner = document.createElement('div');
-  banner.className = 'score-strip';
-  banner.textContent = `Marking — You are ${me === 'daniel' ? 'Daniel (Host)' : 'Jaime (Guest)'}`;
-  root.appendChild(banner);
-
   const title = document.createElement('div');
-  title.className = 'panel-title accent-white mt-2';
-  title.textContent = `ROUND ${round} — MARK YOUR OPPONENT`;
+  title.className = 'panel-title accent-white';
+  title.textContent = `Round ${round} — Marking (${me === 'daniel' ? 'Host' : 'Guest'})`;
   root.appendChild(title);
 
-  const card = document.createElement('div');
-  card.className = 'card mt-3';
-  card.style.textAlign = 'left';
-  root.appendChild(card);
-
   const note = document.createElement('div');
-  note.className = 'note mt-2';
+  note.className = 'mt-2';
   note.textContent = 'This phase is offline. You both mark simultaneously.';
   root.appendChild(note);
+
+  const card = document.createElement('div');
+  card.className = 'card mt-4';
+  card.style.textAlign = 'left';
+  root.appendChild(card);
 
   const row = document.createElement('div');
   row.className = 'btn-row mt-6';
   const btn = document.createElement('button');
   btn.className = 'btn btn-go';
-  btn.textContent = 'SUBMIT MARKING';
+  btn.textContent = 'SUBMIT MARKS';
   btn.disabled = true;
   row.appendChild(btn);
   root.appendChild(row);
 
-  // ---- State ----
-  let oppIndices = [];      // opponent's question indices within seeded 6
-  let oppAnswers = [];      // opponent's selected 'a1' | 'a2'
-  let questions  = [];      // full 6 question objects for this round
-  let marks      = [null, null, null]; // true/false
+  let oppIndices = [];
+  let oppAnswers = [];
+  let questions = [];
+  let marks     = [null, null, null];
 
-  // Start
-  void start();
-  btn.addEventListener('click', onSubmit);
-
-  return root;
-
-  // ===================== Logic =====================
+  start();
 
   async function start() {
-    if (!roomCode) {
-      card.textContent = 'Missing room code. Return to Lobby.';
-      return;
-    }
     try {
       initFirebase();
       await ensureAuth();
 
-      // Load opponent answers
+      // Load opponent’s answers (indices + their picked a1/a2)
       const ansRef = doc(db, 'rooms', roomCode, 'answers', `${them}_${round}`);
       const ansSnap = await getDoc(ansRef);
       if (!ansSnap.exists()) {
-        card.textContent = `Waiting for ${capitalize(them)} to finish their questions…`;
-        // Passive snapshot to auto-render when they appear
-        onSnapshot(ansRef, (sn) => {
-          if (!sn.exists()) return;
-          oppIndices = sn.data()?.indices || [];
-          oppAnswers = sn.data()?.answers || [];
-          void renderQuestions();
-        });
+        card.textContent = 'Waiting for opponent answers…';
         return;
       }
-      oppIndices = ansSnap.data()?.indices || [];
-      oppAnswers = ansSnap.data()?.answers || [];
+      const a = ansSnap.data() || {};
+      oppIndices = Array.isArray(a.indices) ? a.indices : [];
+      oppAnswers = Array.isArray(a.answers) ? a.answers : [];
 
       await renderQuestions();
-    } catch (err) {
-      console.error('[MarkingRoom] start error', err);
-      card.textContent = 'Could not load opponent answers.';
+
+      btn.disabled = marks.some(x => x !== true && x !== false);
+      btn.onclick = onSubmit;
+
+      // After submit, we wait for both to finish, then reveal awarded score and resync.
+    } catch (e) {
+      console.error('[MarkingRoom] start error', e);
+      card.textContent = 'Could not load marking data.';
     }
   }
 
   async function renderQuestions() {
-    // Get seeded questions for this round
+    // Get seeded questions for this round (same shape as QuestionRoom)
     const seed = await getDoc(doc(db, 'rooms', roomCode, 'seed', 'questions'));
-    const rounds = Array.isArray(seed.data()?.rounds) ? seed.data().rounds : [];
-    const rObj = rounds.find(r => Number(r.round) === round) || {};
-    questions = Array.isArray(rObj.questions) ? rObj.questions : [];
+    const data = seed.exists() ? (seed.data() || {}) : {};
+    const rKey = `round_${round}`;
+    questions = Array.isArray(data[rKey]) ? data[rKey] : [];
 
     card.innerHTML = '';
     marks = [null, null, null];
@@ -131,7 +113,7 @@ export default function MarkingRoom(ctx = {}) {
       const h = document.createElement('div');
       h.style.fontWeight = '700';
       h.style.marginBottom = '6px';
-      h.textContent = `${i + 1}. ${q?.q || '(missing question)'}`;
+      h.textContent = `${i + 1}. ${q?.question || '(missing question)'}`;
       block.appendChild(h);
 
       const sel = document.createElement('div');
@@ -184,7 +166,7 @@ export default function MarkingRoom(ctx = {}) {
       // keep going; other side may still award us
     }
 
-    // Now wait until BOTH have submitted marking, then reveal my awarded score.
+    // Now wait for both sides to finish and then reveal perceived award for ME
     waitForBothThenReveal();
   }
 
