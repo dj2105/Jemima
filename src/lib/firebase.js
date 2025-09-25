@@ -1,64 +1,125 @@
 // /src/lib/firebase.js
-// Firestore + Anonymous Auth. Defaults to your provided config, but allows
-// override from Key Room (JSON). Ensures we are signed in before any writes.
+// Lightweight Firebase initialiser for a static (HTML/JS/CSS) site.
+// Usage:
+//  1) In your browser, set localStorage["firebaseConfig.json"] = JSON.stringify({...})
+//     (Copy the config from Firebase Console → Project Settings → "Your apps" → Web app)
+//  2) Or set window.__FIREBASE_CONFIG__ = { ... } in index.html before loading main.js
+//  3) Call: await initFirebase(); await ensureAuth();
 
-import { initializeApp } from 'firebase/app';
 import {
-  getFirestore, doc, collection, setDoc, getDoc,
-  updateDoc, onSnapshot
-} from 'firebase/firestore';
+  initializeApp, getApps, getApp
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
 import {
-  getAuth, onAuthStateChanged, signInAnonymously
-} from 'firebase/auth';
+  getAuth, signInAnonymously, onAuthStateChanged, connectAuthEmulator
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-// --- Default config (Daniel’s) ---
-const defaultConfig = {
-  apiKey: "AIzaSyBvJcSjv0scpaoGjKZDW93NLK9HvVeuHFo",
-  authDomain: "jemima-asks.firebaseapp.com",
-  projectId: "jemima-asks",
-  storageBucket: "jemima-asks.firebasestorage.app",
-  messagingSenderId: "945831741100",
-  appId: "1:945831741100:web:3b40a06caf863a4f5b4109",
-  measurementId: "G-22H4H6DWXH"
-};
+import {
+  getFirestore, doc, setDoc, getDoc, updateDoc, onSnapshot, collection,
+  serverTimestamp, connectFirestoreEmulator
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-let app, db, auth, authReadyPromise;
+// ---- Internal module state (singleton) ----
+let _inited = false;
+let _app = null;
+export let auth = null;
+export let db = null;
 
-/** Initialise Firebase + Firestore + Anonymous Auth (idempotent). */
-export function initFirebase() {
-  if (db) return db;
-
-  let cfg = defaultConfig;
+// ---- Helpers ----
+function readLocalConfig() {
   try {
-    const saved = JSON.parse(localStorage.getItem('keyRoom') || '{}');
-    if (saved.firebaseConfig) {
-      const parsed = JSON.parse(saved.firebaseConfig);
-      if (parsed && parsed.apiKey && parsed.projectId) cfg = parsed;
-    }
+    const raw = localStorage.getItem("firebaseConfig.json");
+    if (raw) return JSON.parse(raw);
   } catch {}
+  return null;
+}
 
-  app = initializeApp(cfg);
-  db = getFirestore(app);
-  auth = getAuth(app);
+function getConfigOrThrow() {
+  const fromLocal = readLocalConfig();
+  const fromWindow = (typeof window !== 'undefined') ? window.__FIREBASE_CONFIG__ : null;
+  const cfg = fromLocal || fromWindow || null;
+  if (!cfg || !cfg.apiKey || !cfg.projectId) {
+    const hint = `
+No Firebase web config found.
 
-  // Ensure anonymous sign-in (so rules with request.auth != null pass)
-  if (!authReadyPromise) {
-    authReadyPromise = new Promise((resolve) => {
-      onAuthStateChanged(auth, (u) => resolve(u || null));
-      // If no user, sign in anonymously
-      signInAnonymously(auth).catch(() => {/* ignore: onAuthStateChanged will still fire */});
-    });
+How to fix (do either):
+1) Paste your Firebase web config in the browser console:
+   localStorage.setItem("firebaseConfig.json", JSON.stringify({
+     apiKey: "...",
+     authDomain: "...",
+     projectId: "...",
+     appId: "..."
+   }));
+
+2) Or define it before loading /src/main.js:
+   <script>
+     window.__FIREBASE_CONFIG__ = { apiKey:"...", authDomain:"...", projectId:"...", appId:"..." };
+   </script>
+
+Then reload this page.
+`.trim();
+    throw new Error(hint);
   }
-  return db;
+  return cfg;
 }
 
-/** Await auth being available (Anonymous). */
+function usingEmulators() {
+  const isLocal = ['localhost', '127.0.0.1'].includes(location.hostname);
+  const url = new URL(location.href);
+  const p = url.searchParams.get('emu');
+  if (p === '1') return true;
+  if (p === '0') return false;
+  return isLocal; // default: emulator ON when running locally
+}
+
+// ---- Public: init & auth ----
+export async function initFirebase() {
+  if (_inited) return { app: _app, db, auth, doc, setDoc, getDoc, updateDoc, onSnapshot, collection, serverTimestamp };
+
+  const config = getConfigOrThrow();
+
+  _app = getApps().length ? getApp() : initializeApp(config);
+  auth = getAuth(_app);
+  db = getFirestore(_app);
+
+  if (usingEmulators()) {
+    try {
+      connectAuthEmulator(auth, "http://127.0.0.1:9099", { disableWarnings: true });
+      connectFirestoreEmulator(db, "127.0.0.1", 8080);
+      console.info("[firebase] Connected to local emulators (Auth:9099, Firestore:8080). Add ?emu=0 to disable.");
+    } catch (e) {
+      console.warn("[firebase] Emulator connect failed (are they running?)", e);
+    }
+  }
+
+  _inited = true;
+  return { app: _app, db, auth, doc, setDoc, getDoc, updateDoc, onSnapshot, collection, serverTimestamp };
+}
+
+// Anonymous sign-in (idempotent)
 export async function ensureAuth() {
-  if (!authReadyPromise) initFirebase();
-  return authReadyPromise;
+  if (!auth) await initFirebase();
+
+  const user = auth.currentUser;
+  if (user) return user;
+
+  return new Promise((resolve, reject) => {
+    const unsub = onAuthStateChanged(auth, (u) => {
+      if (u) {
+        unsub();
+        resolve(u);
+      }
+    }, reject);
+
+    signInAnonymously(auth).catch((e) => {
+      console.error("[firebase] Anonymous sign-in failed:", e);
+      unsub();
+      reject(e);
+    });
+  });
 }
 
-// Expose helpers
+// Re-export Firestore helpers for convenience
 export {
-  db, doc, collection, setDoc, getDoc, updateDoc, onSnapshot, auth
+  doc, setDoc, getDoc, updateDoc, onSnapshot, collection, serverTimestamp
 };
