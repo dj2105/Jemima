@@ -61,12 +61,17 @@ export default function Generation(ctx = {}) {
   btn.className = 'btn btn-go';
   btn.textContent = 'GO';
   btn.disabled = true;
-  btn.addEventListener('click', async () => {
-    try { await updateDoc(doc(collection(db, 'rooms'), roomCode), { status: 'countdown' }); } catch {}
-    try { localStorage.setItem('advanceNext', 'countdown'); } catch {}
-    location.hash = '#/countdown';
-    return;
-  });
+btn.addEventListener('click', async () => {
+  try {
+    await updateDoc(doc(collection(db, 'rooms'), roomCode), { status: 'countdown' });
+  } catch (e) {
+    // Surface rule errors so we know
+    sub.textContent = 'Could not advance (check Firestore rules / auth). ' + (e.message || e);
+  }
+  try { localStorage.setItem('advanceNext', 'countdown'); } catch {}
+  location.hash = '#/countdown';
+  return;
+});
   row.appendChild(btn);
 
   box.append(title, sub, statusCard, bar, row);
