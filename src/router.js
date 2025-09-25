@@ -1,17 +1,12 @@
 // /src/router.js
-// Strict hash router with safe fallback. Never falls back to Generation.
+// Minimal, explicit hash router for Jemima’s Asking with full route coverage.
+// Uses dynamic imports for views. Stores/resolves a "next route" for Countdown.
+// All routes return a DOM node to mount.
 
-export function startRouter({ mount, initialView }) {
+export function startRouter({ mount, initialView } = {}) {
   const navigate = (hash) => { location.hash = hash; };
 
-  async function fallback() {
-    try {
-      if (initialView) return initialView({ navigate });
-    } catch {}
-    const mod = await import('./views/Lobby.js');
-    return mod.default({ navigate });
-  }
-
+  // Helper: safely parse hash and match a route
   const routes = [
     // Lobby (default)
     {
@@ -23,7 +18,7 @@ export function startRouter({ mount, initialView }) {
       }
     },
 
-    // Host setup
+    // Key Room (host enters keys/config)
     {
       name: 'key',
       re: /^#\/key$/,
@@ -33,73 +28,68 @@ export function startRouter({ mount, initialView }) {
       }
     },
 
-    // Host generation page
+    // Host-only generation (guests watch progress)
     {
       name: 'generate',
-      re: /^#\/(?:gen|generate)$/,
+      re: /^#\/generate$/,
       load: async () => {
         const mod = await import('./views/Generation.js');
         return mod.default({ navigate });
       }
     },
 
-    // Guest path: /join/CODE  (force role=guest and go to Generation watcher)
-    {
-      name: 'join',
-      re: /^#\/join\/([A-Z0-9]{4,6})$/,
-      load: async (_m, code) => {
-        try {
-          localStorage.setItem('lastGameCode', code.toUpperCase());
-          localStorage.setItem('playerRole', 'guest');
-        } catch {}
-        const mod = await import('./views/Generation.js');
-        return mod.default({ navigate });
-      }
-    },
-
-    // Countdown → Q1
+    // Countdown — both players resynchronise here.
+    // It reads localStorage.nextRoute (set by the prior screen) and advances.
     {
       name: 'countdown',
       re: /^#\/countdown$/,
       load: async () => {
         const mod = await import('./views/Countdown.js');
-        return mod.default({ navigate, nextHash: '#/q/1' });
+        return mod.default({ navigate });
       }
     },
 
-    // ===== GAME ROUTES =====
-    // Questions (Rounds 1–5)
+    // Questions Phase (offline): round 1–5
     {
-      name: 'question',
-      re: /^#\/q\/([1-5])$/,
-      load: async (_m, round) => {
-        // If your file is named differently (e.g. Question.js), change the import path below.
+      name: 'round',
+      re: /^#\/round\/([1-5])$/,
+      load: async (_m, roundStr) => {
         const mod = await import('./views/QuestionRoom.js');
-        return mod.default({ navigate, round: Number(round) });
+        return mod.default({ navigate, round: Number(roundStr) });
       }
     },
 
-    // Marking (Rounds 1–5)
+    // Marking Phase (offline): round 1–5
     {
       name: 'marking',
-      re: /^#\/mark\/([1-5])$/,
-      load: async (_m, round) => {
+      re: /^#\/marking\/([1-5])$/,
+      load: async (_m, roundStr) => {
         const mod = await import('./views/MarkingRoom.js');
-        return mod.default({ navigate, round: Number(round) });
+        return mod.default({ navigate, round: Number(roundStr) });
       }
     },
 
-    // Jemima interludes (after R1–R4)
+    // Interludes: after Rounds 1–4
     {
       name: 'interlude',
       re: /^#\/interlude\/([1-4])$/,
-      load: async (_m, idx) => {
+      load: async (_m, idxStr) => {
         const mod = await import('./views/Interlude.js');
-        return mod.default({ navigate, idx: Number(idx) });
+        return mod.default({ navigate, idx: Number(idxStr) });
       }
     },
 
-    // Final results
+    // Jemima’s two maths questions (after Round 5 marking)
+    {
+      name: 'jemima',
+      re: /^#\/jemima$/,
+      load: async () => {
+        const mod = await import('./views/JemimaQuiz.js');
+        return mod.default({ navigate });
+      }
+    },
+
+    // Final Room (perceived vs actual scores)
     {
       name: 'final',
       re: /^#\/final$/,
@@ -107,28 +97,53 @@ export function startRouter({ mount, initialView }) {
         const mod = await import('./views/FinalRoom.js');
         return mod.default({ navigate });
       }
+    },
+
+    // Optional: rejoin route with code
+    {
+      name: 'rejoin',
+      re: /^#\/rejoin\/([A-Z0-9]{4,10})$/,
+      load: async (_m, code) => {
+        // Persist code and bounce to Lobby (or wherever you prefer)
+        try { localStorage.setItem('lastGameCode', code.toUpperCase()); } catch {}
+        const mod = await import('./views/Lobby.js');
+        return mod.default({ navigate });
+      }
     }
   ];
 
-  async function render() {
-    const h = location.hash || '#/';
-    console.debug('[router] hash:', h);
+  function matchRoute(hash) {
     for (const r of routes) {
-      const m = h.match(r.re);
-      if (m) {
-        console.debug('[router] match:', r.name, m.slice(1));
-        try {
-          const node = await r.load(m, ...(m.slice(1)));
-          mount(node);
-        } catch (e) {
-          console.error('[router] load failed for', r.name, e);
-          mount(await fallback());
-        }
+      const m = hash.match(r.re);
+      if (m) return { route: r, match: m };
+    }
+    return null;
+  }
+
+  async function render() {
+    const hash = location.hash || '#/';
+    const m = matchRoute(hash);
+
+    // First render: allow an injected initialView override (tests/dev)
+    if (!m) {
+      if (initialView) {
+        mount(initialView({ navigate }));
         return;
       }
+      const mod = await import('./views/Lobby.js');
+      mount(mod.default({ navigate }));
+      return;
     }
-    console.warn('[router] no route matched; falling back to Lobby');
-    mount(await fallback());
+
+    try {
+      const vnode = await m.route.load(m.match[0], ...m.match.slice(1));
+      mount(vnode);
+    } catch (err) {
+      // Fallback hard to Lobby if a view fails to load
+      console.error('[router] Failed to load route', m.route?.name, err);
+      const mod = await import('./views/Lobby.js');
+      mount(mod.default({ navigate }));
+    }
   }
 
   window.addEventListener('hashchange', render);
