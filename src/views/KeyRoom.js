@@ -85,7 +85,7 @@ export default function KeyRoom(ctx = {}) {
         })
       }),
 
-      // accept extras from your full config
+      // extras
       global: _z.record(_z.any()).optional(),
       delivery_format: _z.record(_z.any()).optional(),
       selection_rules: _z.record(_z.any()).optional(),
@@ -101,6 +101,7 @@ export default function KeyRoom(ctx = {}) {
       runtime_enforcement: _z.record(_z.any()).optional()
     });
 
+    // Extended JMathsSchema
     const NumberSpec = _z.object({
       name: _z.string().min(1),
       min: _z.number().int(),
@@ -116,25 +117,20 @@ export default function KeyRoom(ctx = {}) {
 
     JMathsSchema = _z.object({
       version: _z.literal('jmaths-1'),
-      global: _z.object({
-        language: _z.string().optional(),
-        answerType: _z.literal('integer'),
-        allowZero: _z.boolean().default(false),
-        range: _z.object({ min: _z.number().int(), max: _z.number().int() })
-          .refine(r => r.max >= r.min, { message: 'range.max must be ≥ range.min' })
-      }),
-      passageTemplates: _z.array(Template).min(1),
-      roundPlan: _z.array(_z.object({
-        round: _z.number().int().min(1).max(4),
-        templateId: _z.string().min(1)
-      })).length(4),
-      finalQuestionRecipes: _z.array(_z.object({
-        id: _z.string().min(1),
-        promptPattern: _z.string().min(10),
-        compute: _z.string().min(1)
-      })).length(2)
+      global: _z.record(_z.any()).optional(),
+      passageTemplates: _z.array(Template).min(1).optional(),
+      roundPlan: _z.array(_z.record(_z.any())).optional(),
+      finalQuestionRecipes: _z.array(_z.record(_z.any())).optional(),
+
+      // accept extras like in your pack
+      constraints: _z.record(_z.any()).optional(),
+      beat_library: _z.array(_z.string()).optional(),
+      system_prompt: _z.string().optional(),
+      examples: _z.array(_z.record(_z.any())).optional(),
+      meta: _z.record(_z.any()).optional()
     });
 
+    // SeedSchema (for combined seed)
     const SeedQItem = _z.object({
       q: _z.string().min(6),
       a1: _z.string().min(1),
@@ -251,7 +247,6 @@ export default function KeyRoom(ctx = {}) {
     if (!qv.success) { log('Main Questions config invalid: ' + firstIssue(qv.error), 'error'); return; }
     if (!jv.success) { log('Jemima Maths config invalid: ' + firstIssue(jv.error), 'error'); return; }
 
-    // Init Firebase + Auth
     try {
       log('Initialising Firebase…');
       await initFirebase();
@@ -261,7 +256,6 @@ export default function KeyRoom(ctx = {}) {
       return;
     }
 
-    // Move room to generating
     const roomRef = doc(db, 'rooms', roomCode);
     try {
       await setDoc(roomRef, { state: 'generating' }, { merge: true });
@@ -270,7 +264,6 @@ export default function KeyRoom(ctx = {}) {
       return;
     }
 
-    // Call adapters
     try {
       log('Contacting Gemini for main questions…');
       const { generateSeedQuestions } = await import('/src/adapters/questions-adapter.js');
@@ -280,7 +273,6 @@ export default function KeyRoom(ctx = {}) {
       const { generateJemimaMaths } = await import('/src/adapters/jemima-adapter.js');
       const jSeed = await generateJemimaMaths(jv.data, `${roomCode}-${Date.now()}`);
 
-      // Combine & validate complete seed
       const fullSeed = {
         rounds: qSeed.rounds,
         interludes: jSeed.interludes,
@@ -291,18 +283,15 @@ export default function KeyRoom(ctx = {}) {
         throw new Error('Seed invalid: ' + firstIssue(parsed.error));
       }
 
-      // Write seed atomically + metadata
-      log('Writing seed to Firestore…');
       await setDoc(roomRef, {
         seed: parsed.data,
         meta: {
           configVersions: { qcfg: qv.data.version, jmaths: jv.data.version },
           createdAt: serverTimestamp?.() || new Date(),
-          version: '2025-09-25'
+          version: '2025-09-26'
         }
       }, { merge: true });
 
-      // Start countdown to Round 1
       await setDoc(roomRef, {
         state: 'countdown_r1',
         countdownT0: serverTimestamp?.() || new Date(Date.now() + 3500)
