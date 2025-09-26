@@ -118,7 +118,8 @@ export async function ensureAuth() {
     });
   });
 }
-
+// Handy for debugging in the browser console:
+try { window.__fb = { initFirebase, ensureAuth, auth, db }; } catch {}
 // Re-export Firestore helpers for convenience
 export {
   doc, setDoc, getDoc, updateDoc, onSnapshot, collection, serverTimestamp
