@@ -1,0 +1,6 @@
+CD C:\Users\Spaniel\Downloads\Jemima-main
+
+python -m http.server 8080
+
+firebase emulators:start
+

@@ -1,0 +1,106 @@
+/* styles.css — Poster style: white canvas, oversized titles, bold blocks, minimal chrome */
+
+:root{
+  --bg: #ffffff;
+  --ink: #0d0d0d;
+  --ink-dim:#4a4a4a;
+
+  /* Jemima marquee colours */
+  --hot-pink:#ff2a87;
+  --lime:#18ea4a;
+  --peach:#ffb3c0;
+  --yellow:#ffcc00;
+  --blue:#0066ff;
+
+  --panel:#f5f5f5;
+  --line:#e6e6e6;
+
+  --font-body:"Inter", system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+  --font-display:"Bebas Neue", Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+}
+
+*,
+*::before,
+*::after{ box-sizing:border-box; }
+
+html, body{
+  margin:0; padding:0; min-height:100%;
+  background:var(--bg); color:var(--ink);
+  font-family:var(--font-body);
+}
+
+.wrap{ max-width:900px; margin:0 auto; padding:20px; }
+
+/* TITLES */
+h1,h2,h3{
+  font-family:var(--font-display);
+  letter-spacing:.5px;
+  margin:0 0 .25rem 0;
+  line-height:1;
+}
+h1{ font-size:72px; }
+h2{ font-size:56px; }
+h3{ font-size:36px; }
+
+/* BLOCKS */
+.panel{
+  background:var(--panel);
+  border:4px solid var(--ink);
+  border-radius:12px;
+  padding:16px;
+  margin:18px 0;
+}
+.panel.code-card{
+  background:#fff3; border-style:solid; display:flex; justify-content:center; align-items:center;
+}
+.code-big{
+  font-family:var(--font-display);
+  font-size:120px; letter-spacing:.15em;
+}
+
+/* COUNTDOWN */
+.countdown-number{
+  font-family:var(--font-display);
+  font-size:160px;
+}
+
+/* BUTTONS — poster chips */
+button, .btn{
+  appearance:none; border:none; cursor:pointer; font-family:var(--font-display);
+  font-size:28px; line-height:1; padding:12px 18px; border-radius:10px;
+  color:#000; background:var(--yellow); border:4px solid var(--ink);
+}
+button.secondary{ background:var(--lime); }
+button.ghost{ background:#fff; }
+button:disabled{ opacity:.5; cursor:not-allowed; }
+
+input, textarea{
+  width:100%; padding:12px 14px; border-radius:10px; border:4px solid var(--ink);
+  background:#fff; color:var(--ink); font-size:18px; font-family:var(--font-body);
+}
+.input-field.uppercase{ text-transform:uppercase; }
+
+.row{ display:flex; gap:.75rem; align-items:center; flex-wrap:wrap; }
+.hidden{ display:none; }
+
+.status{ color:var(--ink-dim); font-size:14px; margin:4px 0 0; }
+
+/* Question list */
+.q-list{ display:grid; gap:12px; }
+.qrow{ background:#fff; border:4px solid var(--ink); border-radius:10px; padding:12px; }
+.qprompt{ font-size:22px; font-weight:700; margin:0 0 10px; }
+
+label.radio{
+  display:flex; gap:.5rem; align-items:flex-start; font-size:20px; font-weight:700;
+}
+label.radio input{ width:28px; height:28px; accent-color:#000; }
+
+/* Colour accents you can apply if wanted */
+.block-pink{ background:var(--hot-pink); }
+.block-lime{ background:var(--lime); }
+.block-peach{ background:var(--peach); }
+.block-yellow{ background:var(--yellow); }
+.block-blue{ background:var(--blue); }
+
+/* Links minimal */
+a{ color:#000; font-weight:800; text-decoration:underline; }

@@ -1,0 +1,310 @@
+```json
+{
+  "_comment": "Stipulation: no use of example questions from the prompt may be reused in any part of the generated questions.",
+  "quiz": {
+    "title": "A Peculiar General Knowledge Quiz",
+    "rounds": [
+      {
+        "round_number": 1,
+        "round_title": "Round One: Familiar Territory",
+        "questions": [
+          {
+            "question_number": 1,
+            "prompt": "The world-famous Abbey Road Studios, featured on a classic Beatles album cover, is located in which London borough?",
+            "options": {
+              "A": "City of Westminster",
+              "B": "Borough of Camden"
+            },
+            "correct_answer": "A"
+          },
+          {
+            "question_number": 2,
+            "prompt": "Who is widely credited with inventing the World Wide Web at CERN in 1989?",
+            "options": {
+              "A": "Tim Berners-Lee",
+              "B": "Vint Cerf"
+            },
+            "correct_answer": "A"
+          },
+          {
+            "question_number": 3,
+            "prompt": "Who was the reigning British monarch at the outbreak of the First World War in August 1914?",
+            "options": {
+              "A": "George V",
+              "B": "Edward VII"
+            },
+            "correct_answer": "A"
+          },
+          {
+            "question_number": 4,
+            "prompt": "The malleus, incus, and stapes are three tiny, interconnected bones found in which part of the human body?",
+            "options": {
+              "A": "The middle ear",
+              "B": "The nasal septum"
+            },
+            "correct_answer": "A"
+          },
+          {
+            "question_number": 5,
+            "prompt": "The iconic line, \"Here's looking at you, kid,\" originates from which classic 1942 romantic drama film?",
+            "options": {
+              "A": "Casablanca",
+              "B": "Gone with the Wind"
+            },
+            "correct_answer": "A"
+          },
+          {
+            "question_number": 6,
+            "prompt": "Which of these influential guitarists was a founding member of the rock band Led Zeppelin?",
+            "options": {
+              "A": "Jimmy Page",
+              "B": "Jeff Beck"
+            },
+            "correct_answer": "A"
+          }
+        ]
+      },
+      {
+        "round_number": 2,
+        "round_title": "Round Two: Enthusiast's Collection",
+        "questions": [
+          {
+            "question_number": 1,
+            "prompt": "To be called Blue Stilton, the cheese must be made in one of only three specific English counties, including Leicestershire and which other?",
+            "options": {
+              "A": "Derbyshire or Nottinghamshire",
+              "B": "Somerset or Dorset"
+            },
+            "correct_answer": "A"
+          },
+          {
+            "question_number": 2,
+            "prompt": "The classic dystopian novel 'Fahrenheit 451', about a future where books are outlawed, was written by which American author?",
+            "options": {
+              "A": "Ray Bradbury",
+              "B": "Philip K. Dick"
+            },
+            "correct_answer": "A"
+          },
+          {
+            "question_number": 3,
+            "prompt": "The annual Six Nations Championship in rugby union involves teams from England, Scotland, Wales, Ireland, France, and which other nation?",
+            "options": {
+              "A": "Italy",
+              "B": "Spain"
+            },
+            "correct_answer": "A"
+          },
+          {
+            "question_number": 4,
+            "prompt": "The now-ubiquitous QWERTY keyboard layout was originally patented in 1874 for use on which specific device?",
+            "options": {
+              "A": "The Sholes & Glidden typewriter",
+              "B": "The Creed teleprinter"
+            },
+            "correct_answer": "A"
+          },
+          {
+            "question_number": 5,
+            "prompt": "The Shard, a 95-storey skyscraper that redefined London's skyline, was designed by which celebrated Italian architect?",
+            "options": {
+              "A": "Renzo Piano",
+              "B": "Richard Rogers"
+            },
+            "correct_answer": "A"
+          },
+          {
+            "question_number": 6,
+            "prompt": "Which aircraft was the very first supersonic passenger airliner to enter commercial service, in December 1975?",
+            "options": {
+              "A": "Tupolev Tu-144",
+              "B": "Aérospatiale/BAC Concorde"
+            },
+            "correct_answer": "A"
+          }
+        ]
+      },
+      {
+        "round_number": 3,
+        "round_title": "Round Three: Points of Detail",
+        "questions": [
+          {
+            "question_number": 1,
+            "prompt": "The hugely popular sans-serif typeface Helvetica was designed in 1957 by Max Miedinger and Eduard Hoffmann in which country?",
+            "options": {
+              "A": "Switzerland",
+              "B": "Germany"
+            },
+            "correct_answer": "A"
+          },
+          {
+            "question_number": 2,
+            "prompt": "Commonly used for Ethernet computer networking, Category 5 (Cat 5) cable is defined by which telecommunications standard?",
+            "options": {
+              "A": "TIA/EIA-568-A",
+              "B": "ISO/IEC 8877"
+            },
+            "correct_answer": "A"
+          },
+          {
+            "question_number": 3,
+            "prompt": "The Notting Hill Carnival, a major annual cultural event, has been held on the streets of London over which UK public holiday weekend since 1966?",
+            "options": {
+              "A": "August Bank Holiday",
+              "B": "Spring Bank Holiday (May)"
+            },
+            "correct_answer": "A"
+          },
+          {
+            "question_number": 4,
+            "prompt": "The word 'whisky' is an anglicisation of the Gaelic phrase 'uisce beatha', which has what literal meaning?",
+            "options": {
+              "A": "Water of life",
+              "B": "Spirit of the mountain"
+            },
+            "correct_answer": "A"
+          },
+          {
+            "question_number": 5,
+            "prompt": "The economic theory of 'comparative advantage', which argues for free trade, is most closely associated with which classical economist?",
+            "options": {
+              "A": "David Ricardo",
+              "B": "Adam Smith"
+            },
+            "correct_answer": "A"
+          },
+          {
+            "question_number": 6,
+            "prompt": "The iconic Roland TR-808, whose sounds defined 1980s music, is what specific type of electronic instrument?",
+            "options": {
+              "A": "Rhythm Composer (Drum Machine)",
+              "B": "Bass Line Synthesizer"
+            },
+            "correct_answer": "A"
+          }
+        ]
+      },
+      {
+        "round_number": 4,
+        "round_title": "Round Four: Specialist Subjects",
+        "questions": [
+          {
+            "question_number": 1,
+            "prompt": "The Rosetta Stone, crucial for deciphering ancient Egyptian hieroglyphs, was discovered in 1799 by soldiers from which country's army?",
+            "options": {
+              "A": "France",
+              "B": "Britain"
+            },
+            "correct_answer": "A"
+          },
+          {
+            "question_number": 2,
+            "prompt": "Often called the 'powerhouse' of the cell, which organelle is responsible for generating most of the cell's supply of adenosine triphosphate (ATP)?",
+            "options": {
+              "A": "Mitochondrion",
+              "B": "Ribosome"
+            },
+            "correct_answer": "A"
+          },
+          {
+            "question_number": 3,
+            "prompt": "In Shakespeare's 'Hamlet', the tragic character Ophelia is famously associated with distributing flowers, including which one \"for remembrance\"?",
+            "options": {
+              "A": "Rosemary",
+              "B": "Pansies"
+            },
+            "correct_answer": "A"
+          },
+          {
+            "question_number": 4,
+            "prompt": "In the Irish sport of Gaelic football, how many points is awarded for a goal, scored by putting the ball into the opponent's net?",
+            "options": {
+              "A": "3 points",
+              "B": "2 points"
+            },
+            "correct_answer": "A"
+          },
+          {
+            "question_number": 5,
+            "prompt": "The famous 'Wilhelm scream', a stock sound effect used in countless films, first appeared in which 1951 Western?",
+            "options": {
+              "A": "Distant Drums",
+              "B": "High Noon"
+            },
+            "correct_answer": "A"
+          },
+          {
+            "question_number": 6,
+            "prompt": "Boyle's Law is a gas law stating that the pressure and volume of a gas have what relationship when temperature is held constant?",
+            "options": {
+              "A": "Inverse relationship",
+              "B": "Direct relationship"
+            },
+            "correct_answer": "A"
+          }
+        ]
+      },
+      {
+        "round_number": 5,
+        "round_title": "Round Five: Pin-Point Accuracy",
+        "questions": [
+          {
+            "question_number": 1,
+            "prompt": "For the Apollo 12 lunar mission, the Command Module was given the call sign 'Yankee Clipper'. What was the Lunar Module's call sign?",
+            "options": {
+              "A": "Intrepid",
+              "B": "Aquarius"
+            },
+            "correct_answer": "A"
+          },
+          {
+            "question_number": 2,
+            "prompt": "In classical architecture, what is the term for the application of a slight convex curve to a column to correct the visual illusion of concavity?",
+            "options": {
+              "A": "Entasis",
+              "B": "Volute"
+            },
+            "correct_answer": "A"
+          },
+          {
+            "question_number": 3,
+            "prompt": "The first documented case of a computer 'bug' was a real moth found by Grace Hopper's team in which 1947 electromechanical computer?",
+            "options": {
+              "A": "Harvard Mark II",
+              "B": "ENIAC"
+            },
+            "correct_answer": "A"
+          },
+          {
+            "question_number": 4,
+            "prompt": "In UK building terminology, 'purlins' are horizontal beams used as structural support for which part of a building?",
+            "options": {
+              "A": "The roof",
+              "B": "The foundation"
+            },
+            "correct_answer": "A"
+          },
+          {
+            "question_number": 5,
+            "prompt": "The colour name 'cerulean' is derived from the Latin word 'caeruleus', meaning dark blue, which itself was likely derived from 'caelum', the Latin word for what?",
+            "options": {
+              "A": "Sky",
+              "B": "Sea"
+            },
+            "correct_answer": "A"
+          },
+          {
+            "question_number": 6,
+            "prompt": "The English word 'mortgage' is derived from an Old French legal term that has what literal meaning?",
+            "options": {
+              "A": "Dead pledge",
+              "B": "Great debt"
+            },
+            "correct_answer": "A"
+          }
+        ]
+      }
+    ]
+  }
+}
+```
