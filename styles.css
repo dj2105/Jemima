@@ -1,106 +1,210 @@
-/* styles.css — Poster style: white canvas, oversized titles, bold blocks, minimal chrome */
+/* ===========================
+   Jemima’s Asking — Global UI
+   =========================== */
 
-:root{
-  --bg: #ffffff;
-  --ink: #0d0d0d;
-  --ink-dim:#4a4a4a;
+/* Palette driven by a single hue per view. */
+:root {
+  --ink-h: 210;             /* each view sets this randomly */
+  --ink-s: 60%;
+  --ink-l: 18%;
+  --ink: hsl(var(--ink-h), var(--ink-s), var(--ink-l));
+  --paper: hsl(var(--ink-h), 35%, 96%);
 
-  /* Jemima marquee colours */
-  --hot-pink:#ff2a87;
-  --lime:#18ea4a;
-  --peach:#ffb3c0;
-  --yellow:#ffcc00;
-  --blue:#0066ff;
+  --ok: #2a7f3a;
+  --maybe: #1f2e57;
+  --bad: #b42a2a;
 
-  --panel:#f5f5f5;
-  --line:#e6e6e6;
-
-  --font-body:"Inter", system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
-  --font-display:"Bebas Neue", Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  --radius: 14px;
+  --shadow: 0 8px 24px rgba(0,0,0,.07);
 }
 
-*,
-*::before,
-*::after{ box-sizing:border-box; }
-
-html, body{
-  margin:0; padding:0; min-height:100%;
-  background:var(--bg); color:var(--ink);
-  font-family:var(--font-body);
+/* Global reset-ish */
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: Courier, "Courier New", ui-monospace, Menlo, Consolas, monospace;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-.wrap{ max-width:900px; margin:0 auto; padding:20px; }
+/* Layout */
+#app { padding: 24px 16px; }
 
-/* TITLES */
-h1,h2,h3{
-  font-family:var(--font-display);
-  letter-spacing:.5px;
-  margin:0 0 .25rem 0;
-  line-height:1;
-}
-h1{ font-size:72px; }
-h2{ font-size:56px; }
-h3{ font-size:36px; }
-
-/* BLOCKS */
-.panel{
-  background:var(--panel);
-  border:4px solid var(--ink);
-  border-radius:12px;
-  padding:16px;
-  margin:18px 0;
-}
-.panel.code-card{
-  background:#fff3; border-style:solid; display:flex; justify-content:center; align-items:center;
-}
-.code-big{
-  font-family:var(--font-display);
-  font-size:120px; letter-spacing:.15em;
+.view {
+  max-width: 460px;
+  margin: 0 auto;
 }
 
-/* COUNTDOWN */
-.countdown-number{
-  font-family:var(--font-display);
-  font-size:160px;
+.title {
+  margin: 0 0 12px 0;
+  font-weight: 700;
+  letter-spacing: .5px;
+  text-align: center;
 }
 
-/* BUTTONS — poster chips */
-button, .btn{
-  appearance:none; border:none; cursor:pointer; font-family:var(--font-display);
-  font-size:28px; line-height:1; padding:12px 18px; border-radius:10px;
-  color:#000; background:var(--yellow); border:4px solid var(--ink);
+.card {
+  background: #fff;
+  border: 1px solid var(--ink);
+  border-radius: var(--radius);
+  padding: 16px 14px;
+  box-shadow: var(--shadow);
 }
-button.secondary{ background:var(--lime); }
-button.ghost{ background:#fff; }
-button:disabled{ opacity:.5; cursor:not-allowed; }
 
-input, textarea{
-  width:100%; padding:12px 14px; border-radius:10px; border:4px solid var(--ink);
-  background:#fff; color:var(--ink); font-size:18px; font-family:var(--font-body);
+.mono { font-family: inherit; }
+.mono.small { font-size: .92rem; }
+
+/* Inputs */
+input[type="text"], input[type="number"], .input {
+  font-family: inherit;
+  font-size: 1rem;
+  padding: 10px 12px;
+  border: 1px solid var(--ink);
+  border-radius: 10px;
+  background: #fff;
+  color: var(--ink);
+  width: 100%;
 }
-.input-field.uppercase{ text-transform:uppercase; }
 
-.row{ display:flex; gap:.75rem; align-items:center; flex-wrap:wrap; }
-.hidden{ display:none; }
-
-.status{ color:var(--ink-dim); font-size:14px; margin:4px 0 0; }
-
-/* Question list */
-.q-list{ display:grid; gap:12px; }
-.qrow{ background:#fff; border:4px solid var(--ink); border-radius:10px; padding:12px; }
-.qprompt{ font-size:22px; font-weight:700; margin:0 0 10px; }
-
-label.radio{
-  display:flex; gap:.5rem; align-items:flex-start; font-size:20px; font-weight:700;
+/* Buttons */
+.btn {
+  font-family: inherit;
+  font-size: 1rem;
+  padding: 10px 14px;
+  border: 1px solid var(--ink);
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--paper);
+  cursor: pointer;
+  transition: transform .06s ease, box-shadow .12s ease, background .12s ease, color .12s ease, opacity .12s ease;
 }
-label.radio input{ width:28px; height:28px; accent-color:#000; }
+.btn:hover { transform: translateY(-1px); box-shadow: 0 6px 14px rgba(0,0,0,.08); }
+.btn:disabled { opacity: .45; cursor: default; transform: none; box-shadow: none; }
 
-/* Colour accents you can apply if wanted */
-.block-pink{ background:var(--hot-pink); }
-.block-lime{ background:var(--lime); }
-.block-peach{ background:var(--peach); }
-.block-yellow{ background:var(--yellow); }
-.block-blue{ background:var(--blue); }
+.btn.outline {
+  background: transparent;
+  color: var(--ink);
+}
+.btn.outline:hover:not(:disabled) {
+  background: rgba(0,0,0,.04);
+}
 
-/* Links minimal */
-a{ color:#000; font-weight:800; text-decoration:underline; }
+/* Throbbing state for primary actions */
+@keyframes throb {
+  0%   { transform: translateY(0) scale(1);    box-shadow: 0 0 0 rgba(0,0,0,0); }
+  50%  { transform: translateY(-1px) scale(1.02); box-shadow: 0 6px 18px rgba(0,0,0,.10); }
+  100% { transform: translateY(0) scale(1);    box-shadow: 0 0 0 rgba(0,0,0,0); }
+}
+.btn.throb { animation: throb 1.2s ease-in-out infinite; }
+
+/* Choice buttons in Questions */
+.btn.big {
+  min-width: 180px;
+  padding: 16px 18px;
+  font-weight: 700;
+  border-radius: 14px;
+}
+
+/* Countdown */
+.countdown-big {
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+/* QA lists (Marking) */
+.qa-list { margin-top: 6px; }
+.mark-row { padding: 10px 0 8px; border-bottom: 1px dashed rgba(0,0,0,.15); }
+.mark-row:last-child { border-bottom: none; }
+.q { font-weight: 600; }
+.a { font-weight: 700; margin-top: 6px; }
+
+/* Marking selection buttons (single row) */
+.btn-row .btn { min-width: 92px; }
+
+/* Selected state colours applied programmatically; keep useful fallbacks */
+.btn.outline.active.ok {
+  background: var(--ok);
+  color: var(--paper);
+  border-color: var(--ok);
+}
+.btn.outline.active.maybe {
+  background: var(--maybe);
+  color: var(--paper);
+  border-color: var(--maybe);
+}
+.btn.outline.active.bad {
+  background: var(--bad);
+  color: var(--paper);
+  border-color: var(--bad);
+}
+
+/* Jemima Maths — pinned container slot (box itself styles inline for portability) */
+.jemima-maths-pinned {
+  margin-top: 18px;
+}
+
+/* Lobby specifics (kept minimal) */
+.lobby-title {
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 14px;
+}
+
+.lobby-code-wrap {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: center;
+}
+
+.lobby-code-input {
+  width: 220px; /* a touch wider per your request */
+  text-transform: uppercase;
+  letter-spacing: .25ch;
+  text-align: center;
+}
+
+/* Arrow button for lobby submit */
+.arrow-btn {
+  width: 52px;
+  height: 52px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  border: 2px solid var(--ink);
+  background: transparent;
+  color: var(--ink);
+  cursor: pointer;
+  transition: background .12s ease, color .12s ease, transform .06s ease, box-shadow .12s ease;
+}
+.arrow-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 16px rgba(0,0,0,.08); }
+.arrow-btn:disabled { opacity: .45; cursor: default; box-shadow: none; transform: none; }
+.arrow-btn.ready { animation: throb 1.2s ease-in-out infinite; }
+.arrow-btn.filled { background: var(--ink); color: var(--paper); }
+
+/* Tiny helpers */
+.status { opacity: .8; }
+pre.log {
+  background: #fff;
+  border: 1px dashed var(--ink);
+  border-radius: 12px;
+  padding: 10px;
+  max-height: 180px;
+  overflow: auto;
+}
+.progress-wrap { margin: 12px 0; }
+.progress { height: 8px; border:1px solid var(--ink); border-radius: 999px; padding: 2px; }
+.progress .bar-bg { height: 100%; background: rgba(0,0,0,.06); border-radius: 999px; overflow: hidden; }
+.progress .bar { height: 100%; width: 0%; background: var(--ink); border-radius: 999px; transition: width .25s ease; }
+.status { text-align: center; font-family: inherit; }
+
+/* Links (KeyRoom “Daniel’s entrance”) */
+a, .link { color: var(--ink); text-decoration: underline; text-decoration-thickness: 2px; }
+a:hover, .link:hover { text-decoration: none; }
+
+/* Ensure all headings and controls stay monospace */
+h1,h2,h3,h4, button, input, select, textarea { font-family: inherit; }
