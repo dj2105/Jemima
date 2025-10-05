@@ -147,41 +147,48 @@ export async function safeSetState(code, nextState, extra = {}) {
 export async function claimRoleIfEmpty(code, uid, role = "guest") {
   await initFirebase();
   const ref = roomRef(code);
-  role = role === "host" ? "host" : "guest";
+  const slot = role === "host" ? "host" : "guest";
+  let status = "error";
+  let reason = "unknown";
 
-  let result = { claimed: false, role };
-
-  await _exports.runTransaction(_db, async (tx) => {
-    const snap = await tx.get(ref);
-    if (!snap.exists()) {
-      const meta = role === "host" ? { hostUid: uid, guestUid: "" } : { hostUid: "", guestUid: uid };
-      tx.set(ref, {
-        state: "lobby",
-        round: 1,
-        meta,
-        timestamps: { createdAt: _exports.serverTimestamp(), updatedAt: _exports.serverTimestamp() }
-      });
-      result.claimed = true;
-      return;
-    }
-    const d = snap.data() || {};
-    const hostUid = d?.meta?.hostUid || "";
-    const guestUid = d?.meta?.guestUid || "";
-
-    if (role === "host") {
-      if (!hostUid || hostUid === uid) {
-        tx.update(ref, { "meta.hostUid": uid, "timestamps.updatedAt": _exports.serverTimestamp() });
-        result.claimed = true;
+  try {
+    await _exports.runTransaction(_db, async (tx) => {
+      const snap = await tx.get(ref);
+      if (!snap.exists()) {
+        status = "error";
+        reason = "missing";
+        return;
       }
-    } else {
-      if (!guestUid || guestUid === uid) {
-        tx.update(ref, { "meta.guestUid": uid, "timestamps.updatedAt": _exports.serverTimestamp() });
-        result.claimed = true;
-      }
-    }
-  });
 
-  return result;
+      const data = snap.data() || {};
+      const meta = data.meta || {};
+      const current = meta[`${slot}Uid`] || "";
+
+      if (!current) {
+        tx.update(ref, {
+          [`meta.${slot}Uid`]: uid,
+          "timestamps.updatedAt": _exports.serverTimestamp(),
+        });
+        status = "ok";
+        reason = "claimed";
+        return;
+      }
+
+      if (current === uid) {
+        status = "already-set";
+        reason = "same-uid";
+        return;
+      }
+
+      status = "error";
+      reason = "occupied";
+    });
+  } catch (err) {
+    console.error(`[firebase] claimRoleIfEmpty(${code}, ${slot}) failed:`, err);
+    return { status: "error", reason: "exception", role: slot, code, error: err };
+  }
+
+  return { status, reason, role: slot, code };
 }
 
 export async function getRole(code, uid) {

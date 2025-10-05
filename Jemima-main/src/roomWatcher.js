@@ -23,24 +23,44 @@ function el(tag, attrs = {}, kids = []) {
   return n;
 }
 
-const clampCode = s => String(s||"").trim().toUpperCase().replace(/[^A-Z0-9]/g,"").slice(0,3);
-function getHashParams(){
+const clampCode = (s) => String(s || "").trim().toUpperCase().replace(/[^A-Z0-9]/g, "").slice(0, 3);
+function getHashParams() {
   const raw = window.location.hash || "";
   return new URLSearchParams(raw.split("?")[1] || "");
 }
-function getQueryCode(){ return clampCode(getHashParams().get("code") || ""); }
-function pathFor(state, code, round){
+function getQueryCode() {
+  return clampCode(getHashParams().get("code") || "");
+}
+
+function computeRound(room = {}) {
+  const fromTop = Number(room.round);
+  if (Number.isFinite(fromTop) && fromTop > 0) return fromTop;
+  const fromMeta = Number(room.meta?.round);
+  if (Number.isFinite(fromMeta) && fromMeta > 0) return fromMeta;
+  return 1;
+}
+
+function targetForState(state, code, round) {
   const r = round || 1;
-  switch (String(state||"").toLowerCase()) {
-    case "seeding":    return `#/seeding?code=${code}`;
-    case "countdown":  return `#/countdown?code=${code}&round=${r}`;
-    case "questions":  return `#/questions?code=${code}&round=${r}`;
-    case "marking":    return `#/marking?code=${code}&round=${r}`;
-    case "interlude":  return `#/interlude?code=${code}&round=${r}`;
-    case "award":      return `#/award?code=${code}&round=${r}`;
-    case "final":      return `#/final?code=${code}`;
-    case "lobby":      return `#/lobby`;
-    default:           return null; // unknown/transition → hold
+  switch (String(state || "").toLowerCase()) {
+    case "countdown":
+      return `#/countdown?code=${code}&round=${r}`;
+    case "questions":
+      return `#/questions?code=${code}&round=${r}`;
+    case "marking":
+      return `#/marking?code=${code}&round=${r}`;
+    case "interlude":
+      return `#/interlude?code=${code}&round=${r}`;
+    case "award":
+      return `#/award?code=${code}&round=${r}`;
+    case "maths":
+      return `#/maths?code=${code}`;
+    case "final":
+      return `#/final?code=${code}`;
+    case "lobby":
+      return "#/lobby";
+    default:
+      return null;
   }
 }
 
@@ -50,51 +70,76 @@ function sameRoute(a, b){ return String(a||"") === String(b||""); }
 // Public API if you want to start watching from any view
 export function startRoomWatcher(code, { onState } = {}) {
   const c = clampCode(code);
+  if (!c) {
+    console.warn("[watcher] startRoomWatcher called without code");
+    return () => {};
+  }
+
   let unknownSince = 0;
   let lastPushed = null;
 
-  const stop = onSnapshot(roomRef(c), (snap) => {
-    const d = snap.data() || {};
-    const state = d.state;
-    const round = d.round || 1;
+  const stop = onSnapshot(
+    roomRef(c),
+    (snap) => {
+      if (!snap.exists()) {
+        if (typeof onState === "function") {
+          try { onState({ state: null, round: 1, room: null, exists: false }); } catch {}
+        }
+        if (!unknownSince) unknownSince = Date.now();
+        if (Date.now() - unknownSince > 1500) {
+          const safe = "#/lobby";
+          if (!sameRoute(safe, window.location.hash)) {
+            lastPushed = safe;
+            console.log(`[watcher] state=missing round=1 → nav ${safe}`);
+            window.location.hash = safe;
+          }
+        }
+        return;
+      }
 
-    if (typeof onState === "function") {
-      try { onState({ state, round, room: d }); } catch {}
-    }
+      const room = snap.data() || {};
+      const state = room.state || "";
+      const round = computeRound(room);
 
-    const target = pathFor(state, c, round);
+      if (typeof onState === "function") {
+        try { onState({ state, round, room, exists: true }); } catch {}
+      }
 
-    if (target) {
-      unknownSince = 0;
-      // Only navigate if different from current hash
-      if (!sameRoute(target, window.location.hash)) {
-        // Prevent flapping between same targets
-        if (lastPushed !== target) {
+      if (state.toLowerCase() === "seeding") {
+        unknownSince = 0;
+        return; // stay on watcher with waiting copy
+      }
+
+      const target = targetForState(state, c, round);
+
+      if (target) {
+        unknownSince = 0;
+        if (!sameRoute(target, window.location.hash) && lastPushed !== target) {
           lastPushed = target;
-          // console.debug("[watcher] →", target, "| state:", state, "round:", round);
+          console.log(`[watcher] state=${state || "unknown"} round=${round} → nav ${target}`);
           window.location.hash = target;
         }
+        return;
       }
-      return;
-    }
 
-    // Unknown/transitionary state: wait a bit before sending to lobby
-    if (!unknownSince) unknownSince = Date.now();
-    const elapsed = Date.now() - unknownSince;
-
-    // If the room is genuinely empty/missing state for >1.5s, send to lobby
-    if (elapsed > 1500) {
-      const safe = "#/lobby";
-      if (!sameRoute(safe, window.location.hash)) {
-        lastPushed = safe;
-        window.location.hash = safe;
+      if (!unknownSince) unknownSince = Date.now();
+      if (Date.now() - unknownSince > 1500) {
+        const safe = "#/lobby";
+        if (!sameRoute(safe, window.location.hash)) {
+          lastPushed = safe;
+          console.log(`[watcher] state=${state || "unknown"} round=${round} → nav ${safe}`);
+          window.location.hash = safe;
+        }
       }
+    },
+    (err) => {
+      console.warn("[watcher] snapshot error:", err?.message || err);
     }
-  }, (err) => {
-    console.warn("[watcher] snapshot error:", err?.message || err);
-  });
+  );
 
-  return () => { try { stop(); } catch {} };
+  return () => {
+    try { stop(); } catch {}
+  };
 }
 
 // --- Default export as a minimal "view" for #/watcher?code=XYZ ---
@@ -106,15 +151,23 @@ export default {
     const code = getQueryCode();
     container.innerHTML = "";
     const card = el("div", { class: "card" }, [
-      el("h1", { class: "title" }, "Loading…"),
-      el("div", { class: "mono" }, `Room ${code}`),
+      el("h1", { class: "title" }, "Linking up…"),
+      el("div", { class: "mono" }, code ? `Room ${code}` : "Room unknown"),
       el("div", { class: "mono", id: "wstatus" }, "Waiting for room state…")
     ]);
     container.appendChild(card);
 
     const statusEl = card.querySelector("#wstatus");
     this._stop = startRoomWatcher(code, {
-      onState: ({ state, round }) => {
+      onState: ({ state, round, exists }) => {
+        if (state && state.toLowerCase() === "seeding") {
+          statusEl.textContent = "Waiting for host…";
+          return;
+        }
+        if (!exists) {
+          statusEl.textContent = "Room not found.";
+          return;
+        }
         statusEl.textContent = state
           ? `State: ${state} • Round ${round || 1}`
           : "Waiting for room state…";
@@ -123,5 +176,6 @@ export default {
   },
   async unmount(){
     if (this._stop) this._stop();
+    this._stop = null;
   }
 };
