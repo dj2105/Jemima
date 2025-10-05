@@ -144,6 +144,7 @@ export default {
       patch["timestamps.updatedAt"] = serverTimestamp();
 
       try {
+        console.log(`[flow] submit maths | code=${code} role=${myRole}`);
         await updateDoc(rRef, patch);
         done.disabled = true;
         done.classList.remove("throb");
