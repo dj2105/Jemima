@@ -7,7 +7,7 @@
 
 import {
   initFirebase, ensureAuth,
-  roomRef, getDoc, updateDoc, serverTimestamp
+  roomRef, getDoc, claimRoleIfEmpty
 } from "../lib/firebase.js";
 
 function el(tag, attrs = {}, kids = []) {
@@ -161,40 +161,43 @@ export default {
 
         if (!snap.exists()) {
           setStatus("Room not found. Check the 3-letter code.");
+          console.warn(`[lobby] join code=${code} | room not found`);
           return;
         }
 
-        const room = snap.data() || {};
-        const hostUid = room.meta?.hostUid || null;
-        const guestUid = room.meta?.guestUid || null;
-
-        // Claim guest slot if free (never modify host here)
-        if (hostUid && !guestUid && user.uid !== hostUid) {
-          try {
-            await updateDoc(rRef, {
-              "meta.guestUid": user.uid,
-              "timestamps.updatedAt": serverTimestamp()
-            });
-          } catch (e) {
-            console.warn("Could not claim guest slot (maybe already taken):", e);
-          }
+        let claimResult = { status: "error", reason: "skipped" };
+        try {
+          claimResult = await claimRoleIfEmpty(code, user.uid, "guest");
+        } catch (err) {
+          console.error("[lobby] claimRoleIfEmpty threw:", err);
+          claimResult = { status: "error", reason: "exception" };
         }
 
-        // Robust navigation to watcher
-        const target = `#/watcher?code=${code}`;
-        const before = location.hash;
-        console.log("[Lobby] Navigating to", target, "(was:", before, ")");
-        location.hash = target;
+        console.log(`[lobby] join code=${code} | claimRoleIfEmpty -> ${claimResult.status}`, claimResult.reason ? `(${claimResult.reason})` : "");
 
-        // Fallback: if hash didn’t change for some reason, force it
-        setTimeout(() => {
-          if (location.hash !== target) {
-            console.warn("[Lobby] Hash unchanged; forcing navigation");
-            window.location.assign(target);
+        if (claimResult.status === "error") {
+          if (claimResult.reason === "occupied") {
+            setStatus("Guest slot already taken. Ask Daniel to free it.");
+            return;
           }
-        }, 300);
+          if (claimResult.reason === "missing") {
+            setStatus("Room not found. Check the 3-letter code.");
+            return;
+          }
+          setStatus("Couldn’t claim guest slot. Try again.");
+          return;
+        }
+
+        // Successful claim (or already this device) → route to watcher immediately
+        const target = `#/watcher?code=${code}`;
+        if (location.hash !== target) {
+          location.hash = target;
+        } else {
+          // force router to re-run if hash already matches
+          setTimeout(() => window.dispatchEvent(new HashChangeEvent("hashchange")), 0);
+        }
       } catch (e) {
-        console.error("[Lobby] Join failed:", e);
+        console.error("[lobby] join failed:", e);
         setStatus("Couldn’t join right now. Please try again.");
       }
     }

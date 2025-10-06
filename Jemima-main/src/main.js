@@ -29,7 +29,7 @@ const app = document.getElementById("app");
 let current = { route: "", mod: null, unmount: null };
 
 // Routes that should NOT show the score strip
-const STRIP_EXCLUDE = new Set(["lobby", "keyroom", "seeding", "final"]);
+const STRIP_EXCLUDE = new Set(["lobby", "keyroom", "seeding", "final", "watcher"]);
 
 // Map route -> dynamic import path
 const VIEW_MAP = {
@@ -42,6 +42,7 @@ const VIEW_MAP = {
   award:     () => import("./views/Award.js"),
   maths:     () => import("./views/Maths.js"),
   final:     () => import("./views/Final.js"),
+  watcher:   () => import("./roomWatcher.js"),
 };
 
 function parseHash() {
@@ -59,20 +60,28 @@ function clearNode(node) {
 async function mountRoute() {
   const { route, qs } = parseHash();
   // Guard unknown routes → lobby
-  const load = VIEW_MAP[route] || VIEW_MAP.lobby;
+  const load = VIEW_MAP[route];
+  const actualRoute = load ? route : "lobby";
+  const importer = load || VIEW_MAP.lobby;
+
+  if (!load && route !== "lobby") {
+    console.log(`[router] redirect ${route} -> lobby`);
+  }
+
+  console.log(`[router] mount ${actualRoute}`);
 
   // Unmount old view (if any)
   if (typeof current?.unmount === "function") {
     try { await current.unmount(); } catch {}
   }
-  current = { route, mod: null, unmount: null };
+  current = { route: actualRoute, mod: null, unmount: null };
 
   // Fresh container for the new view
   clearNode(app);
 
   // Load and mount the view
   try {
-    const mod = await load();
+    const mod = await importer();
     const view = mod?.default || mod;
 
     if (!view || typeof view.mount !== "function") {
@@ -84,7 +93,7 @@ async function mountRoute() {
     current.unmount = (typeof view.unmount === "function") ? view.unmount.bind(view) : null;
 
     // Conditionally mount the score strip (not in lobby/keyroom/seeding/final)
-    if (!STRIP_EXCLUDE.has(route)) {
+    if (!STRIP_EXCLUDE.has(actualRoute)) {
       // Prefer code from URL
       const code = (qs.get("code") || "").toUpperCase().replace(/[^A-Z0-9]/g, "").slice(0, 3);
       if (code) {
