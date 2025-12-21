@@ -1,0 +1,2412 @@
+Teams – Refined Markup
+
+T-01 — SILENCE TREATED AS CONSENT: DISPUTED EECONTRACT & BURDEN OF PROOF
+------------------------------------------------------------------------
+Pages: teams01.png, teams02.png
+Page breaks: Page break after page 1 (teams01.png → teams02.png)
+
+Case ID: T-01
+Title: SILENCE TREATED AS CONSENT: DISPUTED EECONTRACT & BURDEN OF PROOF
+Chat name: BILLING SUPPORT CHAT
+Date: FRI 22/08
+Sender: SME 2
+Date / time: 22/08 14:29
+Message: [Quoted] DanielMark Jackson (XBC26 C) 22/08/2025 14:28[Quoted] I didthe comms you shared said "the legal bit" at the very end.
+Sender: SME 2
+Date / time: 22/08 14:30
+Message: also when you click on an order, click "view comms" from the order and scroll down to the date and you will see all comms, its a glitch on the system Everyone
+Sender: Daniel Jackson
+Date / time: 22/08 14:32
+Message: that doesn't prove he agreedyes if we contact a cx with contract info and they dont call in to object it is a binding agreement!ECR (escalations) will always go by if the cx recived comms or not.
+Sender: SME 2
+Date / time: 22/08 14:34
+Message: [Quoted] DanielMark Jackson (XBC26 C) 22/08/2025 14:32[Quoted] My understanding is that EE would need to provide evidence of consentwhere did you get that from? thats known as a burden of proof but we have proof and the proof is we sent email etc notifying them there is a contract is place, a 14 day cooling off period a starts and then contract is set.OfCom wont agree with the cx and an Ombudsman would explain the cx is responsible to read and agree/object to all correspondence from service providers.
+Sender: SME 2
+Date / time: 22/08 14:43
+Message: [Quoted] OfCom wont agree with the cx and an Ombudsman would explain the cx is responsible to read and agree/object to all...Format and process for providing the Contract Summary document1.15 Under Condition C1.5 the Contract Summary needs to be provided before the customer enters into a contract. Under Condition C1.6, a customer's contract can only become effective "once the Relevant Customer has given their Express Consent to enter into the contract after receiving the Contract Summary".
+Sender: Shea Hanton (XBC23 C)
+Date / time: 22/08 14:46
+Message: [Quoted] DanielMark Jackson (XBC26 C) 22/08/2025 14:43[Quoted] [image]customer would have given consent to tick the box to go forward with the package and the customer did so cause they cant override this system. I understand where your coming from but customer clearly got a contract sent and has responsbility on his side to review said contract to make its correct plus verbal agreement would have been on the call
+Sender: Brian Walsh (XBC26 C)
+Date / time: 22/08 14:50
+Message: [Quoted] DanielMark Jackson (XBC26 C) 22/08/2025 14:43[Quoted] [image][image: ABOUT YOUR ORDER]it states thanks for renewing your contract at the top and then gives information below, "what youll pay" is broken down and "the legal bit" at the very bottom.Its ok we can all miss things from time to time and believing we are doing whats best for the cx is a great attribute to have however we must stand firm on our T's and C's and be due diligant in our investigating of accounts ensuring the correct information is being given and no assumptions are made as we can be held by them.I hope this helps and if you have anything further you would like to know or learn about Albert is a great tool or just ask here⸻
+
+T-02 — UNTRACKED HIGH-VALUE CREDITS, LACK OFAUDIT TRAIL OVER £200
+-----------------------------------------------------------------
+Pages: teams04.png
+
+Case ID: T-02
+Title: UNTRACKED HIGH-VALUE CREDITS, LACK OFAUDIT TRAIL OVER £200
+Chat name: BILLING SUPPORT CHAT
+Date: FRI 22/08
+Sender: Daniel Jackson
+Date / time: 22/08 14:56
+Message: [image text unreadable][redacted] has 317.86 outstanding on account, and has been promised multiple times this would be removed. I should resubmit to credit chat? anything we can do to speed things up, considering the delay?
+Sender: SarahJane Fleming (XBC26 C)
+Date / time: 22/08 14:57
+Message: [Quoted] DanielMark Jackson (XBC26 C) 22/08/2025 14:56[Quoted] [redacted] - has 317.86 outstanding on account, and has been promised multiple times this would be removed. I should...your manager would hve to review this and send it off to get applied as it is over £200.00
+Sender: Daniel Jackson
+Date / time: 22/08 15:07
+Message: Noel isn't in today unfortunately. there have been two complaints opened and closed about this already, one closed two months ago, the other closed three months ago. both complaints stated that the credit had been approved and submitted to TL. He's very unhappy
+Sender: SarahJane Fleming (XBC26 C)
+Date / time: 22/08 15:15
+Message: can you follow up with thoases agents , you can still pop it in your teams credit chat even if your TL isnt thereaploigise to the cx set a call bcak to update him⸻
+
+T-03 — ESCALATION REFUSED: MANAGER OVERRIDES“ALBERT” POLICY ON SPEAKING TO A TL
+-------------------------------------------------------------------------------
+Pages: teams05.png
+
+Case ID: T-03
+Title: ESCALATION REFUSED: MANAGER OVERRIDES“ALBERT” POLICY ON SPEAKING TO A TL
+Chat name: NOEL’S TEAM CREDITSOVER 200
+Date: FRI 22/08
+Sender: Daniel Jackson
+Date / time: 22/08 20:32
+Message: Account Number - [redacted]Reason - credit for entire final bill as stated in previous complaints. Issue has been ongoing since april, with two complaints, one closed three months ago, another closed two months ago, both showing promises this would be appliedAmount - £317.86Complaint - [redacted]
+Date: 24 August
+Sender: Daniel Jackson
+Date / time: 24/08 11:00
+Message: Account Number - [redacted]Reason - httc on account, but cx allowed to leave without these due to pci cs issueAmount - £322.36[redacted]
+Chat name: NOEL’S TEAM CREDITSOVER 200
+Date: FRI 31/10
+Sender: Daniel Jackson
+Date / time: 31/10 20:56
+Message: Account Number - [redacted]Reason - httc - there is evidence on account that these will be waivedAmount - 212.66[redacted]⸻
+Case ID: T-03
+Title: ESCALATION REFUSED: MANAGER OVERRIDES“ALBERT” POLICY ON SPEAKING TO A TL
+Chat name: NOEL’S TEAM CREDITSOVER 200
+Date: FRI 22/08
+Sender: Daniel Jackson
+Date / time: 22/08 20:32
+Message: Account Number - [redacted]Reason - credit for entire final bill as stated in previous complaints. Issue has been ongoing since april, with two complaints, one closed three months ago, another closed two months ago, both showing promises this would be appliedAmount - £317.86Complaint - [redacted]
+Date: 24 August
+Sender: Daniel Jackson
+Date / time: 24/08 11:00
+Message: Account Number - [redacted]Reason - httc on account, but cx allowed to leave without these due to pci cs issueAmount - £322.36[redacted]
+Chat name: NOEL’S TEAM CREDITSOVER 200
+Date: FRI 31/10
+Sender: Daniel Jackson
+Date / time: 31/10 20:56
+Message: Account Number - [redacted]Reason - httc - there is evidence on account that these will be waivedAmount - 212.66[redacted]⸻
+
+T-04 — REPEAT CREDIT PROMISES NOT HONOUREDFOLLOWING COMPLAINT CLOSURES
+----------------------------------------------------------------------
+Pages: teams03.png
+
+Case ID: T-04
+Title: REPEAT CREDIT PROMISES NOT HONOUREDFOLLOWING COMPLAINT CLOSURES
+Chat name: BILLING SUPPORT CHAT
+Date: SAT 23/08
+Sender: Daniel Jackson
+Date / time: 23/08 15:49
+Message: any leaders available? [redacted] had a new contract order with complete works discount for 3 months promised, but then not applied. this was cancelled and then replaced with a new order - which also didn't have the discount. I spoke to value and they said there had been an issue with complete works discount not processing properly for technical reasons. she said there was no guidance however, and advised I resolved this as a billing refund. the discount is £55 a month, so 165 in total, This should indeed be applied our end?
+Sender: [Messages between other agents/SMEs – no response to my request]
+Date / time: [time unreadable]
+Message: [Messages between other agents/SMEs – no response to my request]
+Sender: Daniel Jackson
+Date / time: 23/08 16:01
+Message: [Quoted] DanielMark Jackson (XBC26 C) 23/08/2025 15:49[Quoted] any leaders available? [redacted] had a new contract order with complete works discount for 3 months promised, but then not...Anyone available to confirm?
+Sender: [Messages between other agents/SMEs – no response to my request]
+Date / time: [time unreadable]
+Message: [Messages between other agents/SMEs – no response to my request]
+Sender: Jessica ODriscoll (XBC26 C)
+Date / time: 23/08 16:44
+Message: does or doesnt
+Sender: [Messages between other agents/SMEs – no response to my request]
+Date / time: [time unreadable]
+Message: [Messages between other agents/SMEs – no response to my request]
+Sender: Daniel Jackson
+Date / time: 23/08 16:53
+Message: [Quoted] DanielMark Jackson (XBC26 C) 23/08/2025 16:01[Quoted] Anyone available to confirm?I'm still looking for assistance..
+Sender: Jessica ODriscoll (XBC26 C)
+Date / time: 23/08 16:55
+Message: [Quoted] DanielMark Jackson (XBC26 C) 23/08/2025 16:53[Quoted] I'm still looking for assistance..whats up
+
+T-05 — CALL-LISTEN REQUESTS DELAYED AND MINIMALGUIDANCE, CUSTOMER OUTCOMES AFFECTED
+-----------------------------------------------------------------------------------
+Pages: teams06.png, teams07.png, teams08.png
+Page breaks: Page break after page 1 (teams06.png → teams07.png); Page break after page 2 (teams07.png → teams08.png)
+
+Case ID: T-05
+Title: CALL-LISTEN REQUESTS DELAYED AND MINIMALGUIDANCE, CUSTOMER OUTCOMES AFFECTED
+Chat name: NOEL’S MIS-SELL CHAT
+Date: SUN 24/08
+Sender: Daniel Jackson
+Date / time: 24/08 12:14
+Message: Account Number [redacted]Name:[redacted]Number contacted on:[redacted]Summary (as detailed as possible):bt broadband contract was renewed on this call, but cx adamant this was not agreed. Also, unlimited minutes was replaced with pay per call, which has resulted in call charges which cx is looking to have refunded if it's concluded this was done without consentAgent Ein and Name:[redacted]Time and Date of call :29 May 2025 at 15:20Complaint raised (Y/N)yAction Scheduled for call back (Y/N)y try both [redacted]am on holiday 26aug-4sept. Could someone call cx to discuss result when available?Thank you
+Sender: Daniel Jackson
+Date / time: 24/08 12:45
+Message: Account Number [redacted]Name:[redacted]Number contacted on:[redacted]Summary (as detailed as possible):informed guide on call 27 sept 2024 that she didn't want the price he was offering as it was too high. she perceived this interaction to be sufficient to instigate account closure with no further action from her. account has remained active since then, unknown to her. she only found out recently she has paid monthly bills to bt. very unhappy account was not closed and seeks refunds of service charges since sept 2024.I went through with her that it seems unlikely she will have a strong case. I explained that refusing an offer as too expensive is unlikely to be regarded as a cancellation, or be seen as cause for any refunds. dsar raisedAgent Ein and Name:[redacted]Time and Date of call :27 Sep 2024 at 12:50Complaint raised (Y/N) - yAction Scheduled for call back (Y/N) - y 4 sept when I return from holiday I agreed I wou;d send sms start of shift and call 6pm - 7pm
+Sender: Daniel Jackson
+Date / time: 24/08 18:45
+Message: Account Number:[redacted]Name:[redacted]Number contacted on:[redacted]Summary (as detailed as possible):didn't request account closure, only informed us he was moving out. he had planned to pay off account month by month and avoid being landed with lump httc. was he advised the account would close and he would be charged httc?Agent Ein and Name:[redacted]Time and Date of call :17 Jun 2025 at 16:54Complaint raised (Y/N)yAction Scheduled for call back (Y/N)y - I'm on holiday till 4th Sept. advised cx another agent would contact him when results are known, although also advised I would check on 4th this had been completed
+Sender: Daniel Jackson
+Date / time: 24/08 19:04
+Message: Account Number:[redacted]Name:[redacted]Number contacted on:[redacted]Summary (as detailed as possible):has no knowledge of a new contract being agreed. new contract begun with bt->ee regradeAgent Ein and Name:[redacted]Time and Date of call :18 Dec 2024 at 10:08Complaint raised (Y/N)yAction Scheduled for call back (Y/N)y⸻
+Case ID: T-05
+Title: CALL-LISTEN REQUESTS DELAYED AND MINIMALGUIDANCE, CUSTOMER OUTCOMES AFFECTED
+Chat name: SME DM
+Date: FRI 05/09
+Sender: Daniel Jackson
+Date / time: 05/09 18:55
+Message: While I have you, I just wanted to check - do you know why none of my calls from 24th August, which I flagged in Noel's mis-sell chat, have been reviewed yet?
+Sender: SME
+Date / time: [time unreadable]
+Message: [Quoted] DanielMark Jackson (XBC26 C) 05/09/2025 18:55[Quoted] While I have you, I just wanted to check - do you know why none of my calls from 24th August, which I flagged...jesus no idea, i just got added in there, saw there is 2 that defo cant be listened to as they are in 2024
+Sender: Daniel Jackson
+Date / time: 05/09 18:58
+Message: I thought there was potential to go back a year? Anyway, I'm not put responsibility on you, I just wanted to check there wasn't something I'd missed
+Chat name: NOEL’S MIS-SELL CHAT
+Date: FRI 12/09
+Sender: Noel Curran (XBC26 C)
+Date / time: 12/09 15:46
+Message: [Quoted] DanielMark Jackson (XBC26 C) 24/08/2025 12:14[Quoted] Account Number: [redacted][Quoted] contacted on: [redacted] Summary (as detailed as possible):b...Agent has left a business so can no longer get the call, customer was sent the order Confirmation which mentions Pay as you go calls going onto the package, customer can request DSAR if they are unhappy with resolutionJDanielMarkackson (XBC26 C)
+Sender: Noel Curran (XBC26 C)
+Date / time: [time unreadable]
+Message: [Quoted] DanielMark Jackson (XBC26 C) 24/08/2025 12:45[Quoted] Account Number: [redacted] Number[Quoted] contacted on: [redacted] Summary (as detailed as...Call is too far back, customer would need to state I would like to close my account or something along those lines to. the contract ending would not mean the account closing, i would offer a month as GWG but thats would be most I would offer to herDanielMark Jackson (XBC26 C)
+Sender: Noel Curran (XBC26 C)
+Date / time: 12/09 16:33
+Message: [Quoted] DanielMark Jackson (XBC26 C) 24/08/2025 18:45[Quoted] Account Number:[redacted] Number[Quoted] contacted on:[redacted] Summary (as detailed as...unable to find this call as agent is located in India, listened to the call before from the 13th agent Customer was looking to place home move order, but needed to cancel aot that was currently Active, cx was to call up the following day and place home move order, looking at notes from 17th agent only cancelled AOT no home move order was placed DanielMark Jackson (XBC26 C)
+Sender: Noel Curran (XBC26 C)
+Date / time: 12/09 17:01
+Message: [Quoted] DanielMark Jackson (XBC26 C) 24/08/2025 19:04[Quoted] Account Number:[redacted][Quoted] contacted on:[redacted] Summary (as detailed as possible):h...Call was to far back to be listened to, customer would have gotten order confirmation and could have used 14 day cooling off to call up and dispute package DanielMark Jackson (XBC26 C) can raise dsar if needed⸻
+Case ID: T-05
+Title: CALL-LISTEN REQUESTS DELAYED AND MINIMALGUIDANCE, CUSTOMER OUTCOMES AFFECTED
+Chat name: NOEL’S MIS-SELL CHAT
+Date: FRI 12/09
+Sender: Noel Curran (XBC26 C)
+Date / time: 12/09 16:33
+Message: [Quoted] DanielMark Jackson (XBC26 C) 24/08/2025 18:45[Quoted] Account Number [redacted] Number[Quoted] contacted on: [redacted] Summary (as detailed as...unable to find this call as agent is located in India, listened to the call before from the 13th agent Customer was looking to place home move order, but needed to cancel aot that was currently Active, cx was to call up the following day and place home move order, looking at notes from 17th agent only cancelled AOT no home move order was placed DanielMark Jackson (XBC26 C)
+Sender: Noel Curran (XBC26 C)
+Date / time: 12/09 17:02
+Message: [Quoted] Noel Curran (XBC26 C) 12/09/2025 16:33[Quoted] unable to find this call as agent is located in India, listened to the call before from the 13th agent Customer was looking to place...what needs to be established then is what caused the httc to be applied
+Sender: Noel Curran (XBC26 C)
+Date / time: 12/09 17:43
+Message: HTTC was applied because he never placed the home move and who ever went into the property took over the line which closed his account
+Sender: Noel Curran (XBC26 C)
+Date / time: 12/09 18:17
+Message: [Quoted] Noel Curran (XBC26 C) 12/09/2025 17:43[Quoted] HTTC was applied because he never placed the home move and who ever went into the property took over the line which closed h...in which case, not being able to find the call where the home move order wasn't placed could prove an issue. if cx claims they did place the order then the fact people took over his line when they moved in would be bt's responsibility. But, I think what cx is arguing is that he never requested it to be moved, planning then to pay bills instead of getting lump sum httc. if that's the case, then would it be bt's responsibility to have explained the risk of a takeover happening, or the fact it happened would be considered cx's responsibility?
+Sender: Noel Curran (XBC26 C)
+Date / time: 12/09 18:25
+Message: if a request to take over an account comes in, the customer would need to call up to place cancellation, he was aware that someone was after moving into the property and had already requested a takeover before, so he knew it could happen again. the notes indicate the all that happened on the 17th was the cancelled the first takeover request. if he disputes it you can raise a DSAR request to grab the call but there was never a home move order placed and from the fact that he wanted to pay off the current service at the property he didnt want a home move either as a home move would have put him into a new contract
+Sender: Daniel Jackson
+Date / time: 12/09 18:38
+Message: my report back to cx should be that the httc stand as they are, and if he would like to dispute that, he will have to do so after receiving results of a dsar request, ok?
+Sender: Noel Curran (XBC26 C)
+Date / time: 12/09 18:39
+Message: ya i would only be raising a dsar if he requests one though,⸻
+
+T-06 — PREMATURE COMPLAINT CLOSURE ANDSUSTAINED LACK OF MANAGERIAL SUPPORT
+--------------------------------------------------------------------------
+Pages: teams09.png, teams10.png, teams11.png, teams12.png, teams15.png
+Page breaks: Page break after page 1 (teams09.png → teams10.png); Page break after page 2 (teams10.png → teams11.png); Page break after page 3 (teams11.png → teams12.png); Page break after page 4 (teams12.png → teams15.png)
+
+Case ID: T-06
+Title: PREMATURE COMPLAINT CLOSURE ANDSUSTAINED LACK OF MANAGERIAL SUPPORT
+Chat name: NOEL’S TEAM CREDITSOVER 200
+Date: MON 25/08
+Sender: Daniel Jackson
+Date / time: 25/08 12:49 Edited
+Message: Account Number - [redacted]Reason - 28th mar - 15th may comp as agreed by ECRAmount - 213.50Complaint - [redacted][image text unreadable]Please send to bank. If possible, leave complaint open as requested by cx until it's confirmed she has it in her bank account. I'll follow this up when I'm back 4th Sept. Thanks!
+Chat name: NOEL CURRAN DM
+Date: THUR 04/09
+Sender: Noel Curran
+Date / time: 04/09 13:05
+Message: I see this was rejected. what happens next?[Quoted] DanielMark Jackson (XBC26 C) 25/08/2025 12:49[Quoted] Account Number - [redacted][Quoted] Reason - 28th mar - 15th may comp as agreed by ECR[Quoted] Amount - 213.50[Quoted] Complaint - [redacted][Quoted] [image text unreadable][Quoted] Please send to bank. If possible, leave complaint open as requested by cx until it's confirmed she has it in her bank account. I'll follow this up when I'm back 4th Sept. Thanks!
+Sender: Daniel Jackson
+Date / time: 04/09 15:25
+Message: Hi Noel. the last overdue action is regarding a call listen which it seems I didn't raise. Not sure what happened there, sorry.[redacted]I've listened to the call myself and it's pretty long so can't be absolutely sure, but seems to confirm what cx is claiming. she's being charged 68.99 for bb and tv and understood it would be 66.99. it was all promised inc phone at 13, total promised was 79.99, and I've just confirmed with mobile she is paying 13.[image text unreadable]Where does that leave us? I should raise call listen?
+Sender: Noel Curran (XBC26 C)
+Date / time: 04/09 15:57
+Message: credit the difference⸻
+Case ID: T-06
+Title: PREMATURE COMPLAINT CLOSURE ANDSUSTAINED LACK OF MANAGERIAL SUPPORT
+Chat name: KASSIE CAULFIELD DM
+Date: FRI 05/09
+Sender: Daniel Jackson
+Date / time: 05/09 17:18
+Message: [Quoted] DanielMark Jackson (XBC26 C) 05/09/2025 17:17[Quoted] I've found this credit request has been rejected, in spite of noel arranging it with ecr before it was posted. Can someone tell me...ill have a look 2 sec
+Sender: Daniel Jackson
+Date / time: 05/09 17:19
+Message: thanks kassie
+Sender: Kassie Caulfield (XBC26 C)
+Date / time: [time unreadable]
+Message: hey, so the customer has disputed the final offer, then it will need to go to ECREditedso pop it back over to noel to arange
+Sender: Daniel Jackson
+Date / time: 05/09 17:21
+Message: They haven't disputed it:From: [redacted]Sent: 25 August 2025 10:46To: DanielMark Jackson (XBC26 C) danielmark.jackson@ee.co.ukSubject: Re: EE Complaint ProcessSent from my iPhoneOn 22 Aug 2025, at 07:59, [redacted] wrote:Morning Daniel,Yes we will accept the additional £213.50 as long as it is credited into our bank account.You have worked hard for us and I thank you for all you have done.Please confirm when this will be creditedRegards[redacted]Sent from my iPhoneOn 21 Aug 2025, at 19:32, danielmark.jackson@ee.co.uk wrote:GeneralDear [redacted]Thanks so much for your patience while I've been looking into this further with my team leader.We've reviewed your case again, and EE are now prepared to offer an additional £213.50. This has been worked out based on the period from 28 March to 15 May. I know you had asked for £300, and I do appreciate why, but I should be upfront that this new figure is our final offer.If you'd rather not accept this, the next step would be to arrange a call with a manager so they can go through things with you directly. If you'd like to do that, just send me an email with a time that suits you. A manager can be available tomorrow between 1pm and 7pm, or at the weekend between 10am and 4pm.Kind regards,DanielEE Home Billing
+Sender: Kassie Caulfield (XBC26 C)
+Date / time: 05/09 17:23
+Message: if they have accepted then pop it into your credit chat
+Sender: Daniel Jackson
+Date / time: 05/09 17:24
+Message: I have, and it's been rejected
+Sender: Kassie Caulfield (XBC26 C)
+Date / time: 05/09 17:26
+Message: did you leave a details note and complaint,⸻
+Case ID: T-06
+Title: PREMATURE COMPLAINT CLOSURE ANDSUSTAINED LACK OF MANAGERIAL SUPPORT
+Chat name: KASSIE CAULFIELD DM
+Date: FRI 05/09
+Sender: Daniel Jackson
+Date / time: 05/09 17:18
+Message: [Quoted] DanielMark Jackson (XBC26 C) 05/09/2025 17:17[Quoted] I've found this credit request has been rejected, in spite of noel arranging it with ecr before it was posted. Can someone tell me...ill have a look 2 sec
+Sender: Daniel Jackson
+Date / time: 05/09 17:19
+Message: thanks kassie
+Sender: Kassie Caulfield (XBC26 C)
+Date / time: [time unreadable]
+Message: hey, so the customer has disputed the final offer, then it will need to go to ECREditedso pop it back over to noel to arange
+Sender: Daniel Jackson
+Date / time: 05/09 17:21
+Message: They haven't disputed it:From: [redacted]Sent: 25 August 2025 10:46To: DanielMark Jackson (XBC26 C) danielmark.jackson@ee.co.ukSubject: Re: EE Complaint ProcessSent from my iPhoneOn 22 Aug 2025, at 07:59, [redacted] wrote:Morning Daniel,Yes we will accept the additional £213.50 as long as it is credited into our bank account.You have worked hard for us and I thank you for all you have done.Please confirm when this will be creditedRegards[redacted]Sent from my iPhoneOn 21 Aug 2025, at 19:32, danielmark.jackson@ee.co.uk wrote:GeneralDear [redacted]Thanks so much for your patience while I've been looking into this further with my team leader.We've reviewed your case again, and EE are now prepared to offer an additional £213.50. This has been worked out based on the period from 28 March to 15 May. I know you had asked for £300, and I do appreciate why, but I should be upfront that this new figure is our final offer.If you'd rather not accept this, the next step would be to arrange a call with a manager so they can go through things with you directly. If you'd like to do that, just send me an email with a time that suits you. A manager can be available tomorrow between 1pm and 7pm, or at the weekend between 10am and 4pm.Kind regards,DanielEE Home Billing
+Sender: Kassie Caulfield (XBC26 C)
+Date / time: 05/09 17:23
+Message: if they have accepted then pop it into your credit chat
+Sender: Daniel Jackson
+Date / time: 05/09 17:24
+Message: I have, and it's been rejected
+Sender: Kassie Caulfield (XBC26 C)
+Date / time: 05/09 17:26
+Message: did you leave a details note and complaint,⸻
+Case ID: T-06
+Title: PREMATURE COMPLAINT CLOSURE ANDSUSTAINED LACK OF MANAGERIAL SUPPORT
+Chat name: KASSIE CAULFIELD DM
+Date: FRI 05/09
+Sender: Daniel Jackson
+Date / time: 05/09 17:35
+Message: I had this conversation with noel[image: Quote]I included that screenshot in the credit requestIt was accepted in credit chat by noel with a thumbs up.I go to check it' been applied and find this[image: System screenshot]
+Sender: Daniel Jackson
+Date / time: [time unreadable]
+Message: Perhaps that note isn't related to my request, but it's taking a very long time to process if not
+Chat name: KASSIE CAULFIELD DM
+Date: MON 08/09
+Sender: [Left Aligned / Kassie Caulfield]
+Date / time: 08/09 12:37
+Message: Hi Kassie, I haven't actually got any further with this yet. Would you be able to have a look please?
+Date: 25 September
+Chat name: BILLING SUPPORT CHAT
+Date: MON 08/09
+Sender: Daniel Jackson
+Date / time: 08/09 17:41
+Message: this is the forth attempt I have made since Thursday to get help regarding this. I have found the credit promised by ECR via Noel has been rejected. What happens next?[Quoted] DanielMark Jackson (XBC26 C) 25/08/2025 12:49[Quoted] Account Number -GB31254814[Quoted] Reason - 28th mar - 15th may comp as agreed by ECR[Quoted] Amount - 213.50[Quoted] Complaint - VOL013-972303130928[Quoted] [image][Quoted] Please send to bank. If possible, leave complaint open as requested by cx until it's confirmed she has it in her bank account. I'll follow this up when I'm back 4th Sept. Thanks!
+Sender: SME
+Date / time: 08/09 17:49
+Message: Noel is back tomorrow.
+Sender: SME
+Date / time: 08/09 17:50
+Message: [Quoted] [time unreadable] 2025 17:49[Quoted] Noel is back tomorrow.I'm off till Thursday,,⸻
+Case ID: T-06
+Title: PREMATURE COMPLAINT CLOSURE ANDSUSTAINED LACK OF MANAGERIAL SUPPORT
+Chat name: NOEL CURRAN DM
+Date: MON 08/09
+Sender: Daniel Jackson
+Date / time: 08/09 20:56
+Message: [Quoted] DanielMark Jackson (XBC26 C) 04/09/2025 13:05[Quoted] I see this was rejected. what happens next?Noel, I tried raising this multiple times over the last week seeking help, but didn't get anywhere. the customer is understandably restless. I haven't told them that the credit has been rejected, but I can't be totally sure that the credit rejection in notes is for the credit which had been offered by ecr. I'm out till Thursday now. I have told customer that the will be notified as soon as there is news. I have been communicating with Jane, account holders wife, as requested by account holder. Thank you
+Chat name: NOEL CURRAN DM
+Date: MON 08/09
+Sender: Noel Curran (XBC26 C)
+Date / time: 09/09 14:39
+Message: [Quoted] DanielMark Jackson (XBC26 C) 08/09/2025 20:56[Quoted] Noel, I tried raising this multiple times over the last week seeking help, but didn't get anywhere. the customer is understandably...going forward, if I am after putting a thumbs up on the credit that means it is done, that doesn't mean that you get to share anything from our conversations to any other chat / team leader, If you looked at the notes on the account you could see that i raised off the Auto comp form for this case. it is out of my control when that credit gets applied.
+Chat name: NOEL CURRAN DM
+Date: THUR 11/09
+Sender: Daniel Jackson
+Date / time: 11/09 15:32
+Message: Hi Noel,This is a difficult message to send as I'm new to the team and don't want to start by raising problems, but I do need to be honest.Thanks for replying, though I was a little confused by your message. What had left me frustrated was not hearing back when I first asked last week, and knowing I wouldn't get a response for another week because of our shifts. I want to be clear - I never mentioned this to other staff or framed it as an issue caused by you. In the original request and notes I explained that, due to the customer's past dissatisfaction, I'd committed to keep the complaint open until they confirmed the credit had landed.I saw you raised the comp and gave it a thumbs up, but refused auto-comp requests now follow a new procedure, and it was that "what happens next?" point I was trying to clarify. When I shared our conversation in the credit chat, it was only to provide context - never to undermine you.Unfortunately this is just one of a number of dead ends I'm facing, and it's causing me a lot of stress which is affecting my logins and offline time. I've raised these difficulties with Shannon Williamson and Jessica O'Driscoll but haven't had any real support. This isn't a criticism of you - I've only had about 1.5 days working with you since joining your team, and without support in your absence I've been left stuck.I do have a one-to-one with you tomorrow, and if you'd prefer to cover this then I'm happy to wait. I just wanted to explain where I'm coming from today. I'm confident I can get past this and learn from it, and I really would like a good working relationship with you and colleagues. I hope neither this message nor my difficulties stand in the way of that.
+Sender: Noel Curran (XBC26 C)
+Date / time: 11/09 15:36
+Message: I will speak about this in the 1-1 tomorrow
+Sender: Daniel Jackson
+Date / time: 11/09 15:37
+Message: ok, thank you
+Chat name: NOEL’S TEAM
+Date: FRI 12/09
+Sender: Noel Curran (XBC26 C)
+Date / time: [time unreadable]
+Message: All offline has been removed today lads due to absence, Please watch codes today. take all breaks and lunches on time and try not to go over. no high uses of ACW either today Everyone
+Chat name: NOEL CURRAN DM
+Date: FRI 12/09
+Sender: Daniel Jackson
+Date / time: 12/09 14:01
+Message: my one-to-one is still on peopleware but it's not happening?
+Sender: Noel Curran (XBC26 C)
+Date / time: 12/09 14:02
+Message: ya nothing will be updated on Peopleware anymore it will be updated through kronos⸻
+Case ID: T-06
+Title: PREMATURE COMPLAINT CLOSURE ANDSUSTAINED LACK OF MANAGERIAL SUPPORT
+Chat name: NOEL CURRAN DM
+Date: MON 22/09
+Sender: Noel Curran (XBC26 C)
+Date / time: 22/09 13:48
+Message: [redacted] Why did you reopen this complaint, this needs to be closed ASAP, the credit has gone on the complaint has been open way too long
+Sender: Daniel Jackson
+Date / time: 22/09 13:55
+Message: [image]Please can you arrange the credit to our account that has been done today for £213.50 to be paid into our bank account asap. please do not close the complaint until this has been sorted.Regards.
+Chat name: NOEL CURRAN DM
+Date: THUR 25/09
+Sender: Noel Curran (XBC26 C)
+Date / time: 25/09 15:35
+Message: I'm in acw as I have some questions about accounts I need to ask you.first one is about [redacted] the account with the open complaint you asked me about. A week ago I sent the request for the refund to did, using consumer. But there's no record of this on the billing history and I haven't heard from customer to say it's arrived. would you expect it to show in billing history?[image: YOUR BILLS AND MORE]
+Sender: Daniel Jackson
+Date / time: 25/09 15:35
+Message: [Quoted] DanielMark Jackson (XBC26 C) 25/09/2025 15:35[Quoted] I'm in acw as I have some questions about accounts I need to ask you. first one is about [redacted] the account with the open...this complaint needs to be closed by Sunday at the latest, raise a Group billing to issue the refund back
+Sender: Noel Curran (XBC26 C)
+Date / time: 25/09 16:08
+Message: [Quoted] Noel Curran (XBC26 C) 25/09/2025 16:00[Quoted] this complaint needs to be closed by Sunday at the latest, raise a Group billing to issue the refund backI'm doing the group billing now . I calculate it should be for 369.74, but I don't think there's any way to confirm this? And it seems unlikely this will arrive before Sunday. cx has been very clear throughout that she is not giving permission for complaint to close until they have the money. You're saying I should close it on sunday whatever the situation?⸻
+
+T-07 — PUBLIC TASK LIST: CAPITALISED WARNINGSCREATE PRESSURE CULTURE
+--------------------------------------------------------------------
+Pages: teams14.png
+
+Case ID: T-07
+Title: PUBLIC TASK LIST: CAPITALISED WARNINGSCREATE PRESSURE CULTURE
+Chat name: NOEL’S TEAM
+Date: TUE 02/09
+Sender: Noel Curran (XBC26 C)
+Date / time: 02/09 13:24
+Message: All these Actions are Overdue, HOW can we have so many, dont set call backs if your are not going to complete them. we literally spoke about FCR yesterday lads.[redacted] these must be closed today or else I will be documenting, this level for 3 agents is crazy[Image: Table showing overdue billing actions for various agents]
+Chat name: NOEL’S TEAM
+Date: WED 15/10
+Sender: Noel Curran (XBC26 C)
+Date / time: 15/10 16:06 IMPORTANT
+Message: Everyone these are the current open complaints, Can we please review all these attached to you name and see if we can get any one over 3 days closed[Image: Table showing open complaints assigned to agents]
+Chat name: NOEL’S TEAM
+Date: FRI 17/10
+Sender: Noel Curran (XBC26 C)
+Date / time: 17/10 10:57
+Message: [Image: Table showing percentages/stats]Our complaints % for yesterday was 13%. This is a Joke lads, now more than ever do we need to be focusing on opening complaints where possible. I am 100% certain that there could have been more complaints raised⸻
+
+T-08 — TL ADVISES SENDING CUSTOMER AWAY WITHOUTCOMPLAINT OWNERSHIP
+------------------------------------------------------------------
+Pages: teams13.png
+
+Case ID: T-08
+Title: TL ADVISES SENDING CUSTOMER AWAY WITHOUTCOMPLAINT OWNERSHIP
+Chat name: NOEL CURRAN DM
+Date: THUR 04/09
+Sender: Daniel Jackson
+Date / time: 04/09 15:50
+Message: [image: System notes][redacted] moved to ee from o2 1 year ago. order placed in store. was told it would be a line takeover i.e. o2 services would stop, but he's just received a letter from o2 demanding £60, and they say services are still active. He's sending me that letter later today. On the order it does say working line takeover, but order wasn't completed that way. Connections say this is down to openreach. CX had to go, I said I would call back with info when I receive the o2 bill. What should I say happens next?
+Sender: Noel Curran (XBC26 C)
+Date / time: 04/09 15:54
+Message: the customer needs to go back to O2 and cancel the account, and once they have the final bill come back to us then
+
+T-09 — EARLY WARNINGS OF WORKLOAD DISTRESSACKNOWLEDGED BUT NOT ACTED UPON
+-------------------------------------------------------------------------
+Pages: teams16.png
+
+Case ID: T-09
+Title: EARLY WARNINGS OF WORKLOAD DISTRESSACKNOWLEDGED BUT NOT ACTED UPON
+Chat name: JESSICA O’DRISCOLL DM
+Date: FRI 05/09
+Sender: Jessica ODriscoll (XBC26 C)
+Date / time: 05/09 15:06
+Message: he'll enjoy it there, he likes a good moan.
+Sender: Daniel Jackson
+Date / time: 05/09 15:06
+Message: While I've got you here, I really need to make clear to someone that I'm struggling without noel here - and our temp ll having been withdrawn today. since being on noel's team i've have almost no opportunity to talk to him, partly because I was on al for a week. I've got a backlog of issues and have overdue actions I'm being chased about.
+Sender: Jessica ODriscoll (XBC26 C)
+Date / time: 05/09 15:07
+Message: ok and are the actions for callbacks that youre waiting on a call listen update?
+Sender: Daniel Jackson
+Date / time: 05/09 15:09
+Message: some of them
+Sender: Jessica ODriscoll (XBC26 C)
+Date / time: 05/09 15:11
+Message: unfortunately the SMEs covering were put back onto calls, as absence is so bad. you can always ask for guidance in the support chat and the rest of us will support wherever we can, but i will make Noel aware that there are some issues
+Sender: Daniel Jackson
+Date / time: 05/09 15:56
+Message: ok, thank you
+Chat name: JESSICA O’DRISCOLL DM
+Date: FRI 05/09
+Sender: Shannon Williamson (XBC26 C)
+Date / time: 06/09 10:28
+Message: Hi Danielwere you late logging in?
+Sender: Shannon Williamson (XBC26 C)
+Date / time: 06/09 10:39
+Message: ?
+Sender: Daniel Jackson
+Date / time: 06/09 10:40
+Message: I was, yes
+Sender: Shannon Williamson (XBC26 C)
+Date / time: 06/09 10:40
+Message: what time did you log in and what was the reason you were late?
+Sender: Daniel Jackson
+Date / time: 06/09 11:00
+Message: Excuse me if I'm a bit prickly about this. I also know I could have avoided this situation by logging in on time. But the truth is I'm struggling at the moment. I was moved to Noel's team on 18 August, and I've only had 1.5 days when he's been in (although I was on holiday 1 week) and no support other than the group chat at all other times. I've got a backlog of things I need advice about, some of which I've raised in the group chat and not received feedback about, or only received very vague guidance which puts me in a difficult position with customers. I've got call listens which haven't been done from mid august, and the whole thing is very stressful. I'm well aware it's not how infosys wish me to handle the situation, but after punching in at 9am, I delayed logging in as I looked though some outstanding issues in the hope of getting them resolved. Not that it really helped. I reached out to Jessica O'Drisscoll about this yesterday, and all she said was that I can use the group chat and she'll tell Noel about it (which is of little benefit in my attempts of help customers now)
+Sender: Shannon Williamson (XBC26 C)
+Date / time: 06/09 11:01
+Message: I apologise you feel like that let me flag this aspaasap
+Sender: Daniel Jackson
+Date / time: 06/09 11:01
+Message: thank you
+Chat name: NOEL CURRAN DM
+Date: THURS 16/10
+Sender: Noel Curran
+Date / time: 16/10 17:05
+Message: Hi Daniel, Can i just ask where you were for the last 3 hours ?[image: Jackson, DanielMark 00:34:34]this is your total time online today, this is completely unacceptable, did you make contact with either the sick line or the IT webex ?
+Sender: Daniel Jackson
+Date / time: 16/10 17:05
+Message: I'm quite sure my silence isn't helping, I'm just struggling to know how to explain. I'm not justifying going awol or expecting any sympathy, but there are aspects of this job which I'm finding particularly difficult. Is there a time we could talk?
+Sender: Noel Curran (XBC26 C)
+Date / time: 16/10 18:49
+Message: I will put in a meeting for tomorrow morning
+Sender: Daniel Jackson
+Date / time: 16/10 19:18
+Message: ok, thank you⸻
+
+T-10 — ESCALATION REJECTED PENDING BILL, AGENTIGNORED AND LEFT UNSUPPORTED
+--------------------------------------------------------------------------
+Pages: teams17.png
+
+Case ID: T-10
+Title: ESCALATION REJECTED PENDING BILL, AGENTIGNORED AND LEFT UNSUPPORTED
+Chat name: BILLING SUPPORT CHAT
+Date: SUN 07/09
+Sender: Daniel Jackson
+Date / time: 07/09 17:15
+Message: [image: Bill estimate][redacted] is it possible to find out what these termination charges are for? this is next bill estimate
+Sender: Jason Campbell (XBC26 C)
+Date / time: 07/09 17:16
+Message: Check orders - Anything being ceased ?
+Sender: Daniel Jackson
+Date / time: 07/09 17:18
+Message: no, just a new package contract. he had bb with us already, and moved tv to us. I suspect a new bb contract was begun, creating these charges. but can't find a way to confirm
+Sender: Jason Campbell (XBC26 C)
+Date / time: 07/09 17:19
+Message: in that case we would have to wait for the bill to be produced to see for certain
+Sender: Daniel Jackson
+Date / time: 07/09 17:19
+Message: thank you
+Sender: Jason Campbell (XBC26 C)
+Date / time: 07/09 17:29 Edited
+Message: [Quoted] Jason Campbell (XBC26 C) 07/09/2025 17:19[Quoted] in that case we would have to wait for the bill to be produced to see for certainhe would like to escalate. He thinks it's unacceptable for someone to have it indicated that they will face a £395 charge and have to wait a month to find out what will happen about it. he mentioned ofcom. having said that, he's a very nice charming man
+Sender: Keelyn Ryan (XBC26 C)
+Date / time: 07/09 17:36
+Message: is the cease charges an error ? we cant do anything until that bill is out
+Sender: Daniel Jackson
+Date / time: 07/09 17:37
+Message: [Quoted] I guess it is an error[Quoted] DanielMark Jackson (XBC26 C) 07/09/2025 17:18[Quoted] no, just a new package contract. he had bb with us already, and moved tv to us. I suspect a new bb contract was begun, creating...he has actually gone, I said someone would contact him tomorrow, but I'm sure he'll take a call now if you'd like to take it on⸻
+
+T-11 — DIFFICULTY AND DELAY TO ACHIEVEVULNERABLE ESCALATION
+-----------------------------------------------------------
+Pages: teams18.png, teams20.png, teams22.png
+Page breaks: Page break after page 1 (teams18.png → teams20.png); Page break after page 2 (teams20.png → teams22.png)
+
+Case ID: T-11
+Title: DIFFICULTY AND DELAY TO ACHIEVEVULNERABLE ESCALATION
+Chat name: BILLING SUPPORT CHAT
+Date: MON 08/09
+Sender: Daniel Jackson
+Date / time: 08/09 14:33
+Message: I have an escalation. are you available Eamonn or someone else?
+Sender: Eamonn OShea (XBC26 C)
+Date / time: 08/09 14:34
+Message: [Quoted] DanielMark Jackson (XBC26 C) 08/09/2025 14:33[Quoted] I have an escalation. are you available Eamonn or someone else?What is the query?
+Sender: Daniel Jackson
+Date / time: 08/09 14:36
+Message: [redacted] He says he paid a deposit without proper explanation of what would happen with it. There's a complaint closed about it but 1. cx says the complaint didn't acknowledge that the money was taken without proper explanation and 2. the complaint was closed without consent
+Sender: Eamonn OShea (XBC26 C)
+Date / time: 08/09 14:38
+Message: [Quoted] DanielMark Jackson (XBC26 C) 08/09/2025 14:36[Quoted] He says he paid a deposit without proper explanation of what would happen with it. There's a complaint closed about it...Deposit is paid at the point of sale, comms sent to confirm...follow Albert, if within 90 days, get call listened too...
+Sender: Eamonn OShea (XBC26 C)
+Date / time: 08/09 14:39
+Message: Going on an Escalation Call...not within 90 days
+Sender: SME 1
+Date / time: 08/09 14:40
+Message: was the complaint in relation to the deposit DanielMark Jackson (XBC26 C)
+Sender: Daniel Jackson
+Date / time: 08/09 14:41
+Message: [Quoted] Chloe KennedyMurphy (XBC26 C) 08/09/2025 14:40[Quoted] was the complaint in relation to the deposit DanielMark Jackson (XBC26 C)yes
+Sender: SME 1
+Date / time: 08/09 14:41 Edited
+Message: and is it because he hasn't got the deposit back that he's complaining or?
+Sender: Daniel Jackson
+Date / time: 08/09 14:42
+Message: yes. he says it was requested on the basis they needed it to provide service, but wasn't told it could be kept for so long. last they were told jan 2026
+Sender: SME 1
+Date / time: 08/09 14:44
+Message: A deposit is kept because of a bad credit score etc. thats why some accounts require a deposit when getting set up and that deposit refund date is depending on if you stay up to date with your bills -reviewing the account and CX has had numerous late payment charges and failed DD etc that we have issued multiple credits forthat would push back on the deposit so unfortunately thats why its taking so long to be issued back
+Sender: Daniel Jackson
+Date / time: 08/09 14:46 Edited
+Message: I understand that and have explained. their point is they were advised it would be returned much sooner and at no point was it explained that it could be kept so long. they are listed vulnerablethey're also very unhappy with bt in general, equipment which has been charged and not received, and callbacks promised byt never received
+Sender: SME 2
+Date / time: 08/09 14:54 Edited
+Message: [Quoted] DanielMark Jackson (XBC26 C) 08/09/2025 14:44[Quoted] A deposit is kept because of a bad credit score etc. thats why some accounts require a deposit when getting set up and that...from what i've seen they've changed it now so everyone has to pay £20 deposit when making a new EE account. Bad credit just pay more
+Case ID: T-11
+Title: DIFFICULTY AND DELAY TO ACHIEVE
+VULNERABLE ESCALATION
+Chat name: BILLING SUPPORT CHAT
+Date: MON 08/09
+Sender: Daniel Jackson
+Date / time: 08/09 14:55
+Message: co-pilot says: Thanks for the context—your messages in blue show you’re actively handling the customer's concerns. Based on what's been shared, here's a quick breakdown to help you decide whether a team leader (TL) should step in:
+🤝 When TL Involvement Might Be Needed
+* "Escalation Request": If the customer explicitly asks to speak to a manager or TL.
+* "Unresolved Frustration": The customer is clearly unhappy with BT, feels misled about the deposit refund timeline, and has experienced delays due to credit checks. If they're losing trust or becoming irate, a TL might help de-escalate.
+* "Policy Exception or Compensation": If the customer is requesting something outside standard process—like early refund or compensation—a TL may need to approve or explain the decision.
+* "Repeated Issues": If this isn't the first time the customer has contacted BT about this and feels ignored or bounced around, TL involvement can show accountability.
+✅ When You Might Handle It Yourself
+* If the customer is still engaging calmly and you're able to explain the situation clearly.
+* If you've already offered next steps (e.g., submitting the auto compensation form) and they're receptive.
+* If you're confident the issue can be resolved without needing higher authority.
+You're doing a solid job navigating a tricky situation. If you feel the customer's trust is slipping or they're asking for something you can't authorize, escalating to TL is the right move.
+Sender: Eamonn OShea (XBC26 C)
+Date / time: 08/09 15:12
+Message: [Quoted] Eamonn OShea (XBC26 C) 08/09/2025 14:35
+[Quoted] What is the query?
+Have you query resolved or do you need additional support?
+Sender: Eamonn OShea (XBC26 C)
+Date / time: 08/09 15:13
+Message: [Quoted] Eamonn OShea (XBC26 C) 08/09/2025 15:12
+[Quoted] Have you query resolved or do you need additional support?
+I need additional support
+Sender: Daniel Jackson
+Date / time: [time unreadable]
+Message: the details are all in this chat
+Sender: Eamonn OShea (XBC26 C)
+Date / time: 08/09 15:13
+Message: [Quoted] DanielMark Jackson (XBC26 C) 08/09/2025 15:13
+[Quoted] I need additional support
+https://infosys.webex.com/meet/[redacted]
+[image: Infosys Webex link preview]
+Chat name: EAMONN OSEA DM
+Date: MON 08/09
+Sender: Daniel Jackson
+Date / time: 08/09 16:09
+Message: Eamonn, I've just come back from my break and about to call the customer back. Really I don't think that I have anything to add to when I last spoke to them, and certainly I don't have anything to present which gives an answer to either of their primary moans i.e. evidence of information communicated about deposit and (which we didn't discuss earlier) the failed promises given by agents that they will be called back, and coupled with that the fact the complaint was closed without permission given by customer , and no evidence that attemts were made to contact them.
+I'm going to feel a little silly calling back regarding the request to speak to a manager, if I am then unable to progress the case forward and am then left with the same request to speak to a manager.
+What do you think?
+Sender: Eamonn OShea (XBC26 C)
+Date / time: 08/09 16:26
+Message: Did you raise a DSAR?
+Sender: Daniel Jackson
+Date / time: 08/09 16:27
+Message: I haven't no. I will do that now.
+Sender: Daniel Jackson
+Date / time: 08/09 16:34 Edited
+Message: ok, done
+Sender: Eamonn OShea (XBC26 C)
+Date / time: 08/09 16:38
+Message: Did you also raise a Group Billing?
+Case ID: T-11
+Title: DIFFICULTY AND DELAY TO ACHIEVE
+VULNERABLE ESCALATION
+Chat name: EAMONN OSEA DM
+Date: MON 08/09
+Sender: Daniel Jackson
+Date / time: 08/09 16:40
+Message: no. how would you suggest I present it on group billing form, that I'm advocating for a refund?
+Sender: Daniel Jackson
+Date / time: 08/09 16:49
+Message: I don't feel I have the authority for me to make the request. As you said, there's little chance it will be accepted. And as a delaying tactic, having spoken to the complainers, I think it will only aggravate matters
+Sender: Daniel Jackson
+Date / time: 08/09 17:22
+Message: I called the customer as promised and reiterated the current deposit policy and refund timeline. During the call, I acknowledged the lack of documented communication and the customer's concerns around misinformed expectations. As discussed, I've raised a DSAR request on the customer's behalf to allow them access to any relevant call recordings or data from the past 12 months.
+While the account holder, Rick, has learning difficulties, I've been speaking with Fiona, a registered third party on the account, following explicit verbal consent from Rick during the initial call. Fiona has been the primary point of contact throughout the complaint and is acting on Rick's behalf. Although I understand that any formal resolution may require direct contact with the account holder, I recommend proceeding with Fiona for now to ensure clarity and accessibility.
+The customer appreciated the transparency and is awaiting further contact from a manager, as previously requested. Please let me know if you're able to take the callback forward or if further action is needed on my side.
+Sender: Eamonn OShea (XBC26 C)
+Date / time: 08/09 17:27
+Message: What is the account number?
+Sender: Daniel Jackson
+Date / time: 08/09 17:28
+Message: [redacted]
+I reopened the complaint. what shall i do with it?
+Sender: Eamonn OShea (XBC26 C)
+Date / time: 08/09 19:40
+Message: I'll follow up...
+Sender: Daniel Jackson
+Date / time: 08/09 19:40
+Message: thank you
+
+T-12 — Case ID:
+---------------
+Pages: teams21.png
+
+Case ID: T-12
+Title: VULNERABLE CUSTOMER SUPPORT:
+SAFEGUARDING NOT ADDRESSED
+Chat name: BILLING SUPPORT CHAT
+Date: FRI 12/09
+Sender: Daniel Jackson
+Date / time: 12/09 19:26
+Message: is there a tl available please?
+Sender: Eamonn OShea (XBC26 C)
+Date / time: 12/09 19:37
+Message: [Quoted] DanielMark Jackson (XBC26 C) 12/09/2025 19:26
+[Quoted] is there a tl available please?
+What is the query?
+Sender: Daniel Jackson
+Date / time: 12/09 19:46
+Message: [redacted] I've been speaking to an elderly lady who described herself as bedbound. I think it's fair to say she probably has dementia. There is currently a home move order on her account, which will cease her broadband and landline. She has no knowledge of the transfer, and has been very argumentative. From speaking to her, I think it's clear that if the landline cancels on 3rd oct, as scheduled, this will cause her problems. However, she has now hung up the phone, saying that I was talking rubbish, and saying there must be some sort of phantom at bt. I feel if there is a duty of care to customers, bt should take action to make sure she doesn't lose her landline.
+Sender: Eamonn OShea (XBC26 C)
+Date / time: 12/09 19:53
+Message: [Quoted] DanielMark Jackson (XBC26 C) 12/09/2025 19:46
+[Quoted] [redacted] I've been speaking to an elderly lady who described herself as bedbound. I think it's fair to say she probably has...
+I'll check the account!!!
+Sender: Daniel Jackson
+Date / time: 12/09 19:54
+Message: thank you ☺️
+Sender: Eamonn OShea (XBC26 C)
+Date / time: 12/09 20:05 Edited
+Message: If the customer does not want the service to stop, there is an AOT on this account, call the customer, click on open order, pop down to the bottom right, as seen below & cancel AOT...It's straight forward...
+Also, you did NOT raise a complaint on behalf of the customer!!!
+[image: Cancel/replace wizard button and Cancel Other Summary dialog]
+Sender: Daniel Jackson
+Date / time: 12/09 20:06
+Message: could we chat in webex?
+Chat name: EAMONN OSEA DM
+Date: FRI 12/09
+Sender: Daniel Jackson
+Date / time: 12/09 19:58
+Message: regarding Kate Maree, there are other details it would be worth me relaying you're taking it further
+Sender: Daniel Jackson
+Date / time: 12/09 20:17
+Message: Lost sound there
+Sender: Daniel Jackson
+Date / time: [time unreadable]
+Message: The problem I have is that she was saying very clearly that she does want to cancel the broadband. I guess the answer there though is just to pass to loyalty
+Sender: Daniel Jackson
+Date / time: 12/09 20:30
+Message: thank you. actually she didn't answer. I can try again tomorrow. thankfully I found she has right to exit due to pci cs issue, which makes life easier!
+Sender: Eamonn OShea (XBC26 C)
+Date / time: 12/09 20:33
+Message: That's fine, we only offer 1 call back, leave a note on the account to inform the next Guide, what the customer needs to do...
+If you have an open complaint, 3 attempts to contact customer...
+My systems crashed whilst speaking to you...
+⸻
+
+T-13 — Case ID:
+---------------
+Pages: teams19.png
+
+Case ID: T-13
+Title: INTERNATIONAL ADD-ON MIS-SELL CONCERN: NO
+CALL-LISTEN ROUTE, LIMITED RESEARCH TIME
+Chat name: BILLING SUPPORT CHAT
+Date: SAT 13/09
+Sender: Daniel Jackson
+Date / time: 13/09 13:54
+Message: [image] [redacted] says he was sold unlimited and international with promise it included international mobile calls. He called when he'd been billed for international mobile in July and had the charges waived on the basis they should have been included (see above), and was promised these would not be billed in the future. However, further research confirms mobile calls are not included in plan. What can I offer customer as resolution?
+Sender: Daniel Jackson
+Date / time: [time unreadable]
+Message: [Quoted] I'm going on lunch now, contacting cx with an answer later)
+Sender: Jason Campbell (XBC26 C)
+Date / time: 13/09 14:05
+Message: [Quoted] DanielMark Jackson (XBC26 C) 13/09/2025 13:54
+[Quoted] [image] [redacted] he was sold unlimited and international with promise it included international mobile calls. He called when he'...
+That needs to go to mobile for that if they were misold on mobile - Not us 🤨
+Sender: Daniel Jackson
+Date / time: 13/09 14:29
+Message: It's not mobile. It's digital home phone
+Sender: Jason Campbell (XBC26 C)
+Date / time: 13/09 14:31
+Message: wait is this about calling mobile from landline or international calls
+Sender: Daniel Jackson
+Date / time: 13/09 14:31 Edited
+Message: don't quite understand your question. It's about international calls from a landline
+he has call pack unlimited and international
+Sender: Jason Campbell (XBC26 C)
+Date / time: 13/09 14:32
+Message: sorry i am confused by the last part of your message
+[image: er research confirms mobile calls are not included in plan. What]
+Sender: Daniel Jackson
+Date / time: 13/09 14:33
+Message: what's your confusion?
+to mobiles
+Sender: Jason Campbell (XBC26 C)
+Date / time: 13/09 14:34
+Message: Ahh like interational mobile call
+Sender: Daniel Jackson
+Date / time: 13/09 14:34
+Message: yes
+Sender: Jason Campbell (XBC26 C)
+Date / time: 13/09 14:34
+Message: i get it now 🤩 - sorry
+Sender: Daniel Jackson
+Date / time: 13/09 14:34
+Message: that's ok ☺️
+Sender: Jason Campbell (XBC26 C)
+Date / time: 13/09 14:36 Edited
+Message: Mobiles are no included in the international plan - So customer can call Landline to landline but not landline to mobile
+There are only 5 countries : Bahamas, Canada, Hong Kong, San Marino and USA where mobiles are included in the plan
+Sender: Daniel Jackson
+Date / time: 13/09 14:50 Edited
+Message: Yes, that's what I had established. My question is what I should say to [redacted] who says he was promised calls to international mobiles would be included with plan when he took it out (although this promise hasn't been confirmed) and was then promised they were included when he called in July. On that call he had the charges for calls to international mobiles waived and the notes confirm agent promised (incorrectly) that calls to international mobiles shouldn't be charged (see below)
+Sender: Jason Campbell (XBC26 C)
+Date / time: 13/09 15:22
+Message: [Quoted] DanielMark Jackson (XBC26 C) 13/09/2025 14:50
+[Quoted] Yes, that's what I had established. My question is what I should say to [redacted] who says he was promised calls to international...
+Nothing much we can do if the customer is calling mobiles other then the ones I listed - Customer would be liable for charges
+
+T-14 — Case ID:
+---------------
+Pages: teams24.png
+
+Case ID: T-14
+Title: MIS-ADVICE CONFIRMED, NO REMEDY OR
+ESCALATION GUIDANCE
+Chat name: NOEL’S MIS-SELL CHAT
+Date: SUN 14/09
+Sender: Daniel Jackson
+Date / time: 14/09 11:13
+Message: Account Number [redacted]
+Name [redacted]
+Number contacted on [redacted]
+Summary (as detailed as possible):CX was told she could downgrade to 500mbps for 32.99 at any time when she took out contract, but this has since been refused. says She was told this near beginning of call.
+Agent Ein and Name:[redacted]
+Tayyab) [redacted]
+Time and Date of call :05 May 16:52
+Complaint raised (Y/N)y
+Action Scheduled for call back (Y/N)y
+Sender: Noel Curran (XBC26 C)
+Date / time: 18/09 18:31
+Message: [Quoted] DanielMark Jackson (XBC26 C) 14/09/2025 11:13
+[Quoted] Account Number: [redacted] Name: [redacted]
+[Quoted] Number contacted on: [redacted]...
+customer was advised that would be able to downgrade service at any point
+DanielMark Jackson (XBC26 C)
+Chat name: NOEL CURRAN DM
+Date: FRI 19/09
+Sender: Daniel Jackson
+Date / time: [time unreadable]
+Message: any news on cx request to end contract? [redacted]
+Sender: Noel Curran (XBC26 C)
+Date / time: 19/09 18:55
+Message: rang ECR they said that we could cover any HTTC for the account if a new one was openned
+Sender: Daniel Jackson
+Date / time: 19/09 18:57
+Message: ok, but not if she doesn't open a new account?
+Sender: Noel Curran (XBC26 C)
+Date / time: 19/09 18:57
+Message: she would have to if she wants to downgrade
+Sender: Daniel Jackson
+Date / time: 19/09 19:00
+Message: her question when I called her was if this gave her the right to leave without charges.
+Sender: Noel Curran (XBC26 C)
+Date / time: 19/09 19:01
+Message: ya
+Sender: Daniel Jackson
+Date / time: 19/09 19:02
+Message: yes it does?
+Date: 22 September
+Sender: Daniel Jackson
+Date / time: 22/09 12:54
+Message: Hi Noel. Hope you had a good weekend. I wasn't sure where the messages above left us. She can or cannot leave without termination fees?
+Sender: Noel Curran (XBC26 C)
+Date / time: 22/09 12:54
+Message: ye can leave without fees
+Sender: Daniel Jackson
+Date / time: 22/09 12:54
+Message: great, thank you.
+
+T-15 — ⸻Case ID:
+----------------
+Pages: teams23.png, teams25.png
+Page breaks: Page break after page 1 (teams23.png → teams25.png)
+
+⸻
+Case ID: T-15
+Title: 35 MINUTE WAIT FOR SUPPORT FOLLOWED BY TL
+ATTEMPT TO DEFLECT ESCALATION
+Chat name: KEELYN RYAN DM
+Date: SAT 20/09
+Sender: Keelyn Ryan (XBC26 C)
+Date / time: 20/09 12:30
+Message: what's up
+[Quoted] DanielMark Jackson (XBC26 C) 20/09/2025 12:03
+[Quoted] is a leader available for an escalation please?
+Sender: Daniel Jackson
+Date / time: 20/09 12:32
+Message: ah! hi, thank you. one moment please
+GB32933379
+she's had various issues since joining, and wants to speak to a manager about being mis-sold package as 'unified'
+she received a notification that ee would take 58.34 from account, but didn't know what for
+I've established it's mobile, and gone through all costs with her
+but she also has issues around her broadband
+and isn't happy at prospect of going through to mobile, she feels it should all be dealt with in one go
+Chat name: BILLING SUPPORT CHAT
+Date: SAT 20/09
+Sender: Kassie Caulfield (XBC26 C)
+Date / time: 20/09 12:37
+Message: whats the issue
+keelyn was looking at this, but I may have missed her...
+[image text unreadable]
+Sender: SME
+Date / time: 20/09 12:38
+Message: will have to go across to mobile we do not have any mobile access you will have to simply explain politely
+Sender: Kassie Caulfield (XBC26 C)
+Date / time: 20/09 12:39
+Message: [Quoted] DanielMark Jackson (XBC26 C) 20/09/2025 12:37
+[Quoted] keelyn was looking at this, but I may have missed her... [image]
+yes he will need to go to mobile, the BB acc with us is ceased
+Sender: Daniel Jackson
+Date / time: 20/09 12:40
+Message: but she also has problems concerning her broadband. she doesn't feel she should have been charged at all. so if I sent her to mobile there would be unresolved issues
+and she has said in no uncertain terms that she wants to speak to a manager
+Sender: Kassie Caulfield (XBC26 C)
+Date / time: 20/09 12:41
+Message: [Quoted] DanielMark Jackson (XBC26 C) 20/09/2025 12:40
+[Quoted] but she also has problems concerning her broadband. she doesn't feel she should have been charged at all. so if I sent her to mobile...
+what wrong with the BB, the final bill was in credit, do we owe her money back?
+Sender: Daniel Jackson
+Date / time: 20/09 12:42
+Message: yes, but only 18.66 in credit and she paid 34.99
+Sender: Kassie Caulfield (XBC26 C)
+Date / time: 20/09 12:43
+Message: [Quoted] DanielMark Jackson (XBC26 C) 20/09/2025 12:42
+[Quoted] yes, but only 18.66 in credit and she paid 34.99
+do we owe money back though?
+Sender: Daniel Jackson
+Date / time: 20/09 12:44
+Message: she argues that her service was so poor she wants a full refund
+she's been waiting over 40 minutes to speak to a manager
+Sender: Kassie Caulfield (XBC26 C)
+Date / time: 20/09 12:45
+Message: [Quoted] DanielMark Jackson (XBC26 C) 20/09/2025 12:44
+[Quoted] she argues that her service was so poor she wants a full refund
+yah just had a look at the notes, ill agree to dispute the rest of the bill, but she really need to be passed to mobile for the other issue
+Case ID: T-15
+Title: 35 MINUTE WAIT FOR SUPPORT FOLLOWED BY TL
+ATTEMPT TO DEFLECT ESCALATION
+Chat name: BILLING SUPPORT CHAT
+Date: SAT 20/09
+Sender: Daniel Jackson
+Date / time: 20/09 12:47
+Message: [Quoted] if you feel that's the correct course of action after a 45 minute wait to speak to a manager, then I will tell her
+I can tell her we'll refund the full 34.99?
+Sender: Kassie Caulfield (XBC26 C)
+Date / time: 20/09 12:49
+Message: [Quoted] DanielMark Jackson (XBC26 C) 20/09/2025 12:47
+[Quoted] if you feel that's the correct course of action after a 45 minute wait to speak to a manager, then I will tell her
+im sorry Daniel im only back from my lunch i was not here when you put it in the chat first. The issue really is with her mobile , i have no problem applying the rest of the credit, and that will resolve the issue on our end, i can take the call if needed but will be passing her to mobile ?
+Sender: Daniel Jackson
+Date / time: 20/09 12:51
+Message: Personally, I think it would be appropriate for you to speak to her. she's just hung up. Would you like me to say you will speak to her when I call her back or not?
+Sender: Kassie Caulfield (XBC26 C)
+Date / time: 20/09 12:53
+Message: [Quoted] DanielMark Jackson (XBC26 C) 20/09/2025 12:51
+[Quoted] Personally, I think it would be appropriate for you to speak to her. she's just hung up. Would you like me to say you will speak to her...
+just pass me the details ill call her myself
+Sender: Daniel Jackson
+Date / time: 20/09 12:54
+Message: called her back just before you replied. she's on the line now. I can pass her over or you'd rather call back?
+Sender: Kassie Caulfield (XBC26 C)
+Date / time: 20/09 12:54
+Message: [Quoted] DanielMark Jackson (XBC26 C) 20/09/2025 12:54
+[Quoted] called her back just before you replied. she's on the line now. I can pass her over or you'd rather call back?
+tell her ill give her a call in 2 mins pass me the details
+⸻
+⸻
+
+T-16 — ⸻Case ID:
+----------------
+Pages: teams27.png
+
+⸻
+Case ID: T-16
+Title: VULNERABLE HIGH BILL DISPUTE, LIMITED
+EMPATHY
+Chat name: BILLING SUPPORT CHAT
+Date: SUN 28/09
+Sender: Daniel Jackson
+Date / time: 28/09 09:56
+Message: I didn't get an answer yesterday, and have set callback for this morning: [redacted]
+Hello. I have a 96 year old lady who has been with bt for over 50 years, landline only, and has just received a bill for 258.15, much to her dismay. Her family have recently got rid of their landline, and they had told her that calling their mobiles wouldn't cost her any more than she'd been paying. I will of course get her moved to unlimited call plan, but can we make any bill shock type refunds on this occasion? She say's she's unable to pay such a high bill and is quite distressed about it.
+Sender: SME
+Date / time: 28/09 10:04
+Message: [Quoted] DanielMark Jackson... 28/09/2025 09:56
+[Quoted] I didn't get an answer yesterday, and have set callback for this morning:...
+checked the acc and the cx's plan never changed. shes always been on home savers and has had call usage charges on previous bills. this isnt considered a bill shock and is in the Higher Credits bracket. ops will reject that! her family told her it would be ok but we didnt.
+⸻
+
+T-17 — Case ID:
+---------------
+Pages: teams28.png
+
+Case ID: T-17
+Title: HISTORIC DEBT PROMISE DISPUTED: LIMITED
+RECORDS USED TO DISMISS, NO INVESTIGATION
+Chat name: NOEL CURRAN DM
+Date: THUR 02/10
+Sender: Noel Curran (XBC26 C)
+Date / time: 02/10 15:06
+Message: on escalation
+Sender: Daniel Jackson
+Date / time: 02/10 16:26
+Message: [redacted] has received dca letter for 639.07. However, it's a very old debt, account closed 2021. So I can't see any notes or bills as they're older than 2 years. She is very angry as she says this is all a fault caused by bt. a complex story about 2 sockets being shared between 3 flats. what can I do next?
+Sender: Noel Curran (XBC26 C)
+Date / time: 02/10 16:26
+Message: just checking the account
+[image: system note]
+what happened here
+Sender: Daniel Jackson
+Date / time: 02/10 16:28
+Message: I'll ask
+so, she say's she phoned up then and was told that the 639.07 was being applied to the account. and that was the last she'd heard, until this dca letter
+Sender: Noel Curran (XBC26 C)
+Date / time: 02/10 16:33
+Message: thats nothing to suggest that we are to cover that
+Sender: Daniel Jackson
+Date / time: 02/10 16:34
+Message: no. but we can only see interactions up to 2 years ago
+⸻
+
+T-18 — Case ID:
+---------------
+Pages: teams26.png
+
+Case ID: T-18
+Title: STORE MIS-SELL ESCALATION REFUSED, STORE
+RETURN REQUIRED, ACCESSIBILITY IGNORED
+Chat name: BILLING SUPPORT CHAT
+Date: THUR 02/10
+Sender: Daniel Jackson
+Date / time: 02/10 17:51
+Message: [redacted] took out contract in store.
+first 3 months had tv discount, £15 instead of £30. discount now ended. cx says he was promised £15 for whole 24 months. Advised he needed to go back to store to dispute, but he says that's impossible due to having to look after 3 kids all under 10 years. anything we can do?
+Sender: Daniel Jackson
+Date / time: 02/10 18:06
+Message: [Quoted] DanielMark Jackson... 02/10/2025 17:51
+[Quoted] [redacted] took out contract in store. first 3 months had tv discount,...
+still seeking help..
+Sender: SME
+Date / time: 02/10 18:08
+Message: there is nothing we can do for them as it was done in store, so we cannot even listen back to a call. they would have to go back to the store to dispute this, nothing we can do
+Sender: Daniel Jackson
+Date / time: 02/10 18:13
+Message: I've explained this to him, but he's not happy and would like to speak to a manager
+Sender: SME
+Date / time: 02/10 18:15
+Message: [Quoted] DanielMark Jackson... 02/10/2025 18:13
+[Quoted] I've explained this to him, but he's not happy and would like to speak to a...
+there is nothing a manager can do in this case you need to advise if escalated that they will tell him the same
+⸻
+
+T-19 — Case ID:
+---------------
+Pages: teams30.png
+
+Case ID: T-19
+Title: ESCALATION REFUSED, MANAGER OVERRIDES
+“ALBERT” POLICY ON SPEAKING TO A TL
+Chat name: BILLING SUPPORT CHAT
+Date: SAT 04/10
+Sender: Daniel Jackson
+Date / time: 04/10 12:37
+Message: [redacted] requested escalation eod friday. I was struck by storm problems during day yesterday and by the time I was back online, no tls were available. I called and told him someone would call today. it's concerning a contract taken out in store. First 3 months had tv discount, £15 instead of £30. discount now ended. He says he was promised £15 for whole 24 months. I made it very clear that he needed to go to store to dispute, and told him tl would tell him the same, but he says it will be very problematic getting back to store and wants to speakk to a manager about it.
+Sender: SME
+Date / time: 04/10 12:39
+Message: No TL will take that at all, CX has to go back to the store, end of.
+Noel would tell you the same if he was in, as any TL would. We don't have proof what he might've been told in the shop.
+Sender: Jason Campbell (XBC26 C)
+Date / time: 04/10 12:42
+Message: [Quoted] DanielMark Jackson (XBC26 C) 04/10/2025 12:37
+[Quoted] GB32483961 requested escalation eod friday. I was struck by storm problems during day yesterday and by the time I was back...
+Nothing we can do what that - Cx would have to go back to store as we cant listen to anything or find out what was advised
+Sender: Daniel Jackson
+Date / time: 04/10 12:46
+Message: [Quoted] [time unreadable] 04/10/2025 12:39
+[Quoted] No TL will take that at all, CX has to go back to the store, end of.
+they've specifically asked to speak to a manager
+[image: Albert Policy: When to escalate a complaint]
+Sender: Jason Campbell (XBC26 C)
+Date / time: 04/10 12:48
+Message: I understand but a manager wont be able to do anything as its the store that did the order - a TL wont be able to listen back to anything
+Sender: Daniel Jackson
+Date / time: 04/10 12:49
+Message: I'm just following albert
+⸻
+
+T-20 — Case ID:
+---------------
+Pages: teams29.png, teams31.png, teams32.png, teams35.png
+Page breaks: Page break after page 1 (teams29.png → teams31.png); Page break after page 2 (teams31.png → teams32.png); Page break after page 3 (teams32.png → teams35.png)
+
+Case ID: T-20
+Title: INVESTIGATION PROMISE BROKEN, NO FOLLOW-
+THROUGH, ESCALATION OWNERSHIP MISSING
+Chat name: BILLING SUPPORT CHAT
+Date: SUN 05/10
+Sender: Jason Campbell (XBC26 C)
+Date / time: 05/10 17:23
+Message: [Quoted] DanielMark Jackson... 05/10/2025 17:20
+[Quoted] is there a TL available?
+What's up ?
+Sender: Daniel Jackson
+Date / time: 05/10 17:25
+Message: [redacted] was being undercharged by £45/month since he took out contract aug 2024. di have confirmed it's now the correct price 106.99, but cx is very angry, saying he was promised tv @£6
+Sender: Jason Campbell (XBC26 C)
+Date / time: 05/10 17:25
+Message: Let me have a quick look - 2 mins
+Sender: Daniel Jackson
+Date / time: 05/10 17:25
+Message: [Quoted] DanielMark Jackson... 05/10/2025 17:25
+[Quoted] [redacted] was being undercharged by £45/month since he took out...
+SO Aug 2024 us to far back for us to Listen to, I cant see anything for £6 TV - I can listne back to some calls I can find and see - Hovwer, we would need to give it a few days for this
+Sender: Daniel Jackson
+Date / time: 05/10 17:30
+Message: yes ok. I'll tell him
+Sender: Daniel Jackson
+Date / time: 05/10 17:40
+Message: so can I leave the call listen you? I've arranged to update him on Thursday afternoon
+Sender: Jason Campbell (XBC26 C)
+Date / time: 05/10 17:42
+Message: do yes PM me all the deets
+Chat name: JASON CAMPBELL DM
+Date: SUN 05/10
+Sender: Daniel Jackson
+Date / time: 05/10 17:48
+Message: [image]
+Cx says he was promised TV at £6/month
+Sender: Daniel Jackson
+Date / time: [time unreadable]
+Message: thank you. I'm here tomorrow, off tuesday/wednesday. I said I'd call with an update 2pm-3pm thursday
+Sender: Jason Campbell (XBC26 C)
+Date / time: 05/10 17:56 Edited
+Message: Im off tomorrow but I am in Tuesday and Wednesday - So will complete it Tuesday/wednesday
+Date: 09 October
+Sender: Daniel Jackson
+Date / time: 09/10 13:09
+Message: Hey Jason. Did you get an opportunity to look for this call?
+[image: redacted box]
+Chat name: NOEL CURRAN DM
+Date: THUR 09/10
+Sender: Daniel Jackson
+Date / time: 09/10 15:11
+Message: ok, thanks. And I have this quite pressing case.
+[redacted]
+Jason was supposed to listen to the call tuesday/wednesday. I have a callback today, around now.
+[image: redacted box]
+He seems to be off today. The customer is very very angry. Well he was, and I see notes that he was when he phoned in yesterday too.
+Sender: Noel Curran (XBC26 C)
+Date / time: 09/10 15:12
+Message: just checkingthe account 2 seconds
+Sender: Daniel Jackson
+Date / time: 09/10 15:13
+Message: I should call him by 4. Shall I call and say results have been delayed?
+Sender: Noel Curran (XBC26 C)
+Date / time: 09/10 15:15
+Message: was it the call in Aug 24 that you were looking to be listened to
+Sender: Daniel Jackson
+Date / time: 09/10 15:16
+Message: yes. Jason said he'd try and track it down, even though it's over a year
+Sender: Noel Curran (XBC26 C)
+Date / time: 09/10 15:20
+Message: ya the call is to far back to be listened to, so we wont be able to get it, the TV was put onto the account in August last year but he only got charged for it in Sept this year
+thats were the increase is coming from
+Sender: Daniel Jackson
+Date / time: 09/10 15:22
+Message: Yes. Is there a reason why it didn't charge until Sept this year? The customer is furious. Saying there's no way he's accepting the increase. says he was promised the tv at £6/month
+Sender: Noel Curran (XBC26 C)
+Date / time: 09/10 15:27
+Message: So in Aug 24 he took out regular sports package which was contracted at 16 pounds
+[image: redacted box]
+then in Sept 24 he changed to Big sports, the order shows 45 pounds
+[image: redacted box]
+I'm guessing it would have been sent here but the email never sent so that would need to be resent.
+i would guess that it was just a error on the billing on the account that got fixed in Sept this year
+Sender: Daniel Jackson
+Date / time: 09/10 15:34
+Message: so what's the next step? I think if I call and say he's obliged to pay 106.99, he'll probably explode
+Sender: Noel Curran (XBC26 C)
+Date / time: 09/10 15:39
+Message: only Step we can take is to raise a DSAR if he requests one, I would resend the email to him once you have him on the line
+we wouldnt have the call in Sept 24 either
+Sender: Daniel Jackson
+Date / time: 09/10 15:41
+Message: if I call him now, will you be available if he wants to escalate?
+Sender: Noel Curran (XBC26 C)
+Date / time: 09/10 15:42
+Message: I can be
+Sender: Daniel Jackson
+Date / time: 09/10 15:43
+Message: and would you suggest I cancel the dd and pause credit schedule for a month to allow time for results?
+Sender: Noel Curran (XBC26 C)
+Date / time: 09/10 15:43
+Message: he has to cancel the DD himself, we shouldn't be cancelling it
+but that would have to be his choice if he chooses to cancel the DD
+Sender: Daniel Jackson
+Date / time: 09/10 15:46
+Message: so tell him the situation and only take action he requests. Don't give him any guidance?
+Sender: Noel Curran (XBC26 C)
+Date / time: 09/10 15:47
+Message: only guidance we can is to send him out the contract and im sure he will make his own decision from there I'm sure
+Sender: Daniel Jackson
+Date / time: 09/10 15:58 Edited
+Message: so the way I see it, I'm heading towards a phone call which I know is going to be very unpleasant. The customer was furious on the call on monday, saying we're thieves and calling him a liar. Saying that the only option now is to wait a month for dsar results could at least be softened by explaining that we can suspend any further payments until dsar results are in. Sending him the contract isn't acknowledging there's been an error on the account which he may not be liable for.
+Sender: Noel Curran (XBC26 C)
+Date / time: 09/10 16:07
+Message: I see that but, the TV has been active since last year, the only way we have now of confirming if the contract is correct or not is with the DSAR as we no longer have the calls, He hasnt been getting charged for tv in at least the last 11/12 months when realistically we should have been. I understand where he is coming from about the increase itself but he would have had the 14 days Cooling off to dispute anything about the contract itself. But you are the one whos going to be handling the call so go forward as you see fit.
+Sender: Daniel Jackson
+Date / time: 09/10 16:35
+Message: [Quoted] Noel Curran (XBC26 C) 09/10/2025 16:07
+[Quoted] I see that but, the TV has been active since last year, the only way we have now of confirming if the contract is correct or not is with...
+when I raise a dsar I have to read "Call recordings are kept for 1 year and then are automatically deleted in accordance with our policy." and get confirmation this has been understood. Given that the calls are over a year old, I don't think he'll take that very well. What do you suggest? (it's not my aim to be difficult Noel, promise!)
+Sender: Noel Curran (XBC26 C)
+Date / time: 09/10 16:42
+Message: if that's the case all you can do call him back and tell him the information that we have and realistically escalate it when he asks, thats all we can do
+Sender: Daniel Jackson
+Date / time: 09/10 16:52
+Message: I'm happy to call him, but really I feel I'm going to have to offer escalation as I have even less to offer than I did the last time we spoke i.e. he was waiting for the call listen results. So if I call now, you'll be available to take the call?
+Sender: Noel Curran (XBC26 C)
+Date / time: 09/10 16:54
+Message: to be honest I don't think you will have to offer an escalation I would say he will ask himself
+Sender: Daniel Jackson
+Date / time: 09/10 16:57
+Message: yes. so are you available?
+or could you call him when you are?
+Sender: Noel Curran (XBC26 C)
+Date / time: 09/10 17:09
+Message: I am available but will be taking my lunch soon
+Sender: Daniel Jackson
+Date / time: 09/10 18:26
+Message: I'm going to try calling the uncharged tv man now [redacted]
+You're available?
+Sender: Noel Curran (XBC26 C)
+Date / time: 09/10 18:27
+Message: currently on an escalation, if I am still on it Jessica is currently online also
+Sender: Noel Curran (XBC26 C)
+Date / time: 09/10 19:22
+Message: I'm available now do you still have him on the line
+Sender: Daniel Jackson
+Date / time: 09/10 19:28
+Message: I'm on another call, I haven't tried him yet.
+Chat name: JESSICA O’DRISCOLL DM
+Date: THUR 09/10
+Sender: Daniel Jackson
+Date / time: 09/10 19:16 Edited
+Message: Hi Jessica. I hope you're well. Sorry about this long one! Noel tells me you're potentially available if I need to escalate. I have a callback to do which seems absolutely certain it will require escalation.
+[redacted] called in very angry on monday. after one year where he wasn't being fully billed for his tv, suddenly on his latest bill, the full tv price was added to his bill, increasing it by £45.
+Having spoken to DI about it, they confirmed there had been a glitch, but the new monthly charges of 106.99 are now correct.
+Jason had offered to search for the call when the original order was placed, as cx insists he was promised tv at £6. I was off tues/weds, but jason said he would check the call ready for today. However, Jason is off today and I can't find any evidence he looked for the call.
+I told Noel who advised we wouldn't have it as it's over a year ago. Noel advised I call cx and raise a dsar if that's what it came to. However, I pointed out I have to get confirmation from customer they understand "Call recordings are kept for 1 year and then are automatically deleted in accordance with our policy." Noel agreed in that case a dsar wasn't suitable to offer.
+And so, I really have nothing to go back to the customer with, and feel the only thing I can do is offer to escalate.
+I've been trying to sort this out all day, and missed the callback time of 3pm. I can see from notes the customer has already called in today, chasing the callback. It also doesn't seem to have progressed, and from talking to him on monday, I would be shocked if he's agreed to pay the additional £45. The complaint I opened on Monday remains open.
+Given that I have nothing further to offer the customer, I have delayed calling back until I can be confident someone will be available to discuss his case when I do call. He was very critical of waiting last time we spoke, and on a very short fuse.
+Chat name: JASON CAMPBELL DM
+Date: SUN 12/10
+Sender: Daniel Jackson
+Date / time: 12/10 14:48 Edited
+Message: [Quoted] DanielMark Jackson (XBC26 C) 09/10/2025 13:09
+[Quoted] Hey Jason. Did you get an opportunity to look for this call?
+Jason - believe me, I'd rather not be raising this again. I did raise with noel, who was unable to find call. I don't feel it's appropriate raising a dsar as the statement we're obliged to get agreement to clearly says calls are kept for maximum of 1 year, and call is over a year ago.
+This left me with nothing to offer cx, other than escalation. Based on that, I tried coordinating with noel so he'd be available to take call when I called cx back,. Based on how angry cx was before, I felt calling him up and then making him wait for ages while I organised someone to take the call was best avoided. Without going into details, I attempted to co-ordinate with another TL before call but without success. I'm under pressure to get my complaints closed today.
+I'll try calling cx this afternoon, can you be available when I do? Is there anything I could offer to try preventing escalation?
+
+T-21 — Case ID:
+---------------
+Pages: teams34.png
+
+Case ID: T-21
+Title: COMPLAINT CLOSED WHILE CUSTOMER STILL
+DISSATISFIED - “WE CONSIDER IT RESOLVED”
+Chat name: NOEL ’S TEAM
+Date: MON 06/10
+Sender: Daniel Jackson
+Date / time: 06/10 19:57
+Message: ive got a customer who's unhappy the followup flag had to be removed from his account following payment before he would be able to make changes to his account today. I've raised a complaint and asked what sort of resolution he was looking for and he said he would speak to the complaints team when they contacted him. I explained that wouldn't be automatic. what shall I tell him happens next?
+and yes, I've got the flag removed
+Sender: Noel Curran (XBC26 C)
+Date / time: 06/10 19:58
+Message: whats the account number
+Sender: Daniel Jackson
+Date / time: 06/10 19:58
+Message: [redacted]
+Sender: Noel Curran (XBC26 C)
+Date / time: 06/10 19:59
+Message: when did he contact the complaints team ?
+Sender: Daniel Jackson
+Date / time: 06/10 19:59
+Message: he just raised a complaint now
+Sender: Noel Curran (XBC26 C)
+Date / time: 06/10 20:00
+Message: whats changes was he looking to make
+Sender: Daniel Jackson
+Date / time: 06/10 20:01
+Message: something tv related
+Sender: Noel Curran (XBC26 C)
+Date / time: 06/10 20:03
+Message: I would just explain that it can take time for the system to update so that once he cleared the balance normally the system can take up to 24 hours to full update with the payment. I would try and see if value would be able to make the changes for him
+Sender: Daniel Jackson
+Date / time: 06/10 20:04
+Message: I've explained that to him, and he says it should be the case that he can make changes immediately as that's what our policy says (apparently)
+Chat name: JESSICA O’DRISCOLL DM
+Date: MON 06/10
+Sender: Daniel Jackson
+Date / time: 06/10 20:10 Edited
+Message: hi jessica, I'm told you're on late? Noel just left me hanging. I'm under instruction not to offer callbacks, and I can't currently close this complaint
+[image: unreadable text]
+Sender: Jessica ODriscoll (XBC26 C)
+Date / time: 06/10 20:12
+Message: hi so it can take up to 24h to reflect for orders to then be placed, I would advise CX to callback to order after 24h
+if youre not allowed to call the CX back
+if you have the CX on the line and you wanted to consult sales/value team to see if it cleared you can always try that but likely now
+not*
+also, sorry to keep replying , you could also close complaint under we consider it resolved but CX doesnt, explained policy to CX cannot physically place order
+then youre noting that the complaint is considered resolved, policy explained etc etc
+Sender: Daniel Jackson
+Date / time: 06/10 20:21
+Message: I probably didn't explain it well enough. He was really making a problem out of nothing, and it was after I'd actually gone out of my way to try and ensure he didn't have a problem further down the line, i.e. making a payment now to then be passed to value and told he couldn't make any changes. Anyway, he's gone now. He says he'll be calling back tomorrow to complain about me, but that's fine, I don't think I should have done anything differently.
+Sender: Jessica ODriscoll (XBC26 C)
+Date / time: 06/10 20:22
+Message: I see, dont you worry if a complaint is made, you get your chance to say what you did on the call etc and that youd reached out for guidance etc - some CX can be difficult in that way, hope you're ok!
+Sender: Daniel Jackson
+Date / time: 06/10 20:24
+Message: I'm ok, thank you ☺️
+⸻
+
+T-22 — Case ID:
+---------------
+Pages: teams33.png, teams37.png, teams38.png
+Page breaks: Page break after page 1 (teams33.png → teams37.png); Page break after page 2 (teams37.png → teams38.png)
+
+Case ID: T-22
+Title: LIMITED-ENGLISH VULNERABLE CUSTOMER: HIGH
+CEASE FEES, NO INTERPRETER, ADR REFUSED
+Chat name: BILLING SUPPORT CHAT
+Date: MON 06/10
+Sender: Daniel Jackson
+Date / time: 06/10 14:07
+Message: do we offer translators? an Afghan is requesting a Dari translator
+Sender: Colm Ryan (XBC26 C)
+Date / time: 06/10 14:11
+Message: im just taking another one Scott Stapleford (XBC26 C)
+Sender: Catherine Heatherton (XBC26 C)
+Date / time: 06/10 14:11
+Message: [Quoted] Scott Stapleford (XBC26 C) 06/10/2025 14:02
+[Quoted] Only BT offers VAT and Cx is new EE so cant offer it to him and wont accept this
+that is so annoying that New EE cant offer VAT invoices I'm sure once its raised to OfCom that will change eventually
+Sender: Scott Stapleford (XBC26 C)
+Date / time: 06/10 14:11
+Message: [Quoted] Colm Ryan (XBC26 C) 06/10/2025 14:11
+[Quoted] im just taking another one Scott Stapleford (XBC26 C)
+No worries is there any other TL ? just Cx is not happy with waiting
+Sender: Daniel Jackson
+Date / time: 06/10 14:12
+Message: [Quoted] DanielMark Jackson (XBC26 C) 06/10/2025 14:07
+[Quoted] do we offer translators? an Afghan is requesting a Dari translator
+is that a no?
+Sender: Noel Curran (XBC26 C)
+Date / time: 06/10 14:13
+Message: no we dont offer Translators
+Chat name: NOEL CURRAN DM
+Date: MON 06/10
+Sender: Daniel Jackson
+Date / time: 06/10 15:00 Edited
+Message: I'm just talking to the Afghan who wanted to speak dari. actually her english is fairly good. but she has a problem. she currently has active account [redacted] home essentials. active since july this year.
+before (home move) she had home essentials account [redacted] active april - july this year
+On this old account she had tv at offer price of £1/month. she says she never wanted the tv. since the home move, the cancelled account has applied cease fees of 277.91 for tv service.
+she now has dca chasing her for this. i can't find any evidence on account that she requested tv service to cease, but she says she never wanted it/never used it. I suspect that as it was only £1 she didn't put much effort into cancellation.
+what are the chances of getting tv cease fees cancelled?
+Sender: Noel Curran (XBC26 C)
+Date / time: 06/10 15:12
+Message: no we wouldnt be able to cover those
+Sorry on escalation
+Chat name: NOEL’S MIS-SELL CHAT
+Date: MON 06/10
+Sender: Daniel Jackson
+Date / time: 06/10 18:23
+Message: Account Number [redacted]
+Name:[redacted]
+Number contacted on [redacted]
+Summary (as detailed as possible):httc since cancellation of tv contract. however cx says that she never asked for/wanted tv, and was added by agent when taking out contract without her permission as her english is poor
+Agent Ein and Name:[redacted]
+Time and Date of call :31 Mar 2025 at 09:55
+Complaint raised (Y/N)y
+Action Scheduled for call back (Y/N)y
+Chat name: NOEL’S MIS-SELL CHAT
+Date: TUE 14/10
+Sender: Noel Curran (XBC26 C)
+Date / time: 14/10 11:47
+Message: [Quoted] DanielMark Jackson (XBC26 C) 06/10/2025 18:23
+[Quoted] Account Number:GB31889053 Name:Palwasha Faizi Number contacted on:07981844511 Summary (as detailed as possible):ht...
+[image]
+no call available for this customer took out package in March, customer called in multiple times and never raised the issue of the TV itself, HTTC would stand DanielMark Jackson (XBC26 C)
+Chat name: NOEL CURRAN DM
+Date: MON 17/10
+Sender: Noel Curran (XBC26 C)
+Date / time: 17/10 18:50
+Message: [Image: Table of tasks]
+can you please look into these over the weekend and get these closed, and i need updates if they are still open. try and make sure the one open 27 days is closed as I will have to explain why its still open to the client on Monday
+Chat name: NOEL CURRAN DM
+Date: MON 19/10
+Sender: Noel Curran (XBC26 C)
+Date / time: 19/10 18:48
+Message: [Quoted] Noel Curran (XBC26 C) 17/10/2025 18:50
+[Quoted] [image] Not EE Customer BT 27 General DanielMark Jackson...
+DanielMark Jackson [redacted] Not EE Customer...
+they're all closed except [redacted] who I will try calling once more when I start my shift tomorrow (today)
+Chat name: NOEL CURRAN DM
+Date: MON 20/10
+Sender: Daniel Jackson
+Date / time: 20/10 14:24
+Message: Sorry I've logged in late today, and that I haven't yet called the customer I said I would contact first thing. This particular case has made me feel quite uncomfortable, and I felt it was appropriate to take some time to review Ofcom's regulations before proceeding.
+From what I've read, the route I'm expected to take doesn't seem to align fully with General Condition C4 and the Ofcom-approved Complaints Code, which require that providers follow a clear process to investigate complaints, tell the customer the outcome of that investigation, and, if the issue remains unresolved, issue a written response or ADR (Alternative Dispute Resolution) letter.
+Could you clarify how I should proceed on this call? After I explain to the customer that the sales call can't be found, and that you've told me the httc still apply, what should I then be offering or advising her?
+I completely understand that you want this complaint closed, but I hope you can appreciate that part of my responsibility as an agent is to be aware of Ofcom's regulations and flag any potential areas of non-compliance. My aim is to act correctly and uphold compliance standards – not to avoid work.
+Sender: Noel Curran (XBC26 C)
+Date / time: 20/10 15:51
+Message: Can I first ask a reason for being late, the resolution for the complaint would be that the HTTC would stand as no call was found and customer only made contact with us mentioning they did not want the TV after it was cancelled. We don't have to offer anything, not all cases would require something offered, again this is similar to the other call back you had, I cant advise you on what to say until you make the call back as I can not guarantee how the customer is going to react to the situation.
+The call i had this morning that was over 2 hours long was in relation to complaints as is our training at 4 today. once a complaint has been opened for 54 days automatically a deadlock letter is sent, A deadlock letter costs 265 per letter sent to a customer. the reason why not only myself but the client are asking guides to close complaints within a short window is to avoid cases going to deadlock, Between Jan - Aug this year EE/BT has spent 1.3 million on deadlock letters. Of course there will be cases that will warrant deadlocks being raised but that would have to be escalated properly ( so starting with you, then myself, then ECR and then deadlock).
+I am in no way asking you to go against compliance standards. What I am asking is that you follow the guidance set by the client you have relayed the information to myself. so I can do the same with the team.
+⸻
+
+T-23 — Case ID:
+---------------
+Pages: teams36.png
+
+Case ID: T-23
+Title: TL FOCUSES ONLY ON COMPLAINT CLOSURE FOR
+COMPLEX CASES
+Chat name: NOEL CURRAN DM
+Date: FRI 17/10
+Sender: Noel Curran (XBC26 C)
+Date / time: 17/10 11:53 Edited
+Message: whats going on with this complaint, why is it open with an action for the 27th ?
+[redacted] I need an update with this one too why is this still open
+Sender: Daniel Jackson
+Date / time: 17/10 12:51
+Message: [redacted] she's a lady who had a failed onetime switch move and has been quite distressed by the whole situation. i've been checking things have been happening as they should be; the account is now ceased and we're waiting for the final bill so we can sort out any credits due.
+Sender: Daniel Jackson
+Date / time: 17/10 13:10
+Message: [redacted] you may remember I spoke to you about him before. the call couldn't be found to listen to, and I have absolutely nothing to offer him when calling. on the day we didn't manage to coordinate before you left, I then sent a message about him to jessica, and she ignored it. last weekend I sent an message to jason, who had originally offered to try and find original call, and he also totally ignored it. both messages were sent with hours left in the shift I think calling him up with no support ready, and then keeping him waiting while I try and arrange a manager, would be worse than not calling him at all.
+Sender: Noel Curran (XBC26 C)
+Date / time: 17/10 13:26
+Message: [Quoted] DanielMark Jackson (XBC26 C) 17/10/2025 12:51
+[Quoted] [redacted] she's a lady who had a failed onetime switch move and has been quite distressed by the whole situation. i've been...
+ok that is understandable but we still cant be leaving complaints open for this length of time, while I appreciate you trying to do as much as possible for the customer, that isnt your job to follow up on, you have done your part with this. any credits that are due would be done by the agent when the customer calls back in not yourself. As I mentioned earlier this week if not last week, all complaint must be closed on the call unless its due to a miss sell.
+Sender: Daniel Jackson
+Date / time: 17/10 13:43
+Message: this is where I find myself in a difficult position. how can I put it to a customer who needs to wait for an account cease/final bill/and most importantly a credit, that they will be receiving a notification that we consider their issue resolved? and I hate saying this, because it's not that I don't respect you, but looking into regulations on complaint handling, my view seems to be supported.
+Sender: Noel Curran (XBC26 C)
+Date / time: 17/10 13:44
+Message: [Quoted] DanielMark Jackson (XBC26 C) 17/10/2025 13:10
+[Quoted] [redacted] you may remember I spoke to you about him before. the call couldn't be found to listen to, and I have absolutely nothi...
+so we you first said about this call to me it was at 16:07, you would have had roughly the next 4 hours after that point to call the customer back when I was available, you dont know how the call is going to go until you call him back, if it was the customer request the he wants to escalate after that point that if fine but you dont need to have a manager lined up waiting to escalate the call, I have given you every possible option that anyone would be able to do for him regardless of seniority. all thats left to do is call the customer back, the longer that you wait to call him back the more unhappy he is going to be as promises were broken, so he is bound to be angry off the get go before you even mention any call findings or lack there of to him
+Sender: Noel Curran (XBC26 C)
+Date / time: 17/10 14:42
+Message: [Quoted] DanielMark Jackson (XBC26 C) 17/10/2025 13:43
+[Quoted] this is where I find myself in a difficult position. how can I put it to a customer who needs to wait for an account cease/final bill/and...
+just in relation to this, can you share which regulation that you were looking at that wouldnt support the complaint being closed, going from the note thats on the complaint " cease order not successful in past resulting in being overcharged since move to virgin. " the resolution for this would be getting the account closed, no where does it mention about needing to wait for final bill. while it is mentioned in the action on the account it would still need to be mentioned in the complaint itself if you are leaving the complaint open for this reason. the issue they called into you with was that the cease order failed and that they would need to be refunded for charges which we are unable to do so until the final bill comes through, there is notes on the account from a previous agent to say that once the final bill comes through we will refund any HTTC from the account.
+Sender: Daniel Jackson
+Date / time: 17/10 15:25 Edited
+Message: Thanks for discussing this Noel. I was looking at Ofcom's general condition C4 and the complaints code under it (paragraphs 7 + 14). It says we've got to keep taking steps to resolve a complaint until it's actually resolved or properly closed.
+In this case the final bill and refund still need to happen, so I'm just not sure how that counts as resolved. I do understand that credits will go on later, but that's kind of the core of what she raised, and she's understandably concerned that promises won't be met.
+I'm not trying to make things awkward. But I also value part of my role being able to genuinely help customers. That doesn't mean I am predisposed to telling them what they want to hear, but it does mean I want to be confident I'm working within regulations. If there's any internal guidance that says it's ok to close at this stage, can you share it? This would help me understand for next time.
+⸻
+
+T-24 — Case ID:
+---------------
+Pages: teams40.png
+
+Case ID: T-24
+Title: VULNERABLE BILLING ERROR DEFERRED,
+IMMEDIATE CANCELLATION REFUSED
+Chat name: BILLING SUPPORT CHAT
+Date: SAT 18/10
+Sender: Daniel Jackson
+Date / time: 18/10 15:29
+Message: [redacted] cancelled account today and it's only been active since tuesday. I've been talking to him for a little while and going round in circles a bit, although he is very nice. He has some cognitive difficulties. any chance we can cancel the 32.99 bill which is currently showing? He's panicking about the final bill. cease due to go through on 27th, but he'd stop the service now if he could.
+Sender: Jason Campbell (XBC26 C)
+Date / time: 18/10 15:31
+Message: [Quoted] DanielMark Jackson... 18/10/2025 15:29
+[Quoted] [redacted] cancelled account today and it's only been active since...
+So he would be credited back on the final bill for the services not used - I understand his concern, however, I dont want to double credit him, you know
+Sender: Daniel Jackson
+Date / time: 18/10 15:36
+Message: yes, fair enough. would you expect the final bill to charge from 14th - 27th when it's produced? Is it fair to advise him that he can dispute this charge and request the bill to be waived in full when it comes?
+he' would stop now if he could, so barely 4 days service
+Sender: Jason Campbell (XBC26 C)
+Date / time: 18/10 15:38
+Message: yea - He can dispute the bill is he so wishes, but dont make any promises with it
+⸻
+
+T-25 — Case ID:
+---------------
+Pages: teams41.png
+
+Case ID: T-25
+Title: DELAYED ENGAGEMENT, BILLING ERROR
+CORRECTION TREATED AS GOODWILL
+Chat name: BILLING SUPPORT CHAT
+Date: SAT 18/10
+Sender: Daniel Jackson
+Date / time: 18/10 14:05 Edited
+Message: is there a leader available? I have a customer [redacted] who has been billed for tv this/next month, despite it ceasing on 17 Oct. I've explained that the only two options I can offer are either to allow the dd to take the full amount now, and then wait for a refund on next bill, or cancel the dd now, pay this bill by card (minus the tv) and then reinstate dd when next bill is generated. But he will not accept this and says he's not going anywhere until we change the dd amount for this month
+Jason Campbell (XBC26 C)Jessica ODriscoll (XBC26 C)SarahJane Fleming (XBC26 C)Kee lyn Ryan (XBC26 C)
+Sender: Keelyn Ryan (XBC26 C)
+Date / time: 18/10 14:17
+Message: [Quoted] DanielMark Jackson (XBC26 C) 18/10/2025 14:05
+[Quoted] is there a leader available? I have a customer [redacted] who has been billed for tv this/next month, despite it ceasing on 17 Oc...
+how much his the credit ?
+what is the date of the service to stop
+Sender: Daniel Jackson
+Date / time: 18/10 14:18
+Message: 22.96 (minus 2 days). service stopped 17th
+Sender: Daniel Jackson
+Date / time: [time unreadable]
+Message: also known as yesterday
+Sender: Keelyn Ryan (XBC26 C)
+Date / time: 18/10 14:18
+Message: apply that as GW
+Sender: Daniel Jackson
+Date / time: 18/10 14:19
+Message: thank you
+could you applu this as my credits aren't working, please
+22.07
+Sender: Jason Campbell (XBC26 C)
+Date / time: 18/10 14:26
+Message: I will PM me the details
+⸻
+
+T-26 — Case ID:
+---------------
+Pages: teams39.png, teams43.png, teams44.png
+Page breaks: Page break after page 1 (teams39.png → teams43.png); Page break after page 2 (teams43.png → teams44.png)
+
+Case ID: T-26
+Title: ESCALATION PROMISED THEN DENIED,
+CONFLICTING LEADERSHIP, AGENT UNDERMINED
+Chat name: JESSICA O’DRISCOLL DM
+Date: SUN 19/10
+Sender: Daniel Jackson
+Date / time: 19/10 12:35 Edited
+Message: Hi Jess, wondering if you can help. I spoke to [redacted] yesterday who was getting in contact as he'd received a bill since cease order had gone through. I explained the process and all seemed well, but it then transpired he expects to be leave without httc.
+His presentation of it is that there's been a long standing understanding by ee that speeds in his area are so slow, that he had the right to leave if they didn't improve. he says this dates back over two years.
+The only recent evidence he thinks could be located is a call in July or August with an agent in Northern Ireland. I've had a look at calls around this time though and can't find evidence.
+Tech have confirmed an engineer visit for slow speeds, but say the speeds, although slow, didn't fall below guarantee.
+Perhaps this shouldn't be taken into account, but he is a former mp and lawyer, and comes across as such! He's been quite vocal about going to regulators if this causes any problems. I did say I would call him today with an update.
+Sender: Jessica ODriscoll (XBC26 C)
+Date / time: 19/10 12:59
+Message: hello so i would say that he needs to go through to tech to allow them to investigate any speed or fault issues as it will ultimately be their decision on that basis as to whether he can leave without HTTC
+Sender: Daniel Jackson
+Date / time: 19/10 13:02
+Message: I already spoke to tech and they said they couldn't as the speed wasn't below guarantee
+Sender: Jessica ODriscoll (XBC26 C)
+Date / time: 19/10 13:03
+Message: ok so he would be liable for the HTTC
+Sender: Daniel Jackson
+Date / time: 19/10 13:04
+Message: so when I call back and he says he'll therefore go to ofcom, I should escalate?
+Sender: Jessica ODriscoll (XBC26 C)
+Date / time: 19/10 13:05
+Message: yes reach out in the support chat and a TL will take the escalation
+Sender: Daniel Jackson
+Date / time: 19/10 13:06
+Message: ok. thank you
+Chat name: KEELYN RYAN DM
+Date: SUN 19/10
+Sender: Keelyn Ryan (XBC26 C)
+Date / time: 19/10 16:32
+Message: whats up with escaltion
+Sender: Daniel Jackson
+Date / time: 19/10 16:34 Edited
+Message: these are my notes from yesterday when I spoke to him. I just called back today confirming that httc would apply (decision from Jess):
+CX called unhappy re: bill issued after cease. Advised final bill still to be produced.
+Cease had been delayed; checked account to ensure no issues clearing charges once final bill generated.
+CX claimed he was told no notice period/HTTC due to very slow speeds + no upgrade planned. No evidence found to support this.
+Connections confirmed slow speeds but no record of waiver. Tech confirmed engineer visit for drops, but no speeds below guarantee.
+Informed CX no evidence of promise to waive fees; advised possible resolution if call recording located. CX recalled speaking to NI agent late June/early Aug; no matching call found.
+CX stated arrangement dates back to complaint during recontracting a couple of years ago when told new lines were coming soon and he'd be free to leave if not delivered.
+CX warned he will escalate to Ofcom/Ombudsman if charges applied.
+[redacted]
+Sender: Keelyn Ryan (XBC26 C)
+Date / time: 19/10 16:37
+Message: 2 secs let me have a look
+theres no HTTC on the account ?
+Sender: Daniel Jackson
+Date / time: 19/10 16:38
+Message: final bill hasnt been produced
+Sender: Keelyn Ryan (XBC26 C)
+Date / time: 19/10 16:38
+Message: contract was till april 26 i think
+Sender: Keelyn Ryan (XBC26 C)
+Date / time: 19/10 16:38
+Message: we cant dispute charges that havent been applied
+[image text unreadable]
+Sender: Keelyn Ryan (XBC26 C)
+Date / time: 19/10 16:42
+Message: with the call charges one we can dispute the charges not on a bill =- you can waive the £26 ones now but cx will have to call to get the other removed when bill is issued - you can leave note to say we can
+Sender: Daniel Jackson
+Date / time: 19/10 16:39
+Message: obviously jess didnt know the HTTC weren't on a bill yet - i would be more than happy to take this call if the HTTC were on a bill but i cant dispute charges that arent on a bill
+Sender: Daniel Jackson
+Date / time: 19/10 16:48
+Message: I don't really understand why you can't take an escalation based on something which we know is going to happen. As far as EE is concerned right now, there is no need to dispute httc, because he is liable for them. The fact is clear - his account is terminated, and he terminated believing that httc would not be applied.
+[image text unreadable]
+and if Jess did think httc had already been applied, then she really didn't pay attention to the message I sent her
+Sender: Keelyn Ryan (XBC26 C)
+Date / time: 19/10 16:55
+Message: there is no comms to show cx is getting HTTC
+so i cant dispute charges that there is no proof of having
+unless there is a final bill that shows me he is getting them i am after going through all emails and doesnt have any amount of HTTC on them
+also arte you logged off your phone panel ?
+Sender: Daniel Jackson
+Date / time: 19/10 16:59
+Message: yes I am, because I don't want to get stuck on a call and not be in a position to discuss this with you. I just called him back and promised a manager would contact him today, and with the end of the day rapidly approaching, it feels like that promise could very easily be broken
+Sender: Keelyn Ryan (XBC26 C)
+Date / time: 19/10 17:02
+Message: you are not allowed to log off your phone panel for this reason ? if you reached out i could have told you to jump into a code - for no reason is anyone allowed to just log off unfortunately
+Sender: Daniel Jackson
+Date / time: 19/10 17:03
+Message: may I have a code to use then
+Sender: Keelyn Ryan (XBC26 C)
+Date / time: 19/10 17:04 Edited
+Message: you've had 20 mins offline now so i think take a call and i will look into this
+Sender: Daniel Jackson
+Date / time: [time unreadable]
+Message: I have asked various people for advice regarding this account, and everyone has agreed there aren't any notes supporting leaving without httc. no one has said they don't think they will be applied. However, perhaps they won't. You think they may not be?
+Sender: Keelyn Ryan (XBC26 C)
+Date / time: 19/10 17:12
+Message: I agree i have no idea if they are going to be or not - cant find any evidence to support that they will be nevermind an amount i have looked through all order cease confirmation comms and doesn't mention any HTTC charges that's why I cant even take the call to discuss them. I agree it is a weird one cause doesn't say on email. I have spoke to Jason here with me about it also and he agrees there is nothing we can do unless there is proof of them
+Sender: Daniel Jackson
+Date / time: 19/10 17:30
+Message: what time do you finish?
+Sender: Keelyn Ryan (XBC26 C)
+Date / time: 19/10 18:16
+Message: soon
+what time are you finihed
+Sender: Daniel Jackson
+Date / time: 19/10 18:19
+Message: 5:30 officially, but I have a couple of complaints noel wants closed by tomorrow which I'm looking at
+Sender: Daniel Jackson
+Date / time: 19/10 18:26
+Message: I really don't want to argue Keelyn. But as someone who would like to help customers where possible, this job can feel like a battle. I have gone out of my way for the customer I have brought to you for escalation, and it's disappointing that my promise to him is being broken. You have not only refused to take it, you've also not given any guidance following that decision.
+
+T-21 — Case ID:
+---------------
+Pages: teams34.png
+
+Case ID: T-21
+Title: COMPLAINT CLOSED WHILE CUSTOMER STILL
+DISSATISFIED - “WE CONSIDER IT RESOLVED”
+Chat name: NOEL ’S TEAM
+Date: MON 06/10
+Sender: Daniel Jackson
+Date / time: 06/10 19:57
+Message: ive got a customer who's unhappy the followup flag had to be removed from his account following payment before he would be able to make changes to his account today. I've raised a complaint and asked what sort of resolution he was looking for and he said he would speak to the complaints team when they contacted him. I explained that wouldn't be automatic. what shall I tell him happens next?
+and yes, I've got the flag removed
+Sender: Noel Curran (XBC26 C)
+Date / time: 06/10 19:58
+Message: whats the account number
+Sender: Daniel Jackson
+Date / time: 06/10 19:58
+Message: [redacted]
+Sender: Noel Curran (XBC26 C)
+Date / time: 06/10 19:59
+Message: when did he contact the complaints team ?
+Sender: Daniel Jackson
+Date / time: 06/10 19:59
+Message: he just raised a complaint now
+Sender: Noel Curran (XBC26 C)
+Date / time: 06/10 20:00
+Message: whats changes was he looking to make
+Sender: Daniel Jackson
+Date / time: 06/10 20:01
+Message: something tv related
+Sender: Noel Curran (XBC26 C)
+Date / time: 06/10 20:03
+Message: I would just explain that it can take time for the system to update so that once he cleared the balance normally the system can take up to 24 hours to full update with the payment. I would try and see if value would be able to make the changes for him
+Sender: Daniel Jackson
+Date / time: 06/10 20:04
+Message: I've explained that to him, and he says it should be the case that he can make changes immediately as that's what our policy says (apparently)
+Chat name: JESSICA O’DRISCOLL DM
+Date: MON 06/10
+Sender: Daniel Jackson
+Date / time: 06/10 20:10 Edited
+Message: hi jessica, I'm told you're on late? Noel just left me hanging. I'm under instruction not to offer callbacks, and I can't currently close this complaint
+[image: unreadable text]
+Sender: Jessica ODriscoll (XBC26 C)
+Date / time: 06/10 20:12
+Message: hi so it can take up to 24h to reflect for orders to then be placed, I would advise CX to callback to order after 24h
+if youre not allowed to call the CX back
+if you have the CX on the line and you wanted to consult sales/value team to see if it cleared you can always try that but likely now
+not*
+also, sorry to keep replying , you could also close complaint under we consider it resolved but CX doesnt, explained policy to CX cannot physically place order
+then youre noting that the complaint is considered resolved, policy explained etc etc
+Sender: Daniel Jackson
+Date / time: 06/10 20:21
+Message: I probably didn't explain it well enough. He was really making a problem out of nothing, and it was after I'd actually gone out of my way to try and ensure he didn't have a problem further down the line, i.e. making a payment now to then be passed to value and told he couldn't make any changes. Anyway, he's gone now. He says he'll be calling back tomorrow to complain about me, but that's fine, I don't think I should have done anything differently.
+Sender: Jessica ODriscoll (XBC26 C)
+Date / time: 06/10 20:22
+Message: I see, dont you worry if a complaint is made, you get your chance to say what you did on the call etc and that youd reached out for guidance etc - some CX can be difficult in that way, hope you're ok!
+Sender: Daniel Jackson
+Date / time: 06/10 20:24
+Message: I'm ok, thank you ☺️
+⸻
+
+T-22 — Case ID:
+---------------
+Pages: teams33.png, teams37.png, teams38.png
+Page breaks: Page break after page 1 (teams33.png → teams37.png); Page break after page 2 (teams37.png → teams38.png)
+
+Case ID: T-22
+Title: LIMITED-ENGLISH VULNERABLE CUSTOMER: HIGH
+CEASE FEES, NO INTERPRETER, ADR REFUSED
+Chat name: BILLING SUPPORT CHAT
+Date: MON 06/10
+Sender: Daniel Jackson
+Date / time: 06/10 14:07
+Message: do we offer translators? an Afghan is requesting a Dari translator
+Sender: Colm Ryan (XBC26 C)
+Date / time: 06/10 14:11
+Message: im just taking another one Scott Stapleford (XBC26 C)
+Sender: Catherine Heatherton (XBC26 C)
+Date / time: 06/10 14:11
+Message: [Quoted] Scott Stapleford (XBC26 C) 06/10/2025 14:02
+[Quoted] Only BT offers VAT and Cx is new EE so cant offer it to him and wont accept this
+that is so annoying that New EE cant offer VAT invoices I'm sure once its raised to OfCom that will change eventually
+Sender: Scott Stapleford (XBC26 C)
+Date / time: 06/10 14:11
+Message: [Quoted] Colm Ryan (XBC26 C) 06/10/2025 14:11
+[Quoted] im just taking another one Scott Stapleford (XBC26 C)
+No worries is there any other TL ? just Cx is not happy with waiting
+Sender: Daniel Jackson
+Date / time: 06/10 14:12
+Message: [Quoted] DanielMark Jackson (XBC26 C) 06/10/2025 14:07
+[Quoted] do we offer translators? an Afghan is requesting a Dari translator
+is that a no?
+Sender: Noel Curran (XBC26 C)
+Date / time: 06/10 14:13
+Message: no we dont offer Translators
+Chat name: NOEL CURRAN DM
+Date: MON 06/10
+Sender: Daniel Jackson
+Date / time: 06/10 15:00 Edited
+Message: I'm just talking to the Afghan who wanted to speak dari. actually her english is fairly good. but she has a problem. she currently has active account [redacted] home essentials. active since july this year.
+before (home move) she had home essentials account [redacted] active april - july this year
+On this old account she had tv at offer price of £1/month. she says she never wanted the tv. since the home move, the cancelled account has applied cease fees of 277.91 for tv service.
+she now has dca chasing her for this. i can't find any evidence on account that she requested tv service to cease, but she says she never wanted it/never used it. I suspect that as it was only £1 she didn't put much effort into cancellation.
+what are the chances of getting tv cease fees cancelled?
+Sender: Noel Curran (XBC26 C)
+Date / time: 06/10 15:12
+Message: no we wouldnt be able to cover those
+Sorry on escalation
+Chat name: NOEL’S MIS-SELL CHAT
+Date: MON 06/10
+Sender: Daniel Jackson
+Date / time: 06/10 18:23
+Message: Account Number [redacted]
+Name:[redacted]
+Number contacted on [redacted]
+Summary (as detailed as possible):httc since cancellation of tv contract. however cx says that she never asked for/wanted tv, and was added by agent when taking out contract without her permission as her english is poor
+Agent Ein and Name:[redacted]
+Time and Date of call :31 Mar 2025 at 09:55
+Complaint raised (Y/N)y
+Action Scheduled for call back (Y/N)y
+Chat name: NOEL’S MIS-SELL CHAT
+Date: TUE 14/10
+Sender: Noel Curran (XBC26 C)
+Date / time: 14/10 11:47
+Message: [Quoted] DanielMark Jackson (XBC26 C) 06/10/2025 18:23
+[Quoted] Account Number:GB31889053 Name:Palwasha Faizi Number contacted on:07981844511 Summary (as detailed as possible):ht...
+[image]
+no call available for this customer took out package in March, customer called in multiple times and never raised the issue of the TV itself, HTTC would stand DanielMark Jackson (XBC26 C)
+Chat name: NOEL CURRAN DM
+Date: MON 17/10
+Sender: Noel Curran (XBC26 C)
+Date / time: 17/10 18:50
+Message: [Image: Table of tasks]
+can you please look into these over the weekend and get these closed, and i need updates if they are still open. try and make sure the one open 27 days is closed as I will have to explain why its still open to the client on Monday
+Chat name: NOEL CURRAN DM
+Date: MON 19/10
+Sender: Noel Curran (XBC26 C)
+Date / time: 19/10 18:48
+Message: [Quoted] Noel Curran (XBC26 C) 17/10/2025 18:50
+[Quoted] [image] Not EE Customer BT 27 General DanielMark Jackson...
+DanielMark Jackson [redacted] Not EE Customer...
+they're all closed except [redacted] who I will try calling once more when I start my shift tomorrow (today)
+Chat name: NOEL CURRAN DM
+Date: MON 20/10
+Sender: Daniel Jackson
+Date / time: 20/10 14:24
+Message: Sorry I've logged in late today, and that I haven't yet called the customer I said I would contact first thing. This particular case has made me feel quite uncomfortable, and I felt it was appropriate to take some time to review Ofcom's regulations before proceeding.
+From what I've read, the route I'm expected to take doesn't seem to align fully with General Condition C4 and the Ofcom-approved Complaints Code, which require that providers follow a clear process to investigate complaints, tell the customer the outcome of that investigation, and, if the issue remains unresolved, issue a written response or ADR (Alternative Dispute Resolution) letter.
+Could you clarify how I should proceed on this call? After I explain to the customer that the sales call can't be found, and that you've told me the httc still apply, what should I then be offering or advising her?
+I completely understand that you want this complaint closed, but I hope you can appreciate that part of my responsibility as an agent is to be aware of Ofcom's regulations and flag any potential areas of non-compliance. My aim is to act correctly and uphold compliance standards – not to avoid work.
+Sender: Noel Curran (XBC26 C)
+Date / time: 20/10 15:51
+Message: Can I first ask a reason for being late, the resolution for the complaint would be that the HTTC would stand as no call was found and customer only made contact with us mentioning they did not want the TV after it was cancelled. We don't have to offer anything, not all cases would require something offered, again this is similar to the other call back you had, I cant advise you on what to say until you make the call back as I can not guarantee how the customer is going to react to the situation.
+The call i had this morning that was over 2 hours long was in relation to complaints as is our training at 4 today. once a complaint has been opened for 54 days automatically a deadlock letter is sent, A deadlock letter costs 265 per letter sent to a customer. the reason why not only myself but the client are asking guides to close complaints within a short window is to avoid cases going to deadlock, Between Jan - Aug this year EE/BT has spent 1.3 million on deadlock letters. Of course there will be cases that will warrant deadlocks being raised but that would have to be escalated properly ( so starting with you, then myself, then ECR and then deadlock).
+I am in no way asking you to go against compliance standards. What I am asking is that you follow the guidance set by the client you have relayed the information to myself. so I can do the same with the team.
+⸻
+
+T-23 — Case ID:
+---------------
+Pages: teams36.png
+
+Case ID: T-23
+Title: TL FOCUSES ONLY ON COMPLAINT CLOSURE FOR
+COMPLEX CASES
+Chat name: NOEL CURRAN DM
+Date: FRI 17/10
+Sender: Noel Curran (XBC26 C)
+Date / time: 17/10 11:53 Edited
+Message: whats going on with this complaint, why is it open with an action for the 27th ?
+[redacted] I need an update with this one too why is this still open
+Sender: Daniel Jackson
+Date / time: 17/10 12:51
+Message: [redacted] she's a lady who had a failed onetime switch move and has been quite distressed by the whole situation. i've been checking things have been happening as they should be; the account is now ceased and we're waiting for the final bill so we can sort out any credits due.
+Sender: Daniel Jackson
+Date / time: 17/10 13:10
+Message: [redacted] you may remember I spoke to you about him before. the call couldn't be found to listen to, and I have absolutely nothing to offer him when calling. on the day we didn't manage to coordinate before you left, I then sent a message about him to jessica, and she ignored it. last weekend I sent an message to jason, who had originally offered to try and find original call, and he also totally ignored it. both messages were sent with hours left in the shift I think calling him up with no support ready, and then keeping him waiting while I try and arrange a manager, would be worse than not calling him at all.
+Sender: Noel Curran (XBC26 C)
+Date / time: 17/10 13:26
+Message: [Quoted] DanielMark Jackson (XBC26 C) 17/10/2025 12:51
+[Quoted] [redacted] she's a lady who had a failed onetime switch move and has been quite distressed by the whole situation. i've been...
+ok that is understandable but we still cant be leaving complaints open for this length of time, while I appreciate you trying to do as much as possible for the customer, that isnt your job to follow up on, you have done your part with this. any credits that are due would be done by the agent when the customer calls back in not yourself. As I mentioned earlier this week if not last week, all complaint must be closed on the call unless its due to a miss sell.
+Sender: Daniel Jackson
+Date / time: 17/10 13:43
+Message: this is where I find myself in a difficult position. how can I put it to a customer who needs to wait for an account cease/final bill/and most importantly a credit, that they will be receiving a notification that we consider their issue resolved? and I hate saying this, because it's not that I don't respect you, but looking into regulations on complaint handling, my view seems to be supported.
+Sender: Noel Curran (XBC26 C)
+Date / time: 17/10 13:44
+Message: [Quoted] DanielMark Jackson (XBC26 C) 17/10/2025 13:10
+[Quoted] [redacted] you may remember I spoke to you about him before. the call couldn't be found to listen to, and I have absolutely nothi...
+so we you first said about this call to me it was at 16:07, you would have had roughly the next 4 hours after that point to call the customer back when I was available, you dont know how the call is going to go until you call him back, if it was the customer request the he wants to escalate after that point that if fine but you dont need to have a manager lined up waiting to escalate the call, I have given you every possible option that anyone would be able to do for him regardless of seniority. all thats left to do is call the customer back, the longer that you wait to call him back the more unhappy he is going to be as promises were broken, so he is bound to be angry off the get go before you even mention any call findings or lack there of to him
+Sender: Noel Curran (XBC26 C)
+Date / time: 17/10 14:42
+Message: [Quoted] DanielMark Jackson (XBC26 C) 17/10/2025 13:43
+[Quoted] this is where I find myself in a difficult position. how can I put it to a customer who needs to wait for an account cease/final bill/and...
+just in relation to this, can you share which regulation that you were looking at that wouldnt support the complaint being closed, going from the note thats on the complaint " cease order not successful in past resulting in being overcharged since move to virgin. " the resolution for this would be getting the account closed, no where does it mention about needing to wait for final bill. while it is mentioned in the action on the account it would still need to be mentioned in the complaint itself if you are leaving the complaint open for this reason. the issue they called into you with was that the cease order failed and that they would need to be refunded for charges which we are unable to do so until the final bill comes through, there is notes on the account from a previous agent to say that once the final bill comes through we will refund any HTTC from the account.
+Sender: Daniel Jackson
+Date / time: 17/10 15:25 Edited
+Message: Thanks for discussing this Noel. I was looking at Ofcom's general condition C4 and the complaints code under it (paragraphs 7 + 14). It says we've got to keep taking steps to resolve a complaint until it's actually resolved or properly closed.
+In this case the final bill and refund still need to happen, so I'm just not sure how that counts as resolved. I do understand that credits will go on later, but that's kind of the core of what she raised, and she's understandably concerned that promises won't be met.
+I'm not trying to make things awkward. But I also value part of my role being able to genuinely help customers. That doesn't mean I am predisposed to telling them what they want to hear, but it does mean I want to be confident I'm working within regulations. If there's any internal guidance that says it's ok to close at this stage, can you share it? This would help me understand for next time.
+⸻
+
+T-24 — Case ID:
+---------------
+Pages: teams40.png
+
+Case ID: T-24
+Title: VULNERABLE BILLING ERROR DEFERRED,
+IMMEDIATE CANCELLATION REFUSED
+Chat name: BILLING SUPPORT CHAT
+Date: SAT 18/10
+Sender: Daniel Jackson
+Date / time: 18/10 15:29
+Message: [redacted] cancelled account today and it's only been active since tuesday. I've been talking to him for a little while and going round in circles a bit, although he is very nice. He has some cognitive difficulties. any chance we can cancel the 32.99 bill which is currently showing? He's panicking about the final bill. cease due to go through on 27th, but he'd stop the service now if he could.
+Sender: Jason Campbell (XBC26 C)
+Date / time: 18/10 15:31
+Message: [Quoted] DanielMark Jackson... 18/10/2025 15:29
+[Quoted] [redacted] cancelled account today and it's only been active since...
+So he would be credited back on the final bill for the services not used - I understand his concern, however, I dont want to double credit him, you know
+Sender: Daniel Jackson
+Date / time: 18/10 15:36
+Message: yes, fair enough. would you expect the final bill to charge from 14th - 27th when it's produced? Is it fair to advise him that he can dispute this charge and request the bill to be waived in full when it comes?
+he' would stop now if he could, so barely 4 days service
+Sender: Jason Campbell (XBC26 C)
+Date / time: 18/10 15:38
+Message: yea - He can dispute the bill is he so wishes, but dont make any promises with it
+⸻
+
+T-25 — Case ID:
+---------------
+Pages: teams41.png
+
+Case ID: T-25
+Title: DELAYED ENGAGEMENT, BILLING ERROR
+CORRECTION TREATED AS GOODWILL
+Chat name: BILLING SUPPORT CHAT
+Date: SAT 18/10
+Sender: Daniel Jackson
+Date / time: 18/10 14:05 Edited
+Message: is there a leader available? I have a customer [redacted] who has been billed for tv this/next month, despite it ceasing on 17 Oct. I've explained that the only two options I can offer are either to allow the dd to take the full amount now, and then wait for a refund on next bill, or cancel the dd now, pay this bill by card (minus the tv) and then reinstate dd when next bill is generated. But he will not accept this and says he's not going anywhere until we change the dd amount for this month
+Jason Campbell (XBC26 C)Jessica ODriscoll (XBC26 C)SarahJane Fleming (XBC26 C)Kee lyn Ryan (XBC26 C)
+Sender: Keelyn Ryan (XBC26 C)
+Date / time: 18/10 14:17
+Message: [Quoted] DanielMark Jackson (XBC26 C) 18/10/2025 14:05
+[Quoted] is there a leader available? I have a customer [redacted] who has been billed for tv this/next month, despite it ceasing on 17 Oc...
+how much his the credit ?
+what is the date of the service to stop
+Sender: Daniel Jackson
+Date / time: 18/10 14:18
+Message: 22.96 (minus 2 days). service stopped 17th
+Sender: Daniel Jackson
+Date / time: [time unreadable]
+Message: also known as yesterday
+Sender: Keelyn Ryan (XBC26 C)
+Date / time: 18/10 14:18
+Message: apply that as GW
+Sender: Daniel Jackson
+Date / time: 18/10 14:19
+Message: thank you
+could you applu this as my credits aren't working, please
+22.07
+Sender: Jason Campbell (XBC26 C)
+Date / time: 18/10 14:26
+Message: I will PM me the details
+⸻
+
+T-26 — Case ID:
+---------------
+Pages: teams39.png, teams43.png, teams44.png
+Page breaks: Page break after page 1 (teams39.png → teams43.png); Page break after page 2 (teams43.png → teams44.png)
+
+Case ID: T-26
+Title: ESCALATION PROMISED THEN DENIED,
+CONFLICTING LEADERSHIP, AGENT UNDERMINED
+Chat name: JESSICA O’DRISCOLL DM
+Date: SUN 19/10
+Sender: Daniel Jackson
+Date / time: 19/10 12:35 Edited
+Message: Hi Jess, wondering if you can help. I spoke to [redacted] yesterday who was getting in contact as he'd received a bill since cease order had gone through. I explained the process and all seemed well, but it then transpired he expects to be leave without httc.
+His presentation of it is that there's been a long standing understanding by ee that speeds in his area are so slow, that he had the right to leave if they didn't improve. he says this dates back over two years.
+The only recent evidence he thinks could be located is a call in July or August with an agent in Northern Ireland. I've had a look at calls around this time though and can't find evidence.
+Tech have confirmed an engineer visit for slow speeds, but say the speeds, although slow, didn't fall below guarantee.
+Perhaps this shouldn't be taken into account, but he is a former mp and lawyer, and comes across as such! He's been quite vocal about going to regulators if this causes any problems. I did say I would call him today with an update.
+Sender: Jessica ODriscoll (XBC26 C)
+Date / time: 19/10 12:59
+Message: hello so i would say that he needs to go through to tech to allow them to investigate any speed or fault issues as it will ultimately be their decision on that basis as to whether he can leave without HTTC
+Sender: Daniel Jackson
+Date / time: 19/10 13:02
+Message: I already spoke to tech and they said they couldn't as the speed wasn't below guarantee
+Sender: Jessica ODriscoll (XBC26 C)
+Date / time: 19/10 13:03
+Message: ok so he would be liable for the HTTC
+Sender: Daniel Jackson
+Date / time: 19/10 13:04
+Message: so when I call back and he says he'll therefore go to ofcom, I should escalate?
+Sender: Jessica ODriscoll (XBC26 C)
+Date / time: 19/10 13:05
+Message: yes reach out in the support chat and a TL will take the escalation
+Sender: Daniel Jackson
+Date / time: 19/10 13:06
+Message: ok. thank you
+Chat name: KEELYN RYAN DM
+Date: SUN 19/10
+Sender: Keelyn Ryan (XBC26 C)
+Date / time: 19/10 16:32
+Message: whats up with escaltion
+Sender: Daniel Jackson
+Date / time: 19/10 16:34 Edited
+Message: these are my notes from yesterday when I spoke to him. I just called back today confirming that httc would apply (decision from Jess):
+CX called unhappy re: bill issued after cease. Advised final bill still to be produced.
+Cease had been delayed; checked account to ensure no issues clearing charges once final bill generated.
+CX claimed he was told no notice period/HTTC due to very slow speeds + no upgrade planned. No evidence found to support this.
+Connections confirmed slow speeds but no record of waiver. Tech confirmed engineer visit for drops, but no speeds below guarantee.
+Informed CX no evidence of promise to waive fees; advised possible resolution if call recording located. CX recalled speaking to NI agent late June/early Aug; no matching call found.
+CX stated arrangement dates back to complaint during recontracting a couple of years ago when told new lines were coming soon and he'd be free to leave if not delivered.
+CX warned he will escalate to Ofcom/Ombudsman if charges applied.
+[redacted]
+Sender: Keelyn Ryan (XBC26 C)
+Date / time: 19/10 16:37
+Message: 2 secs let me have a look
+theres no HTTC on the account ?
+Sender: Daniel Jackson
+Date / time: 19/10 16:38
+Message: final bill hasnt been produced
+Sender: Keelyn Ryan (XBC26 C)
+Date / time: 19/10 16:38
+Message: contract was till april 26 i think
+Sender: Keelyn Ryan (XBC26 C)
+Date / time: 19/10 16:38
+Message: we cant dispute charges that havent been applied
+[image text unreadable]
+Sender: Keelyn Ryan (XBC26 C)
+Date / time: 19/10 16:42
+Message: with the call charges one we can dispute the charges not on a bill =- you can waive the £26 ones now but cx will have to call to get the other removed when bill is issued - you can leave note to say we can
+Sender: Daniel Jackson
+Date / time: 19/10 16:39
+Message: obviously jess didnt know the HTTC weren't on a bill yet - i would be more than happy to take this call if the HTTC were on a bill but i cant dispute charges that arent on a bill
+Sender: Daniel Jackson
+Date / time: 19/10 16:48
+Message: I don't really understand why you can't take an escalation based on something which we know is going to happen. As far as EE is concerned right now, there is no need to dispute httc, because he is liable for them. The fact is clear - his account is terminated, and he terminated believing that httc would not be applied.
+[image text unreadable]
+and if Jess did think httc had already been applied, then she really didn't pay attention to the message I sent her
+Sender: Keelyn Ryan (XBC26 C)
+Date / time: 19/10 16:55
+Message: there is no comms to show cx is getting HTTC
+so i cant dispute charges that there is no proof of having
+unless there is a final bill that shows me he is getting them i am after going through all emails and doesnt have any amount of HTTC on them
+also arte you logged off your phone panel ?
+Sender: Daniel Jackson
+Date / time: 19/10 16:59
+Message: yes I am, because I don't want to get stuck on a call and not be in a position to discuss this with you. I just called him back and promised a manager would contact him today, and with the end of the day rapidly approaching, it feels like that promise could very easily be broken
+Sender: Keelyn Ryan (XBC26 C)
+Date / time: 19/10 17:02
+Message: you are not allowed to log off your phone panel for this reason ? if you reached out i could have told you to jump into a code - for no reason is anyone allowed to just log off unfortunately
+Sender: Daniel Jackson
+Date / time: 19/10 17:03
+Message: may I have a code to use then
+Sender: Keelyn Ryan (XBC26 C)
+Date / time: 19/10 17:04 Edited
+Message: you've had 20 mins offline now so i think take a call and i will look into this
+Sender: Daniel Jackson
+Date / time: [time unreadable]
+Message: I have asked various people for advice regarding this account, and everyone has agreed there aren't any notes supporting leaving without httc. no one has said they don't think they will be applied. However, perhaps they won't. You think they may not be?
+Sender: Keelyn Ryan (XBC26 C)
+Date / time: 19/10 17:12
+Message: I agree i have no idea if they are going to be or not - cant find any evidence to support that they will be nevermind an amount i have looked through all order cease confirmation comms and doesn't mention any HTTC charges that's why I cant even take the call to discuss them. I agree it is a weird one cause doesn't say on email. I have spoke to Jason here with me about it also and he agrees there is nothing we can do unless there is proof of them
+Sender: Daniel Jackson
+Date / time: 19/10 17:30
+Message: what time do you finish?
+Sender: Keelyn Ryan (XBC26 C)
+Date / time: 19/10 18:16
+Message: soon
+what time are you finihed
+Sender: Daniel Jackson
+Date / time: 19/10 18:19
+Message: 5:30 officially, but I have a couple of complaints noel wants closed by tomorrow which I'm looking at
+Sender: Daniel Jackson
+Date / time: 19/10 18:26
+Message: I really don't want to argue Keelyn. But as someone who would like to help customers where possible, this job can feel like a battle. I have gone out of my way for the customer I have brought to you for escalation, and it's disappointing that my promise to him is being broken. You have not only refused to take it, you've also not given any guidance following that decision.
+
+T-27 — Case ID:
+---------------
+Pages: teams42.png
+
+Case ID: T-27
+Title: BROADBAND RE-GRADE MIS-SELL: CALL
+EVIDENCE IGNORED
+Chat name: NOEL’S MIS-SELL CHAT
+Date: MON 20/10
+Sender: Daniel Jackson
+Date / time: 20/10 18:45
+Message: Account Number: [redacted]
+Name: [redacted]
+Number contacted on: [redacted]
+Summary (as detailed as possible):bill much higher than expected due to removal of unlimited call plan and regraded broadband. was this agreed by cx?
+Agent Ein and Name: [redacted]
+Time and Date of call :29 Sep 2025 at 10:58
+Complaint raised (Y/N)y
+Action Scheduled for call back (Y/N)y
+Chat name: NOEL’S MIS-SELL CHAT
+Date: WED 22/10
+Sender: Noel Curran (XBC26 C)
+Date / time: 22/10 14:38
+Message: [Quoted] DanielMark Jackson (XBC26 C) 20/10/2025 18:45
+[Quoted] Account Number: [redacted] Name: [redacted]
+[Quoted] [redacted] Number contacted on [redacted]
+Customer was advised that price without unlimited minutes would be 86.99 and customer agreed to take out this package
+DanielMark Jackson (XBC26 C)
+⸻
+
+T-28 — Case ID:
+---------------
+Pages: teams47.png
+
+Case ID: T-28
+Title: MIS-SOLD PRICE DISPUTE, ESCALATION
+ACCEPTED AFTER DELAY
+Chat name: BILLING SUPPORT CHAT
+Date: FRI 24/10
+Sender: Daniel Jackson
+Date / time: 24/10 19:16
+Message: is a leader available for escalation?
+Sender: Jason Campbell (XBC26 C)
+Date / time: 24/10 19:22
+Message: [Quoted] Jason Campbell (XBC26 C) escalation possible tonight, or will have to be tomorrow?
+Sender: Jason Campbell (XBC26 C)
+Date / time: 24/10 19:25
+Message: [Quoted] DanielMark Jackson (XBC26 C) 24/10/2025 19:22
+[Quoted] Jason Campbell (XBC26 C) escalation possible tonight, or will have to be tomorrow?
+Whats the issue ?
+Sender: Daniel Jackson
+Date / time: 24/10 19:28
+Message: GB32182103 was advised that her package would cost 59.99 - 39.99 for internet, but it's 46.99. I heard the call myself, and he clearly said 39.99. She won't accept a lump sum..
+Sender: Daniel Jackson
+Date / time: [time unreadable]
+Message: di can't help as it's ee
+Sender: Jason Campbell (XBC26 C)
+Date / time: 24/10 19:28
+Message: give me 2 mins and let me check
+Sender: Daniel Jackson
+Date / time: 24/10 19:28
+Message: I appreciate it
+Sender: Jason Campbell (XBC26 C)
+Date / time: 24/10 19:30
+Message: Bare with me just checking a few things
+DanielMark Jackson (XBC26 C) have you tried Valie ?
+Value* to see if they can amend the price
+Sender: Daniel Jackson
+Date / time: 24/10 19:32
+Message: no, they can't
+Sender: Jason Campbell (XBC26 C)
+Date / time: 24/10 19:33
+Message: I know the customer is waiting - However, give me 2 mins - I just want to confirm with another TL as I have no acces to the system atm - 2 mins
+Sender: Daniel Jackson
+Date / time: 24/10 19:34
+Message: okie dokie, thanks
+Sender: Daniel Jackson
+Date / time: 24/10 19:41
+Message: [redacted]
+the miss-sell
+Sender: Jason Campbell (XBC26 C)
+Date / time: 24/10 19:47
+Message: Call me there on the phone panel
+⸻
+
+T-29 — Case ID:
+---------------
+Pages: teams46.png
+
+Case ID: T-29
+Title: HOSTILE LANGUAGE ABOUT EMPLOYEE: TL
+REFERS TO ME AS “THAT MORON DANIEL MARK”
+Chat name: NOEL ’S TEAM
+Date: MON 31/10
+Sender: Daniel Jackson
+Date / time: 31/10 16:47
+Message: GB29780292 is an 85 year old lady who recently lost her husband. she went to the brixton store to reduce costs, and decided to remove her landline from account. instead of simply removing the landline, the staff there cancelled her existing contract, and then sold her a more expensive package, with more than she needs/wants. this was hidden by the fact it comes with 3 months free.
+She has contacted us about this already, very unhappy that her broadband will be 46.99/month, where previously it was 35.99. She has been advised that she must return to store to dispute, which she has done a couple of times, but she says that each time the staff there have been very rude and told her that there isn't a manager available in the store for her to speak to. She says that she will not return to the store because they were so rude.
+She says she doesn't know what to do next. What should I suggest?
+Sender: Noel Curran (XBC26 C)
+Date / time: 31/10 16:49
+Message: is its a miss sell that happened in the store, only the store would be able to handle it, we wouldn't have any calls to listen to, I understand that she may not want to go back to the store, but they are the only ones who can resolve the issue
+Sender: Daniel Jackson
+Date / time: 31/10 16:51
+Message: there are two closed complaints on account, one 24 days ago, the other 9 days ago,. both detailing exactly what I said. What should I do with the complaint I raise?
+Sender: Noel Curran (XBC26 C)
+Date / time: 31/10 16:53
+Message: I wouldn't be raising a new one, you can reopen either one of the ones already closed, I would close it being that we cant resolve the issue as customer would need to go back to store
+Sender: Daniel Jackson
+Date / time: 31/10 16:55
+Message: if it can't be resolved, she should be offered adr, no?
+Sender: Noel Curran (XBC26 C)
+Date / time: 31/10 17:00
+Message: as I said the only ones who could resolve it are the store, it would be up to the customer if she wants to escalate it after that we can offer an ADR to her
+Sender: Daniel Jackson
+Date / time: 31/10 17:07
+Message: what can I advise her in terms of options to escalate? Ofcom says we should be advising customers what to do if it can't be resolved internally
+[Quoted] Noel Curran (XBC26 C) 31/10/2025 17:00
+[Quoted] as I said the only ones who could resolve it are the store, it would be up to the customer if she wants to escalate it after that we ca...
+she has already stated she's not prepared to go back to store again, as her previous attempts have failed
+Sender: Noel Curran (XBC26 C)
+Date / time: 31/10 17:11
+Message: has she asked to escalate the call from yourself
+Sender: Daniel Jackson
+Date / time: 31/10 17:12
+Message: no
+Sender: Noel Curran (XBC26 C)
+Date / time: 31/10 17:13
+Message: if shes not willing to go back to the store there very little we can do, the most we could do is to see if value can offer anything cheaper
+Sender: Daniel Jackson
+Date / time: 31/10 17:23
+Message: she would like to speak to a manager
+Sender: Noel Curran (XBC26 C)
+Date / time: 31/10 17:24
+Message: can you reopen one of the complaints
+Sender: Daniel Jackson
+Date / time: 31/10 17:25
+Message: i have
+Sender: Noel Curran (XBC26 C)
+Date / time: 31/10 17:28
+Message: in ready
+
+T-30 — SYSTEMIC SUPPORT COLLAPSE – BILLING SUPPORT CHAT
+-------------------------------------------------------
+Pages: teams45.png, teams48.png, teams49.png, teams50.png, teams51.png, teams52.png, teams53.png, teams55.png, teams56.png, teams57.png
+Page breaks: Page break after page 1 (teams45.png → teams48.png); Page break after page 2 (teams48.png → teams49.png); Page break after page 3 (teams49.png → teams50.png); Page break after page 4 (teams50.png → teams51.png); Page break after page 5 (teams51.png → teams52.png); Page break after page 6 (teams52.png → teams53.png); Page break after page 7 (teams53.png → teams55.png); Page break after page 8 (teams55.png → teams56.png); Page break after page 9 (teams56.png → teams57.png)
+
+SYSTEMIC SUPPORT COLLAPSE – BILLING SUPPORT CHAT (T-30)
+TUE 18/11 – BILLING SUPPORT CHAT – 17:38
+Claudine Tekasala (XBC26 C) — 18/11 17:38
+GB29221686 i have a cx here that moved to us from sky last year and was told we do everything and sky been taken payment off him. he wanted to know when we contacted sky to cancel off he what he did was return sky equipment but thought account was closed .. there no AOT .. not notes any we can do .. his 90 years old still get bills
+Jessica O’Driscoll (XBC26 C) — 18/11 18:04
+are you ok claudine
+Jessica O’Driscoll (XBC26 C) — 18/11 18:04
+what date last year? sky would have been sending him bills also
+Claudine Tekasala (XBC26 C) — 18/11 18:06 (Edited)
+service activation 25/3/24 with us
+TUE 18/11 – BILLING SUPPORT CHAT – 16:45
+ChristinaMyth Tanoco (XBC26 C) — 18/11 16:45
+Any TL available?
+cx looking for a manager - refusing to speak to me any further because of trust issues. He is upset as he is being charged £55.86 where he should only be charged £48.99 as per new package but for some reason cyber security was added without account reason for his call yesterday. was advised that the cyber security would get removed but received a text about his bill today as £55.86. I have offered to remove the excess amount which he agreed but still is looking for a manager to see how we can make him happy
+Jessica O’Driscoll (XBC26 C) — 18/11 16:53
+whats the AC no
+ChristinaMyth Tanoco (XBC26 C) — 18/11 16:54
+GB32845267
+WED 19/11 – BILLING SUPPORT CHAT – 11:59
+Alexandra Iszak (XBC26 C) — 19/11 11:59
+cx chasing compensation for either a fault or a delay repair from january 2023 , acc is now closed?
+is there a time limit when cx can claim this how do I handle this ?
+Jason Campbell (XBC26 C) — 19/11 12:10
+Yes - There is a time limit - 2023 is too long for the customer to request - I believe that that the timescale is 6 months from when the fault was fixed to request comp
+Alexandra Iszak (XBC26 C) — 19/11 12:13
+cx wants to escalate because she was told by citizens advice she is eligible
+she has all sort of complaint raised all resolved and credit given for all of them
+I think she is now just looking for more money
+Alexandra Iszak (XBC26 C) — 19/11 12:19
+any manager please
+Alexandra Iszak (XBC26 C) — 19/11 12:25
+cx is looking for a escalation are u able to take the call please?
+WED 19/11 – BILLING SUPPORT CHAT – 12:07
+Krishnaveni Jashankar (XBC26 C) — 19/11 12:07 (Edited)
+Any manager available to take this call for me please. Hello Niamh , cx here not happy that we took the dd for £414.21 quarterly basis, on her closed BT account , also advisor moved her from BT to New EE , and assured that she will get the refund within a week, from her account transfer, but looks like we just took another DD on her WHOLE AMOUNT, and produced the final bill without any refund applied, its all because of dd date and final bill got produced same time, now the cx asking for a refund right now please.
+LWS877448L
+Krishnaveni Jashankar (XBC26 C) — 19/11 12:07
+Any manager available to take this call for me please ?
+THUR 20/11 – BILLING SUPPORT CHAT
+Babajide Adeniyi (XBC26 C) — 20/11 17:24
+have stuck adv hub session if any tl able to help
+Brian Walsh (XBC26 C) — 20/11 17:34
+if you open performance hub or rescue lense you can open AH beside that.
+FRI 21/11 – BILLING SUPPORT CHAT – 14:27
+Prathyusha Dhanekula (XBC26 C) — 21/11 14:27
+GB07723365 cust case closed with out consent…. issue is he rang on 10 nov to regrade BB and take off NT but NT hasn’t been taken off, cust isnt happy with that he gave a ring today agent placed cease order advised will ring back but closed case without consent… cust dont want to make payment since 10 nov… adv cease 30days notice due to back to back things happens he is looking for waiving off since 10 nov for nt sports.
+can i advise him will waive off since 10 nov 10days £6.88 will be added once next bill produced can i leave notes.?
+Prathyusha Dhanekula (XBC26 C) — 21/11 14:44
+any manager for manager call please Everyone
+Shannon Williamson (XBC26 C) — 21/11 14:44
+on a manager call
+Prathyusha Dhanekula (XBC26 C) — 21/11 14:46
+she raised complaint to ombudsmen today said any one please
+Corey Smith (XBC26 C) — 21/11 14:48
+if she raised one with them did she not get any contact information ?
+Prathyusha Dhanekula (XBC26 C) — 21/11 14:48
+any other manager please Everyone
+Corey Smith (XBC26 C) — 21/11 14:48
+what was the reason it went to ombudsman
+Prathyusha Dhanekula (XBC26 C) — 21/11 14:50
+called to get an account looked into as cust placed an order in dec 2023 to stop tv and vd and keep BB on its own, she was quoted £35.99 , order completed but prices stayed on old plans price AE280.25 and cust claims she was not aware of this as she doesnt get paper bills anymore and she never logged in her account.
+DI took over this call
+FRI 21/11 – BILLING SUPPORT CHAT – 17:31
+Patrick Donoghue (XBC26 C) — 21/11 17:31
+any tl available ive a cx that was expecting a call back in regards to a missell from a manager and never recieved one
+Patrick Donoghue (XBC26 C) — 21/11 17:44
+cx still on line could really do with a manager pls
+Scott Stapleford (XBC26 C) — 21/11 17:45
+not a manager but i can listen to the call quickly if you like and you can resolve in 30 mins time with the CX
+Patrick Donoghue (XBC26 C) — 21/11 17:47
+Due 21 Nov 2025 at 11:00 - 13:00
+Descriptions:
+Manager:61081985 summary:missell acc opened without knowledge following complaints process see no fix and complaints
+from what i can tell the missell call listen has been done but manager never spoke to cx or moved the process along beyond that just closed the complaint
+Scott Stapleford (XBC26 C) — 21/11 17:48
+bad form but i can listen to the call and give you feedback to resolve with cx? if it cant be resolved then we can escalate
+SAT 22/11 – BILLING SUPPORT CHAT
+Megan O’Connor (XBC26 C) — 22/11 12:21
+any TLs around ?
+Jason Campbell (XBC26 C) — 22/11 12:31
+Whats up Megan ?
+MON 24/11 – BILLING SUPPORT CHAT – 12:51
+Suzanne Harahan (XBC26 C) — 24/11 12:51
+any tls available for manager call was cold transferred to me SAYS SHE WAS MISOLD BB WANTED TO BE PUT ON HOME ESSENTIALS A LONG TIME AGO AND WAS PLACED ON WRONG PRICE SAYS SHES BEEN PAYING 20.00 SINCE 2019
+wants charges backdated to 2019
+my tl isnt in im telling her we dont backdate this far but she wont accept
+cx not accepting what i have to say never gotten comms ab this etc can i pls get some help on this
+Gareth Masterton (XBC26 C) — 24/11 12:53
+Go to loyalty and see if they can get her on HE.
+Suzanne Harahan (XBC26 C) — 24/11 12:53
+shes on it now she was cold transferred to me by them
+Gareth Masterton (XBC26 C) — 24/11 12:53
+Don’t mention the refund otherwise they won’t take it.
+Suzanne Harahan (XBC26 C) — 24/11 12:54
+shes been on it the whole time but she says she shouldve been on the 15 and not the 20 one
+and wants this backdated to 2019
+which is not possible
+and ive already told her this buyt wont accept this
+can i pls get a tl to help me w this have a complaint i cant close
+SYSTEMIC SUPPORT COLLAPSE – WIDESPREAD ESCALATION ABANDONMENT (T-30)
+BILLING SUPPORT CHAT – EXTRACTED TRANSCRIPT
+MON 24/11 – BILLING SUPPORT CHAT – 15:45
+Maija Rumjanceva (XBXW44 C) — 24/11 15:45
+Hi, can someone pls help me with ee MFA WIPE, its what IT told me my TL should do for, but Shannon is not in due to emergency, thanks in advance!
+Brian Walsh (XBC26 C) — 24/11 15:52
+we cant remove MFA
+Alexandra Iszak (XBC26 C) — 24/11 15:54
+I had to do a MFA wipe a while ago but I had to call a specific number on the IVR , a TL had to provide me with all the info but this was some time ago, see if u can contact some of the TLs in today and they can guide you on wht is currently the process
+Maija Rumjanceva (XBXW44 C) — 24/11 15:56
+thats what IT told me a TL needs to do, and my stand in TL told me to ask another TL as mine is not in today, not sure what to do
+Brian Walsh (XBC26 C) — 24/11 15:56
+ok 2 secs im checking
+Maija Rumjanceva (XBXW44 C) — 24/11 15:56
+Everyone
+Can any TL help out on this pls?
+MON 24/11 – BILLING SUPPORT CHAT – 19:03
+Charles Nwabohor (XBC26 C) — 24/11 19:03
+any manager for a manager call pls
+Noel Curran (XBC26 C) — 24/11 19:12
+whats the issue Charles
+FRI 28/11 – BILLING SUPPORT CHAT
+Sam O’Brien (XBC23 C) — 28/11 16:56
+anyone available
+Maija Rumjanceva (XBXW44 C) — 28/11 16:57
+GB18369228 manual reconnection pls
+Sam O’Brien (XBC23 C) — 28/11 17:06
+anyone
+Darren Fogarty (XBC26 C) — 28/11 17:11
+(quoting Sam O’Brien 28/11 17:06)
+anyone
+[GIF: “ANYONE?”]
+Sam O’Brien (XBC23 C) — 28/11 17:19
+??
+Kassie Caulfield (XBC26 C) — 28/11 17:21
+whats up Sam? sorry i didn’t see your message us our chat 😊
+SAT 29/11 – BILLING SUPPORT CHAT
+Uchechukwu Kalu (XBC26 C) — 29/11 15:44
+Any manager free for a call please?
+Jessica O’Driscoll (XBC26 C) — 29/11 15:55
+did u get sorted?
+Uchechukwu Kalu (XBC26 C) — 29/11 16:10
+(quoting Jessica O’Driscoll 29/11 15:55)
+did u get sorted?
+No I did not but scheduled call back for Monday. I can call him back now if you can take the call.
+MON 01/12 – BILLING SUPPORT CHAT – 12:05
+Treasa Doyle (XBC26 C) — 01/12 12:05
+Any TLs available for an escalation? cx on the line very unhappy wants to speak to manager as he spoke with an agent on 17th of nov and was believed to have placed a hm but can not locate order nor an account with the order on it - his own acc doesnt have it
+Brian Walsh (XBC26 C) — 01/12 12:13
+did you speak with DI?
+Treasa Doyle (XBC26 C) — 01/12 12:13
+no?
+Brian Walsh (XBC26 C) — 01/12 12:14
+so you have an AGT number which shows an order. if its not viewable in consumer ask DI to give you the order information.
+MON 01/12 – BILLING SUPPORT CHAT – 14:08
+Sasha Dimov (XBC26 C) — 01/12 14:08
+i have someone calling from BT credit control and she said that she has accidentally data breached a customer and her manager told her she has to report the data breach to us and someone has to submit a form or something but she doesn’t know what dep to go to asking me what to do
+does anyone know
+Joe Fennessy (XBC26 C) — 01/12 14:20
+I think she just has to raise the fraud form its in albert under suspected fraudulent activity and then data breech? i dent get why she is ringing you?
+TUE 02/12 – BILLING SUPPORT CHAT – 10:23
+Himashree Hazarika (XBC26 C) — 02/12 10:23
+any tl available to take a call,cx account closed due to non payment/cx saying he is in suicidal depreassion
+Himashree Hazarika (XBC26 C) — 02/12 10:43
+anyone available to take tl call,this cx want to speak with tl as account stop due top non payment
+TUE 02/12 – BILLING SUPPORT CHAT – 16:16
+Kenneth Obanor (XBC26 C) — 02/12 16:16
+Everyone TL available? Customer is not happy that duplicate account was setup and have been billed in the two account GB32324377 and GB32451131. Cx have been paying into the GB32324377 account but was meant for the other account. I can see that the credit has been applied to the GB32451131 account so that the GB32324377 can be closed. I can see that this account is still active though no active asset. I have tried to assist the cx but will not listen as this has been an ongoing issue. Customer just want to speak to a manager.
+WED 03/12 – BILLING SUPPORT CHAT
+Claudine Tekasala (XBC26 C) — 03/12 18:48
+is there any manager online
+Claudine Tekasala (XBC26 C) — 03/12 19:02
+is there no TL around ?
+THUR 04/12 – BILLING SUPPORT CHAT – 11:30
+Vladislav Belov (XBXW64 C) — 04/12 11:30
+Any TL to take an escalation? Thanks
+Cx’s asking for a manager - they’ve been pinged-ponged between 4 different departments and I asked them if I can solve their query - No, they stand their ground. Want a manager. It was a transfer by 617915292 who was doing the removal of the HTTC + cancellation but all of a sudden they threw cx onto me. Any TL to take this call?
+Vladislav Belov (XBXW64 C) — 04/12 14:42
+Anyone available? Thanks
+THUR 04/12 – BILLING SUPPORT CHAT – 15:54
+Marguerite Fahey (XBC26 C) — 04/12 15:54
+hi any managers pls
+iv a customer and got a httc
+he only got a notification today as he works away and doesnt look at his emails
+if he set up a new acc can we wavier the HTTC charge?
+no letter sent out too him or email and doesnt look at his email?
+Hi any tl please and thanks
+Anthony Biggs (XBC26 C) — 04/12 15:57
+(quoting Marguerite Fahey)
+Hi any tl please and thanks
+[image]
+Marguerite Fahey (XBC26 C) — 04/12 15:58
+no commment 😅
+iv this customer on line and he requested a manager but can we wavier if he sets up a new acc??
+Hi anyone pls ?
+FRI 05/12 – BILLING SUPPORT CHAT – 09:23
+Gordon Moore (XBC23 C) — 05/12 09:23
+need a manager ASAP!!!!!!!!!!!!!!
+hello is there anybody out there
+FRI 05/12 – BILLING SUPPORT CHAT – 12:07
+Harry Hynes (XBC26 C) — 05/12 12:07
+Got someone here saying they ceased acc last month, acc was not ceased but notes say they can leave no HTTCs. Cx looking for last month to be refunded (£71.20). Can this be applied?
+Allen Axi (XBC26 C) — 05/12 12:18
+The customer claims a credit check was run on her without consent. She says she reported it in November, but nothing was done. The agent told her it had been escalated to a manager for a callback, yet she never received one cx says she wants to speak to a manager.
+Brian Walsh (XBC26 C) — 05/12 12:19
+(quoting Harry Hynes 05/12/2025 12:07)
+Got someone here saying they ceased acc last month, acc was not ceased but notes say they can leave no HTTCs. Cx looking for last month to be refunded (£71.20). Can this be applied?
+we need to cease the acc first. was that a sales guide that left that note and or was there one in the acc after that note.
+FRI 05/12 – BILLING SUPPORT CHAT – 12:57
+Kaitriona Smith (XBC26 C) — 05/12 12:57
+Any tl available? LZ331183? Interacting with Claire Morrell 3rd party no info given. Chasing up again.
+cx still has not received their refund from July of £441.4 different group billings raised and still no refund .prior complaint closed all old and closed past the 28 day mark
+Kaitriona Smith (XBC26 C) — 05/12 13:07
+Everyone
+FRI 05/12 – BILLING SUPPORT CHAT – 16:44
+Claudine Tekasala (XBC26 C) — 05/12 16:44
+any manager around this my call back cx called yesterday but there was no TL around to take call
+FRI 05/12 – BILLING SUPPORT CHAT – 17:14
+Samir Kashi (XBC26 C) — 05/12 17:14 (Edited)
+any TL available ?
+Chloe KennedyMurphy (XBC26 C) — 05/12 17:22
+hey guys TLs are very limited in the office there’s only Eamonn and then Alan Myles for support maybe arrange a callback with your own TL or send a private message to the lads or your own TL so they will see it i don’t think they’ll see this chat
+TUE 09/12 – BILLING SUPPORT CHAT
+Guilherme Gomes (XBC26 C) — 09/12 08:41
+Any manager available? Cx has been charged 803.50 as termination fee to move from ee to bt, he has been called us a lot of times and no one waived the charges now customer wants to talk to a manager
+anyone available?
+Everyone
+WED 10/12 – BILLING SUPPORT CHAT
+Claudine Tekasala (XBC26 C) — Wednesday 18:22
+can get TL to apply 69.62 now cx rang up last month was told that they will change the calling plan to unlimited but they got email that something change but LL was still charging them was told get that waived off
+anyone here?
+Jessica O’Driscoll (XBC26 C) — Wednesday 18:32
+add to your credit chat and it can be disputed 😁
+SYSTEMIC SUPPORT COLLAPSE – WIDESPREAD ESCALATION ABANDONMENT (T-30)
+BILLING SUPPORT CHAT – EXTRACTED TRANSCRIPT
+THUR 11/12 – BILLING SUPPORT CHAT – 11:01
+Sam O’Brien (XBC23 C) — Thursday 11:01
+any managers available
+Gareth Masterton (XBC26 C) — Thursday 11:15
+Anne slot will be soon the way that lot are playing!!!!
+Roisin Clancy (XBC26 C) — Thursday 11:15 (Edited)
+i have a cx here who has an Indemnity on her acc but her bank is saying that they didnt request it, is there anything we can do
+Scott Stapleford (XBC26 C) — Thursday 11:17
+(quoting Gareth Masterton 11/12/2025 10:36)
+If you pay Joe I’ll be on sambuca with you!!! HAHA.
+Sounds amazing wish i could come but im way too far away sadly
+Joe Fogarty (XBC26 C) — Thursday 11:18
+(quoting Scott Stapleford 11/12/2025 11:17)
+Sounds amazing wish i could come but im way too far away sadly
+can send you a hot in the post 😂
+Scott Stapleford (XBC26 C) — Thursday 11:19
+(quoting Joe Fogarty 11/12/2025 11:18)
+can send you a hot in the post 😂
+Have to get it imported from france now because no where sells the banana one of it
+If you have tried it 100% recommend
+Andrea Sheehan (XBC26 C) — Thursday 11:20
+(quoting Louise Boland 11/12/2025 09:40)
+Everyone Can ye please pop into Infosys mail and confirm attendance
+is this a night out?
+Sam O’Brien (XBC23 C) — Thursday 11:24
+anyone ??
+Evan Killilea (XBC26 C) — Thursday 11:30
+all accommodation paid for and free bar ye
+billion dollar company innit
+Gareth Masterton (XBC26 C) — Thursday 11:35
+I have a 3 bedroomed house, happy to rent a room out £150 for the night.
+Sam O’Brien (XBC23 C) — Thursday 11:36
+customer hung up
+THUR 11/12 – BILLING SUPPORT CHAT – 15:44
+Kaitriona Smith (XBC26 C) — Thursday 15:44
+I need a TL / I’ve an aggressive son 3rd party claiming he is POA on his mothers account he won’t give us the reference to register this and states no other company asked him to do it, walk abou the bills advised that current line won’t be able to do so.. and he wants a manager he isn’t listening to my I explained gdpr W651559714 Everyone
+Peter Moran (XBC26 C) — Thursday 15:51
+A manager won’t be able to discuss anything with him either, he’ll need to register the POA if he has the POA
+Kaitriona Smith (XBC26 C) — Thursday 15:53
+i know
+FRI 12/12 – BILLING SUPPORT CHAT
+James Mbagwu (XBC26 C) — Friday 19:47
+GB33265724 - manual reconnection please
+Gareth Masterton (XBC26 C) — Friday 19:49
+Head over to payment support no TL here.
+SAT 13/12 – BILLING SUPPORT CHAT – 15:14
+Sam O’Brien (XBC23 C) — Saturday 15:14
+anyone on for a manager call
+Gordon Moore (XBC23 C) — Saturday 15:20
+(quoting Sam O’Brien 13/12/2025 15:14)
+anyone on for a manager call
+sam Eamonn on manager call no other managers here dont know who is working manager from home
+Sam O’Brien (XBC23 C) — Saturday 15:25
+hung up on me anyways twice this week waiting on someone and cx hangs up
+SAT 13/12 – BILLING SUPPORT CHAT – 15:37
+Sonia Oduonye (XBC26 C) — Saturday 15:37
+can i get a manager to apply a credit of £30 for an incorrectly charged engineer appointment? it will not let me dispute the charge, it can wait cx has had a bad time with bt
+GB33321295 credit and refund please
+Alan Myles (XBC26 C) — Saturday 15:42
+(quoting Sonia Oduonye 13/12/2025 15:41)
+GB33321295 credit and refund please
+Hey Sonia
+SAT 13/12 – BILLING SUPPORT CHAT – 16:31
+Claudine Tekasala (XBC26 C) — Saturday 16:31
+any TL here
+Sam O’Brien (XBC23 C) — Saturday 16:56
+WS60209259 anyone delete the bt id **@billing@btinternet.com
+Claudine Tekasala (XBC26 C) — Saturday 17:11
+dont think we have TL here
+Sonia Oduonye (XBC26 C) — Saturday 18:24
+are there any tls on? i have a cx who ceased his services in september 2022 but we started billing him again out of nowhere 3 years later in September 2025, no new order or interactions, the bills just appeared
+Taylor-Jade Lowther (XBC26 C) — Saturday 18:25
+dont think any tls are here
+Sonia Oduonye (XBC26 C) — Saturday 18:26
+thanks
